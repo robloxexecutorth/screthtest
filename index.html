@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — LOAD MORE VERSION</title>
+    <title>RETH OFFICIAL — ENHANCED VERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
@@ -38,11 +39,38 @@
             transition: background-color 0.3s;
         }
 
-        /* --- Header & Navigation --- */
+        /* --- Header & Navigation (ปรับปุ่มให้ใหญ่ขึ้น) --- */
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
-        .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
-        .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
-        .t-btn.active { background: var(--text-main); color: var(--bg-color); }
+        .nav-controls { position: fixed; top: 30px; right: 30px; display: flex; gap: 15px; z-index: 1100; }
+        
+        .t-btn { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            padding: 12px 20px; 
+            border-radius: 14px; 
+            font-size: 11px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            color: var(--text-dim);
+            transition: 0.2s;
+        }
+        .t-btn.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
+        
+        .discord-btn {
+            background: #5865F2;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .discord-btn:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3); }
 
         /* --- Search & Filter --- */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
@@ -69,12 +97,16 @@
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
         .btn-copy { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
 
-        /* --- Load More Button --- */
-        .load-more-container { display: flex; justify-content: center; padding: 60px 0; }
-        .btn-load-more { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 18px 40px; border-radius: 20px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-load-more:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+        /* --- Footer Credit --- */
+        .footer-credit { text-align: center; padding: 40px 0 60px 0; border-top: 1px solid var(--border-color); margin-top: 40px; }
+        .credit-text { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-dim); }
+        .credit-text span { color: var(--accent); }
 
-        /* --- Modal & Filter Menu --- */
+        /* --- Load More --- */
+        .load-more-container { display: flex; justify-content: center; padding: 40px 0; }
+        .btn-load-more { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 18px 40px; border-radius: 20px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+
+        /* --- Modal & Menu --- */
         #modal { transition: opacity 0.3s; }
         .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
         .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
@@ -85,7 +117,10 @@
     <div class="nav-controls">
         <div onclick="setTheme('dark')" id="dBtn" class="t-btn active">Dark</div>
         <div onclick="setTheme('light')" id="lBtn" class="t-btn">Light</div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase">Discord</a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-btn">
+            <i class="fa-brands fa-discord text-lg"></i>
+            <span>Discord</span>
+        </a>
     </div>
 
     <div class="max-w-7xl mx-auto">
@@ -109,6 +144,10 @@
         <div class="load-more-container" id="loadMoreArea" style="display: none;">
             <button onclick="loadMore()" id="btnLoadMore" class="btn-load-more">Load More Scripts</button>
         </div>
+
+        <footer class="footer-credit">
+            <p class="credit-text">Powered by <span>ScriptBlox</span> & Reth Official</p>
+        </footer>
     </div>
 
     <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 opacity-0">
@@ -153,26 +192,17 @@
                 const data = await res.json();
                 const newScripts = data.result.scripts || data.result.docs || [];
                 
-                if (append) {
-                    scripts = [...scripts, ...newScripts];
-                } else {
-                    scripts = newScripts;
-                }
-
-                // ซ่อน/แสดงปุ่ม Load More
+                if (append) { scripts = [...scripts, ...newScripts]; } else { scripts = newScripts; }
                 const totalPages = data.result.totalPages || 0;
                 document.getElementById('loadMoreArea').style.display = (currentPage < totalPages) ? 'flex' : 'none';
-
                 apply();
-            } catch (e) { console.error("Error loading scripts"); }
+            } catch (e) { console.error("Error loading"); }
         }
 
         function loadMore() {
             const btn = document.getElementById('btnLoadMore');
             btn.innerText = "LOADING...";
-            load(currentQuery, currentPage + 1, true).then(() => {
-                btn.innerText = "Load More Scripts";
-            });
+            load(currentQuery, currentPage + 1, true).then(() => { btn.innerText = "Load More Scripts"; });
         }
 
         function apply() {
@@ -189,17 +219,13 @@
             list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 const vBadge = s.verified ? `<div class="ver-badge-cover">${verSVG}</div>` : "";
-                const keyBadge = s.key ? 
-                    `<div class="key-info-badge badge-has-key">Key</div>` : 
-                    `<div class="key-info-badge badge-keyless">Keyless</div>`;
-                
+                const keyBadge = s.key ? `<div class="key-info-badge badge-has-key">Key</div>` : `<div class="key-info-badge badge-keyless">Keyless</div>`;
                 const idx = scripts.indexOf(s);
                 
                 html += `
                 <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${idx})">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
-                        ${vBadge}
-                        ${keyBadge}
+                        ${vBadge} ${keyBadge}
                         <div class="status-badge"><span class="dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
@@ -219,13 +245,9 @@
         function openModal(idx) {
             const s = scripts[idx];
             document.getElementById('mTitle').innerHTML = s.title;
-            document.getElementById('mStats').innerHTML = `
-                <span>👁 VIEWS: ${s.views.toLocaleString()}</span> | 
-                <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | 
-                <span class="text-red-500">👎 DISLIKES: ${s.dislikeCount}</span>`;
+            document.getElementById('mStats').innerHTML = `<span>👁 VIEWS: ${s.views.toLocaleString()}</span> | <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | <span class="text-red-500">👎 DISLIKES: ${s.dislikeCount}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
-            
             const m = document.getElementById('modal');
             m.classList.replace('hidden', 'flex');
             setTimeout(() => m.classList.add('opacity-100'), 10);
