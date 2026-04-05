@@ -72,9 +72,8 @@
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
         .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; border-radius: 8px; padding: 5px; z-index: 20; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
         
-        /* Key Badge ย้ายไปซ้ายบนถัดจาก Verified */
         .key-info-badge { position: absolute; top: 12px; left: 42px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
-        .no-ver .key-info-badge { left: 12px; } /* ถ้าไม่มี Verified ให้ชิดซ้ายสุด */
+        .no-ver .key-info-badge { left: 12px; } 
         
         .badge-keyless { background: #eab308; color: black; }
         .badge-has-key { background: #ef4444; color: white; }
@@ -211,6 +210,7 @@
                     <div class="stats-row">
                         <span><i class="fa-solid fa-eye mr-1"></i> ${s.views.toLocaleString()}</span>
                         <span class="text-green-500"><i class="fa-solid fa-thumbs-up mr-1"></i> ${s.likeCount}</span>
+                        <span class="text-red-500"><i class="fa-solid fa-thumbs-down mr-1"></i> ${s.dislikeCount}</span>
                     </div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
                     <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1 truncate">${s.game.name}</p>
@@ -222,8 +222,11 @@
         function openModal(idx) {
             const s = scripts[idx];
             document.getElementById('mTitle').innerHTML = s.title;
-            // ลบ Dislike ออกจากบรรทัดด้านล่าง
-            document.getElementById('mStats').innerHTML = `<span><i class="fa-solid fa-eye"></i> VIEWS: ${s.views.toLocaleString()}</span> | <span class="text-green-500">👍 LIKES: ${s.likeCount}</span>`;
+            // Dislike กลับมาแล้วในบรรทัดนี้
+            document.getElementById('mStats').innerHTML = `
+                <span><i class="fa-solid fa-eye"></i> VIEWS: ${s.views.toLocaleString()}</span> | 
+                <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | 
+                <span class="text-red-500">👎 DISLIKES: ${s.dislikeCount}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
             const m = document.getElementById('modal');
