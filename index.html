@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — FULL FUNCTION FIXED</title>
+    <title>RETH OFFICIAL — COMPLETE DESIGN FIX</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -15,21 +15,20 @@
             --card-bg: #050505;
             --text-main: #ffffff;
             --text-dim: #555555;
-            --border-color: #111111;
-            --search-bg: #050505;
+            --border-color: #111111; /* ขอบธีมมืด */
             --modal-bg: #080808;
-            --btn-copy-border: transparent;
+            --btn-copy-white-border: transparent; /* ขอบปุ่ม Copy ในธีมมืด */
         }
 
+        /* ปรับแต่ง Light Theme ให้มีขอบดำชัดเจนตามต้องการ */
         [data-theme="light"] {
             --bg-color: #ffffff;
             --card-bg: #ffffff;
             --text-main: #000000;
             --text-dim: #555555;
-            --border-color: #000000; /* ขอบดำในธีมขาว */
-            --search-bg: #ffffff;
+            --border-color: #000000; /* ขอบหลักธีมขาว เป็นสีดำ */
             --modal-bg: #ffffff;
-            --btn-copy-border: #000000; /* ขอบปุ่มดำในธีมขาว */
+            --btn-copy-white-border: #000000; /* ขอบปุ่ม Copy ในธีมขาว เป็นสีดำ */
         }
 
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; margin: 0; overflow-x: hidden; }
@@ -42,19 +41,20 @@
         .t-btn.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
 
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
-        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; transition: 0.3s; }
+        .reth-search { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; transition: 0.3s; }
         .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         
         /* Floating Filter Menu */
         .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
+        /*reth-card: เพิ่มเส้นขอบ */
         .reth-card { 
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; 
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease; 
             overflow: hidden; position: relative; cursor: pointer;
         }
-        .reth-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--text-dim); }
+        .reth-card:hover { transform: translateY(-8px) scale(1.02); }
         .reth-card img { opacity: 0.5; transition: 0.4s ease; }
         .reth-card:hover img { opacity: 1; }
 
@@ -67,9 +67,9 @@
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
         .dot { height: 6px; width: 6px; border-radius: 50%; background: #22c55e; }
 
-        /* Buttons */
+        /* Buttons: บังคับมีขอบสีดำในธีมขาว */
         .btn-copy-white { 
-            background: #ffffff; color: #000000; border: 1.5px solid var(--btn-copy-border);
+            background: #ffffff; color: #000000; border: 1.5px solid var(--btn-copy-white-border);
             text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; 
             text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; 
         }
@@ -82,7 +82,16 @@
             padding: 16px 45px; border-radius: 20px; font-size: 11px; font-weight: 900; 
             text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.1em;
         }
-        .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); }
+        .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
+
+        /* Modal Image Container: เพิ่มเส้นขอบสีดำรอบรูปแกในป๊อปอัพ */
+        #modalGameImage {
+            border: 2px solid var(--border-color); /* ขอบดำในธีมขาว */
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+        }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -117,15 +126,20 @@
     </div>
 
     <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 opacity-0 transition-all duration-300">
-        <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative transform scale-95 transition-transform duration-300" id="modalContent">
+        <div class="bg-[var(--modal-bg)] border-2 border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative transform scale-95 transition-transform duration-300" id="modalContent">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase hover:text-white">Close [X]</button>
             <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2 flex items-center gap-2"></h2>
             <div id="mStats" class="stats-row mb-6"></div>
-            <div class="flex gap-4 mb-8">
-                <button id="mCopy" onclick="copyFromModal()" class="bg-white text-black flex-1 py-4 rounded-xl font-black text-[11px] uppercase">Copy Script</button>
-                <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase text-[var(--text-main)] hover:bg-zinc-900">Source Link</a>
+
+            <div id="modalGameImage" class="mb-8">
+                <img src="" alt="Game Image" class="w-full h-full object-cover">
             </div>
-            <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-[10px] text-zinc-500 max-h-[250px] overflow-auto whitespace-pre-wrap"></div>
+
+            <div class="flex gap-4 mb-8">
+                <button id="mCopy" onclick="copyFromModal()" class="bg-white text-black border-2 border-[var(--btn-copy-white-border)] flex-1 py-4 rounded-xl font-black text-[11px] uppercase transition hover:bg-zinc-100">Copy Script</button>
+                <a id="mLink" href="#" target="_blank" class="flex-1 border-2 border-[var(--border-color)] rounded-xl flex items-center justify-center text-[11px] font-black uppercase text-[var(--text-main)] transition hover:bg-zinc-900 data-[theme=light]:hover:bg-zinc-100">Source Link</a>
+            </div>
+            <div id="mCode" class="bg-black border-2 border-zinc-900 p-6 rounded-2xl font-mono text-[10px] text-zinc-500 max-h-[200px] overflow-auto whitespace-pre-wrap"></div>
         </div>
     </div>
 
@@ -144,6 +158,7 @@
                 : `https://scriptblox.com/api/script/fetch?page=${page}&max=20`;
             
             try {
+                // เปลี่ยน Proxy มาใช้ corsproxy.io ตามที่คุณต้องการ
                 const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(api)}`);
                 const data = await res.json();
                 const newScripts = data.result.scripts || data.result.docs || [];
@@ -174,7 +189,7 @@
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 html += `
                 <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${index})">
-                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
                         ${s.verified ? `<div class="ver-badge-container">${verStarSVG}</div>` : ""}
                         <div class="key-info-badge ${s.key ? 'badge-has-key' : 'badge-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
                         <div class="status-badge"><span class="dot"></span> Working</div>
@@ -200,8 +215,14 @@
 
         function openModal(index) {
             const s = allScripts[index];
+            const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
+
             document.getElementById('mTitle').innerHTML = `${s.title}${s.verified ? `<div class="w-6 h-6 inline-block align-middle ml-2">${verStarSVG}</div>` : ""}`;
             document.getElementById('mStats').innerHTML = `VIEWS: ${s.views.toLocaleString()} | 👍 ${s.likeCount || 0} | 👎 ${s.dislikeCount || 0}`;
+            
+            // อัปเดตรูปภาพแกใน Modal
+            document.querySelector('#modalGameImage img').src = thumb;
+
             document.getElementById('mCode').innerText = s.script || "-- No Script Data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
             
@@ -222,8 +243,8 @@
             const s = allScripts[index];
             navigator.clipboard.writeText(s.script).then(() => {
                 const old = btn.innerText; btn.innerText = "COPIED!";
-                btn.style.background = "#22c55e"; btn.style.color = "#fff";
-                setTimeout(() => { btn.innerText = old; btn.style.background = ""; btn.style.color = ""; }, 1500);
+                btn.style.background = "#22c55e"; btn.style.color = "#fff"; btn.style.borderColor = "#22c55e";
+                setTimeout(() => { btn.innerText = old; btn.style.background = ""; btn.style.color = ""; btn.style.borderColor = ""; }, 1500);
             });
         }
 
@@ -231,7 +252,8 @@
             navigator.clipboard.writeText(document.getElementById('mCode').innerText).then(() => {
                 const btn = document.getElementById('mCopy');
                 btn.innerText = "COPIED!";
-                setTimeout(() => btn.innerText = "Copy Script", 1500);
+                btn.style.background = "#22c55e"; btn.style.color = "#fff"; btn.style.borderColor = "#22c55e";
+                setTimeout(() => { btn.innerText = "Copy Script"; btn.style.background = ""; btn.style.color = ""; btn.style.borderColor = ""; }, 1500);
             });
         }
 
