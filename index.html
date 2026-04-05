@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="th" data-theme="dark">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — ULTIMATE 3D HUB</title>
+    <title>RETH OFFICIAL — THE ULTIMATE 3D HUB</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -13,164 +13,150 @@
     <style>
         :root {
             --bg-color: #000000;
-            --card-bg: rgba(8, 8, 8, 0.7);
+            --card-bg: rgba(5, 5, 5, 0.6);
             --text-main: #ffffff;
-            --text-dim: #777777;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --modal-bg: rgba(10, 10, 10, 0.98);
-            --accent: #1D9BF0;
+            --text-dim: #666666;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --modal-bg: rgba(10, 10, 10, 0.95);
+            --code-bg: #000000;
+            --code-text: #ffffff;
         }
 
         [data-theme="light"] {
             --bg-color: #ffffff;
-            --card-bg: rgba(245, 245, 245, 0.85);
+            --card-bg: rgba(255, 255, 255, 0.8);
             --text-main: #000000;
             --text-dim: #555555;
-            --border-color: rgba(0, 0, 0, 0.1);
+            --border-color: #000000;
             --modal-bg: #ffffff;
+            --code-bg: #ffffff;
+            --code-text: #000000;
         }
 
-        body { margin: 0; background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.4s; overflow-x: hidden; scroll-behavior: smooth; }
-        
-        /* 3D Canvas Background */
+        body { margin: 0; background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; overflow-x: hidden; }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-
-        /* UI Elements */
-        .reth-title { font-size: clamp(50px, 8vw, 100px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 0.9; letter-spacing: -0.04em; }
+        .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         
-        .nav-sticky { position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(20px); background: rgba(0,0,0,0.1); padding: 15px 0; border-bottom: 1px solid var(--border-color); }
+        /* Navigation */
+        .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
+        .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
+        .t-btn.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
 
-        .reth-search { 
-            background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px; 
-            color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; 
-            width: 100%; padding: 18px 25px; transition: 0.3s;
-        }
+        /* Search & Filter */
+        .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; width: 100%; z-index: 10; }
+        .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); }
 
         /* Card System */
-        .reth-card { 
-            background: var(--card-bg); border: 1.5px solid var(--border-color); border-radius: 28px; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; position: relative; 
-            backdrop-filter: blur(15px); animation: fadeIn 0.6s ease forwards;
-        }
-        .reth-card:hover { transform: translateY(-8px); border-color: var(--text-main); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Skeleton Animation */
-        .skeleton { background: linear-gradient(90deg, var(--card-bg) 25%, var(--border-color) 50%, var(--card-bg) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
-        @keyframes loading { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; position: relative; cursor: pointer; backdrop-filter: blur(12px); }
+        .reth-card:hover { transform: translateY(-10px); border-color: var(--text-main); }
+        .reth-card img { opacity: 0.6; transition: 0.4s; }
+        .reth-card:hover img { opacity: 1; }
 
         /* Badges */
-        .ver-badge { position: absolute; top: 12px; left: 12px; width: 24px; height: 24px; z-index: 30; }
-        .key-badge { position: absolute; top: 12px; left: 42px; border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 5px; }
-        .dot { height: 6px; width: 6px; background: #22c55e; border-radius: 50%; }
+        .ver-badge { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
+        .dot { height: 6px; width: 6px; border-radius: 50%; background: #22c55e; }
+        .key-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
+        .bg-key { background: #ef4444; color: white; }
+        .bg-keyless { background: #eab308; color: black; }
 
-        .btn-copy-white { background: #fff; color: #000; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; width: 100%; display: block; text-align: center; cursor: pointer; transition: 0.2s; }
-        .btn-copy-white:active { transform: scale(0.95); }
+        /* Stats & Buttons */
+        .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--border-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
+        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
+
+        /* Load More Animation */
+        .btn-load-more { 
+            background: transparent; border: 2px solid var(--border-color); color: var(--text-main); 
+            padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; 
+            text-transform: uppercase; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); 
+            letter-spacing: 0.15em; backdrop-filter: blur(10px);
+        }
+        .btn-load-more:hover { 
+            background: var(--text-main); color: var(--bg-color); border-color: var(--text-main);
+            transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
         /* Modal */
-        #modal { backdrop-filter: blur(25px); transition: 0.3s; }
-        pre { background: #000; padding: 20px; border-radius: 15px; font-size: 11px; color: #22c55e; overflow: auto; border: 1px solid #333; white-space: pre-wrap; word-break: break-all; max-height: 200px; }
+        #modal { backdrop-filter: blur(20px); }
+        #modalImgArea { border: 2px solid var(--border-color); border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 25px; }
+        #mCode { 
+            background: var(--code-bg); color: var(--code-text); border: 2px solid var(--border-color); 
+            padding: 20px; border-radius: 18px; font-family: monospace; font-size: 10px; 
+            max-height: 180px; overflow: auto; white-space: pre-wrap; word-break: break-all;
+        }
 
-        #toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 35px; border-radius: 50px; font-size: 11px; font-weight: 900; z-index: 9999; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        /* Toast */
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 30px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; z-index: 3000; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
     </style>
 </head>
-<body>
+<body class="p-6 md:p-16">
 
     <canvas id="bg-canvas"></canvas>
-    <div id="toast">COPIED TO CLIPBOARD!</div>
+    <div id="toast">Copied to Clipboard!</div>
 
-    <nav class="nav-sticky px-6 md:px-16">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="font-black text-xl italic tracking-tighter">RETH</div>
-            <div class="flex items-center gap-6">
-                <div class="flex gap-3">
-                    <button onclick="setTheme('dark')" id="dBtn" class="text-[10px] font-black uppercase tracking-widest">Dark</button>
-                    <button onclick="setTheme('light')" id="lBtn" class="text-[10px] font-black uppercase tracking-widest opacity-40">Light</button>
-                </div>
-                <a href="#" class="bg-[#5865F2] px-5 py-2.5 rounded-xl text-[10px] font-black uppercase flex items-center gap-2"><i class="fa-brands fa-discord"></i> Discord</a>
-            </div>
-        </div>
-    </nav>
+    <div class="nav-controls">
+        <button onclick="setTheme('dark')" id="dBtn" class="t-btn">Dark</button>
+        <button onclick="setTheme('light')" id="lBtn" class="t-btn">Light</button>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase flex items-center"><i class="fa-brands fa-discord mr-2"></i> Discord</a>
+    </div>
 
-    <div class="max-w-7xl mx-auto px-6">
-        <header class="py-24 text-center">
+    <div class="max-w-7xl mx-auto relative z-10">
+        <header class="py-20 text-center flex flex-col items-center">
             <h1 class="reth-title">RETH</h1>
-            <p class="text-[11px] font-black text-zinc-500 uppercase tracking-[0.6em] mt-6">Powered by ScriptBlox</p>
+            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-5">Official Script Hub</p>
         </header>
 
-        <div class="max-w-3xl mx-auto mb-20 relative">
-            <div class="flex gap-4">
-                <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
-                <button onclick="document.getElementById('filterMenu').classList.toggle('hidden')" class="bg-[var(--card-bg)] px-8 rounded-2xl border-2 border-[var(--border-color)] text-[10px] font-black uppercase">Filter</button>
-            </div>
-            
-            <div id="filterMenu" class="absolute top-full mt-4 right-0 w-64 bg-[var(--modal-bg)] border-2 border-[var(--border-color)] rounded-2xl p-6 hidden shadow-2xl z-50">
-                <label class="flex justify-between items-center mb-4 cursor-pointer text-[10px] font-black uppercase">Verified Only <input type="checkbox" id="fVer" onchange="render()"></label>
-                <label class="flex justify-between items-center cursor-pointer text-[10px] font-black uppercase">Keyless Only <input type="checkbox" id="fKey" onchange="render()"></label>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
+            <button onclick="toggleFilter()" class="t-btn !px-8 !py-0 !rounded-2xl">Filter</button>
+            <div id="filterMenu" class="absolute top-full mt-4 right-0 w-64 bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-2xl p-6 hidden z-50">
+                <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-4">Quick Filters</h3>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" id="fVer" onchange="render()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" id="fKey" onchange="render()"></label>
             </div>
         </div>
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
-
-        <div id="loadArea" class="flex justify-center mt-24 hidden">
-            <button onclick="loadMore()" class="bg-white text-black px-14 py-5 rounded-full text-[11px] font-black uppercase hover:scale-105 transition-all duration-300 shadow-xl">Load More Scripts</button>
+        
+        <div class="flex justify-center py-24" id="loadMoreArea" style="display: none;">
+            <button onclick="loadMore()" class="btn-load-more">Load More Scripts</button>
         </div>
-
-        <footer class="mt-32 py-20 border-t border-[var(--border-color)] text-center">
-            <div class="flex flex-col items-center gap-5">
-                <p class="text-[10px] font-black uppercase text-zinc-600 tracking-[0.4em]">Data Provided & Powered by</p>
-                <a href="https://scriptblox.com" target="_blank" class="hover:scale-110 transition-transform">
-                    <span class="text-2xl font-black italic tracking-tighter text-[var(--text-main)]">SCRIPT<span class="text-[#1D9BF0]">BLOX</span></span>
-                </a>
-                <p class="text-[9px] font-bold text-zinc-500 uppercase mt-4">© 2026 RETH OFFICIAL — Premium Script Hub</p>
-            </div>
-        </footer>
     </div>
 
-    <div id="modal" class="fixed inset-0 z-[2000] hidden items-center justify-center p-4 bg-black/90 opacity-0">
-        <div class="bg-[var(--modal-bg)] border-2 border-[var(--border-color)] rounded-[40px] max-w-3xl w-full p-8 md:p-12 relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            
-            <h2 id="mTitle" class="text-3xl font-black italic uppercase mb-4 pr-10 leading-tight"></h2>
-            <div id="mStats" class="flex flex-wrap gap-6 text-[10px] font-black text-zinc-500 uppercase mb-8 border-b border-zinc-800 pb-6"></div>
-            
-            <div class="grid md:grid-cols-2 gap-8 mb-8">
-                <div class="rounded-3xl overflow-hidden border-2 border-zinc-800 bg-black aspect-video">
-                    <img id="mImg" src="" class="w-full h-full object-cover">
-                </div>
-                <div class="flex flex-col justify-center gap-4">
-                    <button onclick="copyFromModal()" class="bg-white text-black py-4.5 rounded-2xl font-black text-[12px] uppercase hover:bg-zinc-200 transition">Copy Script</button>
-                    <a id="mLink" href="#" target="_blank" class="border-2 border-zinc-800 py-4.5 rounded-2xl font-black text-[12px] uppercase text-center hover:bg-white/5 transition">View on ScriptBlox</a>
-                </div>
+    <div id="modal" class="fixed inset-0 z-[2000] hidden items-center justify-center p-6 bg-black/80 opacity-0 transition-opacity duration-300">
+        <div class="bg-[var(--modal-bg)] border-2 border-[var(--border-color)] rounded-[40px] max-w-2xl w-full p-10 relative">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
+            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
+            <div id="mStatsRow" class="stats-row mb-6"></div>
+            <div id="modalImgArea"><img id="mImg" src="" class="w-full h-full object-cover"></div>
+            <div class="flex gap-4 mb-8">
+                <button onclick="copyFromModal()" class="bg-white text-black border-2 border-[var(--border-color)] flex-1 py-4 rounded-xl font-black text-[11px] uppercase transition hover:bg-zinc-200">Copy Script</button>
+                <a id="mLink" href="#" target="_blank" class="flex-1 border-2 border-[var(--border-color)] rounded-xl flex items-center justify-center text-[11px] font-black uppercase text-[var(--text-main)]">Source Link</a>
             </div>
-            
-            <p class="text-[10px] font-black uppercase text-zinc-500 mb-3 ml-1">Script Preview:</p>
-            <pre id="mCode"></pre>
+            <div id="mCode"></div>
         </div>
     </div>
 
     <script>
-        // --- 1. 3D ENGINE (COMPLETE) ---
+        // --- 3D ENGINE (Three.js) ---
+        const canvas = document.getElementById('bg-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), antialias: true, alpha: true });
         const shapes = [];
 
         function init3D() {
             renderer.setSize(window.innerWidth, window.innerHeight);
             camera.position.z = 35;
-            const geoPool = [new THREE.IcosahedronGeometry(2,0), new THREE.BoxGeometry(3,3,3), new THREE.OctahedronGeometry(2.5)];
-            for(let i=0; i<50; i++) {
-                const mat = new THREE.MeshPhongMaterial({ color: 0x4f6b8f, wireframe: true, transparent: true, opacity: 0.15 });
+            const geoPool = [new THREE.IcosahedronGeometry(2,0), new THREE.BoxGeometry(3,3,3), new THREE.TetrahedronGeometry(2.5)];
+            for(let i=0; i<45; i++) {
+                const mat = new THREE.MeshBasicMaterial({ color: 0x4f6b8f, wireframe: true, transparent: true, opacity: 0.15 });
                 const mesh = new THREE.Mesh(geoPool[Math.floor(Math.random()*3)], mat);
                 mesh.position.set((Math.random()-0.5)*100, (Math.random()-0.5)*80, (Math.random()-0.5)*50);
-                mesh.userData = { speedY: 0.03 + Math.random()*0.06, rot: Math.random()*0.015 };
+                mesh.userData = { speedY: 0.02 + Math.random()*0.06, rot: Math.random()*0.01 };
                 scene.add(mesh);
                 shapes.push(mesh);
             }
-            scene.add(new THREE.PointLight(0xffffff, 1, 100), new THREE.AmbientLight(0xffffff, 0.3));
         }
 
         function animate3D() {
@@ -178,41 +164,27 @@
             shapes.forEach(s => {
                 s.position.y += s.userData.speedY;
                 s.rotation.x += s.userData.rot;
-                s.rotation.z += s.userData.rot;
+                s.rotation.y += s.userData.rot;
                 if(s.position.y > 40) s.position.y = -40;
             });
             renderer.render(scene, camera);
         }
 
-        // --- 2. DATA ENGINE (COMPLETE) ---
-        let allScripts = []; let page = 1; let query = "";
-        const blueStar = `<svg viewBox="0 0 24 24" class="w-full h-full"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
+        // --- DATA ENGINE ---
+        let allScripts = []; let currentPage = 1; let currentQuery = "";
+        const verStar = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
         async function fetchScripts(q = "", p = 1, append = false) {
-            query = q; page = p;
-            if(!append) showSkeletons();
-            
+            currentQuery = q; currentPage = p;
             const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=20&page=${p}` : `https://scriptblox.com/api/script/fetch?page=${p}&max=20`;
-            
             try {
                 const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(api)}`);
                 const data = await res.json();
-                const newScripts = data.result.scripts || data.result.docs || [];
-                
-                allScripts = append ? [...allScripts, ...newScripts] : newScripts;
-                document.getElementById('loadArea').classList.toggle('hidden', page >= (data.result.totalPages || 1));
+                const scripts = data.result.scripts || data.result.docs || [];
+                allScripts = append ? [...allScripts, ...scripts] : scripts;
+                document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 1)) ? 'flex' : 'none';
                 render();
-            } catch (err) { console.error("API Error:", err); }
-        }
-
-        function showSkeletons() {
-            document.getElementById('scriptGrid').innerHTML = Array(8).fill(0).map(() => `
-                <div class="reth-card p-6 opacity-40">
-                    <div class="aspect-video rounded-2xl skeleton mb-5"></div>
-                    <div class="h-12 rounded-xl skeleton mb-4"></div>
-                    <div class="h-4 w-3/4 rounded-md skeleton"></div>
-                </div>
-            `).join('');
+            } catch (e) { console.error(e); }
         }
 
         function render() {
@@ -222,77 +194,74 @@
             const filtered = allScripts.filter(s => (!fV || s.verified) && (!fK || s.key === false));
 
             grid.innerHTML = filtered.map((s, i) => {
-                const img = s.image && s.image.startsWith('http') ? s.image : (s.game.imageUrl ? s.game.imageUrl : "https://via.placeholder.com/400x225");
+                const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 return `
                 <div class="reth-card p-6" onclick="openModal(${i})">
-                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-6 bg-zinc-900 border border-[var(--border-color)]">
-                        ${s.verified ? `<div class="ver-badge">${blueStar}</div>` : ""}
-                        <div class="key-badge ${s.key ? 'bg-red-500 text-white' : 'bg-yellow-500 text-black'}">${s.key ? 'Key' : 'Keyless'}</div>
-                        <div class="status-badge"><div class="dot"></div> Working</div>
-                        <img src="${img}" class="w-full h-full object-cover opacity-50 hover:opacity-100 transition duration-500">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
+                        ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
+                        <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
+                        <div class="status-badge"><span class="dot"></span> Working</div>
+                        <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
-                    <div class="btn-copy-white mb-5" onclick="event.stopPropagation(); quickCopy(${i})">Copy Script</div>
-                    <div class="flex gap-4 text-[9px] font-black text-zinc-500 uppercase mb-2">
+                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${i})">Copy Script</div>
+                    <div class="stats-row">
                         <span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span>
                         <span>👍 ${s.likeCount || 0}</span>
                     </div>
-                    <h3 class="text-[13px] font-black uppercase truncate">${s.title}</h3>
-                    <p class="text-[9px] font-bold text-zinc-600 truncate mt-1">${s.game.name}</p>
+                    <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
+                    <p class="text-[9px] text-zinc-500 font-bold uppercase truncate mt-1">${s.game.name}</p>
                 </div>`;
             }).join('');
         }
 
-        // --- 3. UTILS & UX (COMPLETE) ---
-        function quickCopy(i) { navigator.clipboard.writeText(allScripts[i].script); showToast(); }
-        function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
-        
-        function showToast() { 
-            const t = document.getElementById('toast'); t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 2500); 
-        }
-
+        // --- UTILS ---
         function setTheme(m) {
-            document.documentElement.setAttribute('data-theme', m);
-            document.getElementById('dBtn').classList.toggle('opacity-40', m !== 'dark');
-            document.getElementById('lBtn').classList.toggle('opacity-40', m !== 'light');
-            shapes.forEach(s => s.material.color.set(m === 'light' ? 0x333333 : 0x4f6b8f));
+            document.body.setAttribute('data-theme', m);
+            document.getElementById('dBtn').classList.toggle('active', m === 'dark');
+            document.getElementById('lBtn').classList.toggle('active', m === 'light');
+            localStorage.setItem('reth-theme', m);
+            shapes.forEach(s => s.material.color.set(m === 'light' ? 0x000000 : 0x4f6b8f));
         }
 
         function openModal(i) {
             const s = allScripts[i];
-            const img = s.image && s.image.startsWith('http') ? s.image : (s.game.imageUrl || "");
+            const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "");
             document.getElementById('mTitle').innerText = s.title;
-            document.getElementById('mImg').src = img;
-            document.getElementById('mStats').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount}</span><span>Game: ${s.game.name}</span><span>Created: ${new Date(s.createdAt).toLocaleDateString()}</span>`;
-            document.getElementById('mCode').innerText = s.script || "-- No Code Available --";
+            document.getElementById('mImg').src = thumb;
+            document.getElementById('mStatsRow').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount || 0}</span><span>Game: ${s.game.name}</span>`;
+            document.getElementById('mCode').innerText = s.script || "-- No Code --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
-            
-            const modal = document.getElementById('modal');
-            modal.classList.replace('hidden', 'flex');
-            setTimeout(() => modal.classList.add('opacity-100'), 10);
-            document.body.style.overflow = 'hidden';
+            const m = document.getElementById('modal');
+            m.classList.replace('hidden', 'flex');
+            setTimeout(() => m.classList.add('opacity-100'), 10);
         }
 
         function closeModal() {
-            const modal = document.getElementById('modal');
-            modal.classList.remove('opacity-100');
-            setTimeout(() => { modal.classList.replace('flex', 'hidden'); document.body.style.overflow = 'auto'; }, 300);
+            const m = document.getElementById('modal');
+            m.classList.remove('opacity-100');
+            setTimeout(() => m.classList.replace('flex', 'hidden'), 300);
         }
 
-        function loadMore() { fetchScripts(query, page + 1, true); }
+        function showToast() { const t = document.getElementById('toast'); t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); }
+        function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
+        function quickCopy(i) { navigator.clipboard.writeText(allScripts[i].script); showToast(); }
+        function loadMore() { fetchScripts(currentQuery, currentPage + 1, true); }
+        function toggleFilter() { document.getElementById('filterMenu').classList.toggle('hidden'); }
 
-        // --- 4. INITIALIZATION ---
-        let timeout;
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => fetchScripts(e.target.value), 600);
-        });
+        window.onload = () => {
+            init3D(); animate3D();
+            setTheme(localStorage.getItem('reth-theme') || 'dark');
+            fetchScripts();
+        };
 
-        window.onload = () => { init3D(); animate3D(); fetchScripts(); setTheme('dark'); };
-        window.onresize = () => {
+        window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-        };
+        });
+
+        let db; document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(db); db = setTimeout(() => fetchScripts(e.target.value, 1, false), 500);
+        });
     </script>
 </body>
 </html>
