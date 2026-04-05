@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — KEY & KEYLESS STATUS</title>
+    <title>RETH OFFICIAL — COMPLETE VERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -30,34 +30,30 @@
             --modal-bg: #ffffff;
         }
 
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; transition: background-color 0.3s; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            margin: 0;
+            transition: background-color 0.3s;
+        }
 
         /* --- Search & Filter --- */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
         .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; outline: none; transition: 0.3s; }
-        .reth-search:focus { border-color: var(--accent); }
         .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
 
-        /* --- Badges on Cover --- */
+        /* --- Badges & Cards --- */
         .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
         .reth-card:hover { transform: translateY(-5px); border-color: var(--text-dim); }
         .reth-card img { opacity: 0.5; transition: 0.5s; }
         
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 9px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
-        
-        /* Verified */
         .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; border-radius: 8px; padding: 5px; z-index: 20; display: flex; align-items: center; justify-content: center; }
         
-        /* Key / Keyless Badge Base */
-        .key-info-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        
-        /* Keyless Style (Yellow) */
+        .key-info-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; letter-spacing: 0.05em; }
         .badge-keyless { background: #eab308; color: black; }
-        
-        /* Key Style (Red) */
         .badge-has-key { background: #ef4444; color: white; }
-
-        /* Offset if no Verified badge */
         .no-ver .key-info-badge { left: 12px; }
 
         .dot { height: 6px; width: 6px; border-radius: 50%; }
@@ -72,10 +68,9 @@
         .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); }
-        
-        /* Floating Menu */
-        .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.5); visibility: hidden; opacity: 0; transition: 0.3s; }
-        .float-filter-menu.show { visibility: visible; opacity: 1; }
+
+        .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
+        .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -97,12 +92,25 @@
             <button onclick="toggleFilter()" id="filterBtn" class="filter-btn">Filter</button>
             <div id="filterMenu" class="float-filter-menu">
                 <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-3">Quick Filters</h3>
-                <label class="flex justify-between py-2"><span>Verified</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"></label>
-                <label class="flex justify-between py-2"><span>Keyless</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"></label>
+                <label class="flex justify-between py-2 cursor-pointer"><span>Verified</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"></label>
+                <label class="flex justify-between py-2 cursor-pointer"><span>Keyless</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"></label>
             </div>
         </div>
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+    </div>
+
+    <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 opacity-0">
+        <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
+            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
+            <div id="mStats" class="stats-row mb-6"></div>
+            <div class="flex gap-4 mb-8">
+                <button id="mCopy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
+                <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
+            </div>
+            <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-xs text-zinc-500 max-h-[250px] overflow-auto whitespace-pre-wrap"></div>
+        </div>
     </div>
 
     <script>
@@ -112,6 +120,11 @@
 
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('show'); }
         function updateFilter(k, v) { filters[k] = v; apply(); }
+        function setTheme(m) {
+            document.body.setAttribute('data-theme', m);
+            document.getElementById('dBtn').className = m === 'dark' ? 't-btn active' : 't-btn';
+            document.getElementById('lBtn').className = m === 'light' ? 't-btn active' : 't-btn';
+        }
 
         async function load(q = "") {
             const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
@@ -137,16 +150,14 @@
             list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 const vBadge = s.verified ? `<div class="ver-badge-cover">${verSVG}</div>` : "";
-                
-                // --- ระบบเช็ค Key ---
-                // ถ้า s.key เป็น true ให้ขึ้นป้าย "Key" (สีแดง)
-                // ถ้า s.key เป็น false ให้ขึ้นป้าย "Keyless" (สีเหลือง)
                 const keyBadge = s.key ? 
                     `<div class="key-info-badge badge-has-key">Key</div>` : 
                     `<div class="key-info-badge badge-keyless">Keyless</div>`;
                 
+                const idx = scripts.indexOf(s);
+                
                 html += `
-                <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}">
+                <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${idx})">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
                         ${vBadge}
                         ${keyBadge}
@@ -156,28 +167,57 @@
                     <div class="stats-row">
                         <span>👁 ${s.views.toLocaleString()}</span>
                         <span class="text-green-500">👍 ${s.likeCount}</span>
+                        <span class="text-red-500">👎 ${s.dislikeCount}</span>
                     </div>
-                    <div class="btn-copy" onclick="quickCopy('${s.script}', this)">Copy Script</div>
+                    <div class="btn-copy" onclick="event.stopPropagation(); quickCopy(${idx}, this)">Copy Loadstring</div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
                 </div>`;
             });
             document.getElementById('scriptGrid').innerHTML = html;
         }
 
-        function quickCopy(code, btn) {
-            navigator.clipboard.writeText(code).then(() => {
+        function openModal(idx) {
+            const s = scripts[idx];
+            document.getElementById('mTitle').innerHTML = s.title;
+            document.getElementById('mStats').innerHTML = `
+                <span>👁 ${s.views.toLocaleString()}</span> | 
+                <span class="text-green-500">👍 ${s.likeCount}</span> | 
+                <span class="text-red-500">👎 ${s.dislikeCount}</span>`;
+            document.getElementById('mCode').innerText = s.script || "-- No Data --";
+            document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
+            
+            const m = document.getElementById('modal');
+            m.classList.replace('hidden', 'flex');
+            setTimeout(() => m.classList.add('opacity-100'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const m = document.getElementById('modal');
+            m.classList.remove('opacity-100');
+            setTimeout(() => { m.classList.replace('flex', 'hidden'); document.body.style.overflow = 'auto'; }, 300);
+        }
+
+        function quickCopy(idx, btn) {
+            navigator.clipboard.writeText(scripts[idx].script).then(() => {
                 const old = btn.innerText; btn.innerText = "COPIED!"; btn.style.background = "#22c55e";
                 setTimeout(() => { btn.innerText = old; btn.style.background = ""; }, 1500);
             });
         }
 
-        function setTheme(m) {
-            document.body.setAttribute('data-theme', m);
-            document.getElementById('dBtn').className = m === 'dark' ? 't-btn active' : 't-btn';
-            document.getElementById('lBtn').className = m === 'light' ? 't-btn active' : 't-btn';
+        function copyFromModal() {
+            navigator.clipboard.writeText(document.getElementById('mCode').innerText).then(() => {
+                const btn = document.getElementById('mCopy'); btn.innerText = "COPIED!";
+                setTimeout(() => btn.innerText = "Copy Script", 1500);
+            });
         }
 
-        document.getElementById('searchInput').addEventListener('input', (e) => load(e.target.value));
+        let debounce;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(debounce);
+            debounce = setTimeout(() => load(e.target.value), 500);
+        });
+
         window.onload = () => load("");
     </script>
 </body>
