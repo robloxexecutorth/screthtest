@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — FLOAT UI</title>
+    <title>RETH OFFICIAL — FLOAT MENU UI</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -16,8 +16,8 @@
             --text-dim: #555555;
             --border-color: #111111;
             --search-bg: #050505;
+            --modal-bg: #080808;
             --accent: #5865F2;
-            --float-bg: rgba(10, 10, 10, 0.8);
         }
 
         [data-theme="light"] {
@@ -27,149 +27,156 @@
             --text-dim: #a1a1aa;
             --border-color: #e4e4e7;
             --search-bg: #ffffff;
-            --float-bg: rgba(255, 255, 255, 0.9);
+            --modal-bg: #ffffff;
         }
 
         body { 
             background-color: var(--bg-color); 
             color: var(--text-main); 
             font-family: 'Inter', sans-serif; 
+            margin: 0;
             transition: background-color 0.3s;
         }
 
-        /* --- Float UI Navigation --- */
-        .float-nav {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--float-bg);
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(20px);
-            padding: 10px 20px;
-            border-radius: 24px;
+        /* --- Search & Filter Row (Same Position) --- */
+        .search-container {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 1000;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            gap: 12px;
+            max-width: 650px;
+            margin: 0 auto 60px auto;
+            position: relative; /* สำหรับให้ Popup อ้างอิงตำแหน่ง */
         }
 
-        .float-btn {
-            background: transparent;
+        .reth-search { 
+            background: var(--search-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 20px; 
+            color: var(--text-main); 
+            font-size: 14px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            flex: 1; 
+            padding: 22px 28px; 
+            outline: none;
+            transition: 0.3s;
+        }
+        .reth-search:focus { border-color: var(--accent); }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             color: var(--text-main);
-            border: none;
-            padding: 10px 15px;
+            padding: 0 25px;
+            border-radius: 20px;
             font-size: 11px;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             transition: 0.2s;
         }
-        .float-btn:hover { background: rgba(255,255,255,0.05); }
-        .float-btn.active-filter { background: var(--accent); color: white; }
+        .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); }
 
-        /* --- Floating Filter Card --- */
-        .filter-popup {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--float-bg);
+        /* --- Floating Filter Menu (The New UI) --- */
+        .float-filter-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            width: 280px;
+            background: var(--modal-bg);
             border: 1px solid var(--border-color);
-            backdrop-filter: blur(25px);
-            padding: 25px;
-            border-radius: 30px;
-            width: 320px;
+            border-radius: 24px;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(20px);
             opacity: 0;
             visibility: hidden;
+            transform: translateY(10px);
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1001;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
-        .filter-popup.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
-        /* --- Custom Checkbox --- */
         .filter-option {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 0; border-bottom: 1px solid var(--border-color);
+            padding: 14px 0; border-bottom: 1px solid var(--border-color);
             cursor: pointer;
         }
         .filter-option span { font-size: 11px; font-weight: 800; text-transform: uppercase; }
+
+        /* Custom Checkbox */
         .custom-check input { display: none; }
-        .box { width: 18px; height: 18px; border: 2px solid var(--border-color); border-radius: 5px; position: relative; transition: 0.2s; }
+        .box { width: 18px; height: 18px; border: 2px solid var(--border-color); border-radius: 6px; position: relative; transition: 0.2s; }
         .custom-check input:checked + .box { background: var(--accent); border-color: var(--accent); }
         .custom-check input:checked + .box::after { content: '✓'; position: absolute; color: white; font-size: 10px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
-        /* --- Typography & Grid --- */
-        .reth-title { font-size: clamp(50px, 8vw, 80px); font-weight: 900; font-style: italic; text-transform: uppercase; text-align: center; }
-        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px 25px; width: 100%; outline: none; transition: 0.3s; }
-        .reth-search:focus { border-color: var(--accent); }
-
+        /* --- Card Styles --- */
         .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
         .reth-card:hover { transform: translateY(-5px); border-color: var(--text-dim); }
+        .reth-card img { opacity: 0.5; transition: 0.5s; }
         
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); border-radius: 8px; padding: 4px 10px; font-size: 9px; font-weight: 900; color: white; display: flex; align-items: center; gap: 5px; z-index: 10; }
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 9px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
         .dot { height: 6px; width: 6px; border-radius: 50%; }
         .dot.working { background: #22c55e; }
         .dot.patched { background: #ef4444; }
 
-        .stats-row { display: flex; gap: 10px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; }
-        .btn-copy { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 12px; border-radius: 12px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
+        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
+        .btn-copy { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
 
-        /* --- Modal --- */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
-        .modal-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 30px; width: 90%; max-width: 600px; padding: 40px; position: relative; }
-        .script-box { background: #000; border: 1px solid #111; border-radius: 15px; padding: 20px; font-family: monospace; font-size: 12px; color: #666; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
+        /* --- Header & Nav --- */
+        .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
+        .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
+        .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
+        .t-btn.active { background: var(--text-main); color: var(--bg-color); }
     </style>
 </head>
-<body class="p-6 md:p-12 pb-32">
+<body class="p-6 md:p-16">
 
-    <div class="float-nav">
-        <button onclick="toggleFilterMenu()" id="filterToggleBtn" class="float-btn flex items-center gap-2">
-            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
-            Filter
-        </button>
-        <div class="w-[1px] h-4 bg-zinc-800"></div>
-        <button onclick="setTheme('dark')" class="float-btn">Dark</button>
-        <button onclick="setTheme('light')" class="float-btn">Light</button>
-        <div class="w-[1px] h-4 bg-zinc-800"></div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="float-btn" style="color:#5865F2">Discord</a>
+    <div class="nav-controls">
+        <div onclick="setTheme('dark')" id="dBtn" class="t-btn active">Dark</div>
+        <div onclick="setTheme('light')" id="lBtn" class="t-btn">Light</div>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase flex items-center">Discord</a>
     </div>
 
-    <div id="filterPopup" class="filter-popup">
-        <h3 class="text-xs font-black uppercase tracking-widest mb-4 text-zinc-500">Filter Options</h3>
-        <label class="filter-option custom-check"><span>Universal</span><input type="checkbox" onchange="updateFilter('universal', this.checked)"><div class="box"></div></label>
-        <label class="filter-option custom-check"><span>Verified</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"><div class="box"></div></label>
-        <label class="filter-option custom-check"><span>Keyless</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"><div class="box"></div></label>
-        <label class="filter-option custom-check"><span>Working</span><input type="checkbox" onchange="updateFilter('working', this.checked)"><div class="box"></div></label>
-        <button onclick="clearFilters()" class="w-full mt-4 py-3 rounded-xl text-[10px] font-black uppercase border border-zinc-800 hover:bg-white hover:text-black transition">Reset All</button>
-    </div>
-
-    <div class="max-w-6xl mx-auto">
-        <header class="mb-20">
-            <h1 class="reth-title italic">RETH HUB</h1>
-            <p class="text-center text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-2">Floating Interface v2</p>
+    <div class="max-w-7xl mx-auto">
+        <header class="py-20 text-center flex flex-col items-center">
+            <h1 class="reth-title">RETH</h1>
+            <div class="h-[2px] w-24 bg-zinc-800 -mt-2"></div>
+            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-5">Official Script Hub</p>
         </header>
 
-        <div class="max-w-xl mx-auto mb-16">
-            <input type="text" id="searchInput" placeholder="SEARCH SCRIPTS..." class="reth-search text-center font-bold">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
+            <button onclick="toggleFilter()" id="filterBtn" class="filter-btn">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
+                Filter
+            </button>
+
+            <div id="filterMenu" class="float-filter-menu">
+                <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-3">Quick Filters</h3>
+                <label class="filter-option custom-check"><span>Universal</span><input type="checkbox" onchange="updateFilter('universal', this.checked)"><div class="box"></div></label>
+                <label class="filter-option custom-check"><span>Verified</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"><div class="box"></div></label>
+                <label class="filter-option custom-check"><span>Keyless</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"><div class="box"></div></label>
+                <label class="filter-option custom-check"><span>Hide Patched</span><input type="checkbox" onchange="updateFilter('working', this.checked)"><div class="box"></div></label>
+                <button onclick="resetFilters()" class="w-full mt-4 py-3 border border-zinc-800 rounded-xl text-[10px] font-black uppercase hover:bg-white hover:text-black transition">Reset</button>
+            </div>
         </div>
 
-        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
     </div>
 
-    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <button onclick="closeModal()" class="absolute top-6 right-6 text-[10px] font-black uppercase text-zinc-500">Close</button>
-            <h2 id="m-title" class="text-2xl font-black italic uppercase mb-2"></h2>
-            <div id="m-stats" class="stats-row mb-6"></div>
-            <div class="flex gap-3 mb-6">
-                <button id="m-copy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
-                <a id="m-link" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
+    <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 transition-opacity duration-300 opacity-0">
+        <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
+            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
+            <div id="mStats" class="stats-row mb-6"></div>
+            <div class="flex gap-4 mb-8">
+                <button id="mCopy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
+                <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
             </div>
-            <div id="m-code" class="script-box"></div>
+            <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-xs text-zinc-500 max-height-[250px] overflow-auto whitespace-pre-wrap"></div>
         </div>
     </div>
 
@@ -177,58 +184,64 @@
         let scripts = [];
         let filters = { universal: false, verified: false, keyless: false, working: false };
 
-        function toggleFilterMenu() {
-            const popup = document.getElementById('filterPopup');
-            const btn = document.getElementById('filterToggleBtn');
-            popup.classList.toggle('show');
-            btn.classList.toggle('active-filter');
+        function toggleFilter() {
+            const menu = document.getElementById('filterMenu');
+            const btn = document.getElementById('filterBtn');
+            menu.classList.toggle('show');
+            btn.classList.toggle('active');
         }
 
-        function updateFilter(key, val) {
-            filters[key] = val;
-            applyFilters();
-        }
+        // Close menu when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!document.querySelector('.search-container').contains(e.target)) {
+                document.getElementById('filterMenu').classList.remove('show');
+                document.getElementById('filterBtn').classList.remove('active');
+            }
+        });
 
-        function clearFilters() {
+        function updateFilter(k, v) { filters[k] = v; apply(); }
+        function resetFilters() { 
             filters = { universal: false, verified: false, keyless: false, working: false };
-            document.querySelectorAll('#filterPopup input').forEach(i => i.checked = false);
-            applyFilters();
+            document.querySelectorAll('#filterMenu input').forEach(i => i.checked = false);
+            apply(); 
         }
 
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
+            document.getElementById('dBtn').className = m === 'dark' ? 't-btn active' : 't-btn';
+            document.getElementById('lBtn').className = m === 'light' ? 't-btn active' : 't-btn';
         }
 
-        async function loadData(q = "") {
-            const url = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
+        async function load(q = "") {
+            const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
             try {
-                const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url));
+                const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api));
                 const data = await res.json();
                 scripts = data.result.scripts || data.result.docs || [];
-                applyFilters();
-            } catch (e) { console.error("Error loading data"); }
+                apply();
+            } catch (e) { console.error("Error"); }
         }
 
-        function applyFilters() {
-            const filtered = scripts.filter(s => {
+        function apply() {
+            const f = scripts.filter(s => {
                 if (filters.universal && !s.isUniversal) return false;
                 if (filters.verified && !s.verified) return false;
                 if (filters.keyless && s.key) return false;
                 if (filters.working && s.isPatched) return false;
                 return true;
             });
-            render(filtered);
+            render(f);
         }
 
         function render(list) {
             let html = "";
-            list.forEach((s, i) => {
-                const thumb = s.image && !s.image.includes('http') ? "https://scriptblox.com"+s.image : (s.game.imageUrl || "https://via.placeholder.com/400x225");
+            list.forEach((s, idx) => {
+                const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 html += `
-                <div class="reth-card p-5" onclick="openModal(${scripts.indexOf(s)})">
-                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-4 bg-zinc-900">
+                <div class="reth-card p-6" onclick="openModal(${scripts.indexOf(s)})">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
                         <div class="status-badge"><span class="dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
-                        <img src="${thumb}" class="w-full h-full object-cover opacity-60">
+                        <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
                     <div class="stats-row">
                         <span>👁 ${s.views.toLocaleString()}</span>
@@ -237,51 +250,50 @@
                     </div>
                     <div class="btn-copy" onclick="event.stopPropagation(); quickCopy(${scripts.indexOf(s)}, this)">Copy Loadstring</div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
-                    <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1">${s.game.name}</p>
+                    <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1 truncate">${s.game.name}</p>
                 </div>`;
             });
-            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 uppercase font-black opacity-20">No Results</p>';
+            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 font-black opacity-20">NO RESULTS FOUND</p>';
         }
 
         function openModal(idx) {
             const s = scripts[idx];
-            document.getElementById('m-title').innerText = s.title;
-            document.getElementById('m-stats').innerHTML = `<span>Views: ${s.views}</span> <span class="text-green-500">Likes: ${s.likeCount}</span> <span class="text-red-500">Dislikes: ${s.dislikeCount}</span>`;
-            document.getElementById('m-code').innerText = s.script;
-            document.getElementById('m-link').href = "https://scriptblox.com/script/" + s.slug;
-            
-            const m = document.getElementById('modalOverlay');
-            m.style.display = 'flex';
-            setTimeout(() => m.style.opacity = '1', 10);
+            document.getElementById('mTitle').innerText = s.title;
+            document.getElementById('mStats').innerHTML = `<span>Views: ${s.views}</span> <span class="text-green-500">Likes: ${s.likeCount}</span> <span class="text-red-500">Dislikes: ${s.dislikeCount}</span>`;
+            document.getElementById('mCode').innerText = s.script;
+            document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
+            const m = document.getElementById('modal');
+            m.classList.replace('hidden', 'flex');
+            setTimeout(() => m.classList.add('opacity-100'), 10);
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            const m = document.getElementById('modalOverlay');
-            m.style.opacity = '0';
-            setTimeout(() => { m.style.display = 'none'; document.body.style.overflow = 'auto'; }, 300);
+            const m = document.getElementById('modal');
+            m.classList.remove('opacity-100');
+            setTimeout(() => { m.classList.replace('flex', 'hidden'); document.body.style.overflow = 'auto'; }, 300);
         }
 
         function quickCopy(idx, btn) {
             navigator.clipboard.writeText(scripts[idx].script).then(() => {
-                const old = btn.innerText; btn.innerText = "Copied!"; btn.style.background = "#22c55e";
+                const old = btn.innerText; btn.innerText = "COPIED!"; btn.style.background = "#22c55e";
                 setTimeout(() => { btn.innerText = old; btn.style.background = ""; }, 1500);
             });
         }
 
         function copyFromModal() {
-            navigator.clipboard.writeText(document.getElementById('m-code').innerText).then(() => {
-                const btn = document.getElementById('m-copy'); btn.innerText = "Copied!";
+            navigator.clipboard.writeText(document.getElementById('mCode').innerText).then(() => {
+                const btn = document.getElementById('mCopy'); btn.innerText = "COPIED!";
                 setTimeout(() => btn.innerText = "Copy Script", 1500);
             });
         }
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
             clearTimeout(window.t);
-            window.t = setTimeout(() => loadData(e.target.value), 500);
+            window.t = setTimeout(() => load(e.target.value), 500);
         });
 
-        window.onload = () => loadData("");
+        window.onload = () => load("");
     </script>
 </body>
 </html>
