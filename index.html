@@ -39,52 +39,60 @@
             transition: background-color 0.3s;
         }
 
-        /* --- Sidebar Styles --- */
-        .sidebar {
+        /* --- Sidebar Filter Styles --- */
+        .filter-sidebar {
             position: fixed; top: 0; right: -350px; width: 320px; height: 100%;
             background: var(--modal-bg); border-left: 1px solid var(--border-color);
             z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 30px; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
         }
-        .sidebar.active { right: 0; }
+        .filter-sidebar.active { right: 0; }
+        
         .sidebar-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             z-index: 999; display: none; backdrop-filter: blur(4px);
         }
         .sidebar-overlay.active { display: block; }
 
-        .filter-group { margin-bottom: 25px; }
-        .filter-label { 
-            font-size: 10px; font-weight: 900; color: var(--text-dim); 
-            text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 15px; display: block;
-        }
-        
-        .custom-checkbox {
+        .filter-option {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 0; cursor: pointer; border-bottom: 1px solid var(--border-color);
+            padding: 14px 0; border-bottom: 1px solid var(--border-color);
+            cursor: pointer; transition: 0.2s;
         }
-        .custom-checkbox span { font-size: 13px; font-weight: 600; }
-        .checkbox-box {
+        .filter-option:hover span { color: var(--accent); }
+        .filter-option span { font-size: 13px; font-weight: 600; text-transform: capitalize; }
+        
+        /* Custom Checkbox */
+        .checkbox-container input { display: none; }
+        .checkmark {
             width: 20px; height: 20px; border: 2px solid var(--border-color);
-            border-radius: 6px; transition: 0.2s; position: relative;
+            border-radius: 6px; display: inline-block; position: relative; transition: 0.2s;
         }
-        .custom-checkbox input:checked + .checkbox-box {
+        .checkbox-container input:checked + .checkmark {
             background: var(--accent); border-color: var(--accent);
         }
-
-        /* --- Utility Buttons --- */
-        .btn-filter-trigger {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            padding: 12px 20px; border-radius: 12px; font-size: 12px; font-weight: 900;
-            text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        .checkbox-container input:checked + .checkmark::after {
+            content: '✓'; position: absolute; color: white; font-size: 12px;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
         }
 
+        /* --- Navigation & Controls --- */
         .nav-controls {
             position: fixed; top: 25px; right: 25px;
             display: flex; align-items: center; gap: 12px; z-index: 100;
         }
+        .filter-trigger-btn {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 900;
+            text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
 
-        /* --- Reuse Existing Styles --- */
+        .theme-toggle { display: flex; background: var(--card-bg); border: 1px solid var(--border-color); padding: 4px; border-radius: 12px; }
+        .t-btn { padding: 8px 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; border-radius: 8px; cursor: pointer; color: var(--text-dim); transition: 0.2s; }
+        .t-btn.active { background: var(--text-main); color: var(--bg-color); }
+        .discord-btn { background: #5865F2; color: white; padding: 12px 24px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4); }
+
+        /* --- Card & Search --- */
         .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; cursor: pointer; }
         .reth-card:hover { border-color: var(--text-dim); transform: translateY(-5px); }
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 5px 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); z-index: 20; color: #ffffff; }
@@ -93,20 +101,20 @@
         .key-tag { position: absolute; top: 12px; left: 12px; font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 5px 10px; border-radius: 8px; z-index: 20; }
         .key-required { background-color: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
         .keyless { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
-        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase; }
-        .stat-like { color: #4ade80; } .stat-dislike { color: #f87171; }
-        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; transition: 0.2s; }
         .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; width: 100%; padding: 26px; outline: none; }
+        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase; }
+        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; transition: 0.2s; }
         .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 30px; max-width: 650px; width: 95%; padding: 40px; color: var(--text-main); }
         .script-box { background: #000000; border: 1px solid #111111; border-radius: 16px; padding: 20px; font-family: monospace; font-size: 12px; color: #777777; max-height: 250px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
+        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 6px; vertical-align: middle; }
     </style>
 </head>
 <body class="p-6 md:p-16">
 
     <div class="nav-controls">
-        <button onclick="toggleSidebar()" class="btn-filter-trigger">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
-            Filters
+        <button onclick="toggleSidebar()" class="filter-trigger-btn">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
+            Advanced Filter
         </button>
         <div class="theme-toggle">
             <div id="darkBtn" class="t-btn active" onclick="setTheme('dark')">Dark</div>
@@ -116,33 +124,37 @@
     </div>
 
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-    <aside id="filterSidebar" class="sidebar">
-        <div class="flex justify-between items-center mb-10">
+    <aside id="filterSidebar" class="filter-sidebar">
+        <div class="flex justify-between items-center mb-8">
             <h2 class="text-xl font-black uppercase italic italic">Advanced Search</h2>
             <button onclick="toggleSidebar()" class="text-zinc-500 hover:text-white font-bold text-[10px]">CLOSE [X]</button>
         </div>
 
-        <div class="filter-group">
-            <label class="filter-label">Status & Verification</label>
-            <label class="custom-checkbox">
+        <div class="mb-10">
+            <p class="text-[10px] font-black uppercase text-zinc-600 mb-4 tracking-widest">Filter By Category</p>
+            
+            <label class="filter-option checkbox-container">
                 <span>Verified Only</span>
-                <input type="checkbox" class="hidden" onchange="updateFilter('verified', this.checked)">
-                <div class="checkbox-box"></div>
+                <input type="checkbox" onchange="updateFilter('verified', this.checked)">
+                <span class="checkmark"></span>
             </label>
-            <label class="custom-checkbox">
-                <span>Universal Scripts</span>
-                <input type="checkbox" class="hidden" onchange="updateFilter('universal', this.checked)">
-                <div class="checkbox-box"></div>
+
+            <label class="filter-option checkbox-container">
+                <span>Universal</span>
+                <input type="checkbox" onchange="updateFilter('universal', this.checked)">
+                <span class="checkmark"></span>
             </label>
-            <label class="custom-checkbox">
-                <span>Keyless (No Key)</span>
-                <input type="checkbox" class="hidden" onchange="updateFilter('keyless', this.checked)">
-                <div class="checkbox-box"></div>
+
+            <label class="filter-option checkbox-container">
+                <span>Patched (Show Patched)</span>
+                <input type="checkbox" onchange="updateFilter('showPatched', this.checked)">
+                <span class="checkmark"></span>
             </label>
-            <label class="custom-checkbox">
-                <span>Working Only</span>
-                <input type="checkbox" class="hidden" onchange="updateFilter('working', this.checked)">
-                <div class="checkbox-box"></div>
+
+            <label class="filter-option checkbox-container">
+                <span>Key System (Requires Key)</span>
+                <input type="checkbox" onchange="updateFilter('keySystem', this.checked)">
+                <span class="checkmark"></span>
             </label>
         </div>
 
@@ -151,7 +163,7 @@
 
     <div class="max-w-7xl mx-auto">
         <header class="py-16 md:py-24 text-center flex flex-col items-center">
-            <h1 class="reth-title">RETH</h1>
+            <h1 class="reth-title italic font-black text-8xl tracking-tighter">RETH</h1>
             <div class="reth-title-underline"></div>
             <p class="reth-subtitle">OFFICIAL SCRIPT HUB</p>
         </header>
@@ -171,7 +183,7 @@
             <p id="modalGame" class="text-[11px] text-zinc-500 font-bold uppercase tracking-widest mb-10"></p>
             <div class="flex gap-4 mb-8">
                 <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0">COPY SCRIPT</div>
-                <a href="#" id="modalWebLink" target="_blank" class="modal-btn-web">VIEW WEB</a>
+                <a href="#" id="modalWebLink" target="_blank" class="modal-btn-web" style="flex:1; border:1px solid var(--border-color); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; text-transform:uppercase; color:var(--text-main); text-decoration:none;">VIEW WEB</a>
             </div>
             <div id="modalScript" class="script-box"></div>
         </div>
@@ -180,20 +192,20 @@
     <script>
         var scriptGridElement = document.getElementById('scriptGrid');
         var modalElement = document.getElementById('scriptModal');
-        var sidebarElement = document.getElementById('filterSidebar');
-        var overlayElement = document.getElementById('sidebarOverlay');
+        var sidebar = document.getElementById('filterSidebar');
+        var overlay = document.getElementById('sidebarOverlay');
         var scriptsArrayData = [];
         
         var activeFilters = {
             universal: false,
             verified: false,
-            keyless: false,
-            working: false
+            showPatched: false,
+            keySystem: false
         };
 
         function toggleSidebar() {
-            sidebarElement.classList.toggle('active');
-            overlayElement.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
 
         function updateFilter(type, value) {
@@ -202,87 +214,96 @@
         }
 
         function resetFilters() {
-            activeFilters = { universal: false, verified: false, keyless: false, working: false };
-            document.querySelectorAll('.sidebar input[type="checkbox"]').forEach(el => el.checked = false);
+            activeFilters = { universal: false, verified: false, showPatched: false, keySystem: false };
+            document.querySelectorAll('.filter-sidebar input').forEach(i => i.checked = false);
             applyFilters();
         }
 
         async function fetchScriptsFromServer(searchQuery) {
-            var api = searchQuery ? "https://scriptblox.com/api/script/search?q=" + encodeURIComponent(searchQuery) + "&max=50" : "https://scriptblox.com/api/script/fetch?page=1&max=50";
+            var api = searchQuery ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(searchQuery)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
             var proxy = "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api);
             try {
                 var response = await fetch(proxy);
-                var jsonData = await response.json();
-                if (jsonData && jsonData.result) {
-                    scriptsArrayData = jsonData.result.scripts || jsonData.result.docs || [];
-                    applyFilters(); 
-                }
-            } catch (error) { console.error("Error:", error); }
+                var data = await response.json();
+                scriptsArrayData = data.result.scripts || data.result.docs || [];
+                applyFilters();
+            } catch (e) { console.error(e); }
         }
 
         function applyFilters() {
-            var filteredList = scriptsArrayData.filter(item => {
-                var passUniversal = activeFilters.universal ? item.isUniversal === true : true;
-                var passVerified = activeFilters.verified ? item.verified === true : true;
-                var passKeyless = activeFilters.keyless ? item.key === false : true;
-                var passWorking = activeFilters.working ? item.isPatched === false : true;
-                return passUniversal && passVerified && passKeyless && passWorking;
+            var filtered = scriptsArrayData.filter(item => {
+                var passUni = activeFilters.universal ? item.isUniversal === true : true;
+                var passVer = activeFilters.verified ? item.verified === true : true;
+                var passPatch = activeFilters.showPatched ? true : item.isPatched === false;
+                var passKey = activeFilters.keySystem ? item.key === true : true;
+                return passUni && passVer && passPatch && passKey;
             });
-            renderScriptsToUI(filteredList);
+            renderScriptsToUI(filtered);
+        }
+
+        function getVerifiedBadge(isVerified) {
+            return isVerified ? `<span class="verified-badge"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>` : "";
         }
 
         function renderScriptsToUI(list) {
             var html = "";
-            list.forEach((item, i) => {
-                var thumb = item.image && !item.image.includes('http') ? "https://scriptblox.com" + item.image : (item.game && item.game.imageUrl ? item.game.imageUrl : "https://via.placeholder.com/400x225/050505/222222?text=RETH+HUB");
-                var statusHtml = item.isPatched ? '<span class="status-dot patched"></span> Patched' : '<span class="status-dot working"></span> Working';
+            list.forEach((item) => {
+                var thumb = item.image && !item.image.includes('http') ? "https://scriptblox.com" + item.image : (item.game.imageUrl || "https://via.placeholder.com/400x225");
                 html += `
-                <div class="reth-card p-6 group" onclick="openScriptDetailModal(${scriptsArrayData.indexOf(item)})">
+                <div class="reth-card p-6" onclick="openScriptDetailModal(${scriptsArrayData.indexOf(item)})">
                     <div class="relative aspect-video bg-black rounded-2xl mb-5 overflow-hidden">
-                        <div class="key-tag ${item.key ? 'key-required' : 'keyless'}">${item.key ? 'Key Required' : 'Keyless'}</div>
-                        <div class="status-badge">${statusHtml}</div>
-                        <img src="${thumb}" class="w-full h-full object-cover">
+                        <div class="key-tag ${item.key ? 'key-required' : 'keyless'}">${item.key ? 'Key' : 'Keyless'}</div>
+                        <div class="status-badge"><span class="status-dot ${item.isPatched ? 'patched' : 'working'}"></span> ${item.isPatched ? 'Patched' : 'Working'}</div>
+                        <img src="${thumb}" class="w-full h-full object-cover opacity-60">
                     </div>
                     <div class="stats-row">
-                        <span>👁 ${(item.views || 0).toLocaleString()}</span>
-                        <span class="stat-like">👍 ${(item.likeCount || 0).toLocaleString()}</span>
-                        <span class="stat-dislike">👎 ${(item.dislikeCount || 0).toLocaleString()}</span>
+                        <span>👁 ${item.views.toLocaleString()}</span>
+                        <span style="color:#4ade80">👍 ${item.likeCount}</span>
+                        <span style="color:#f87171">👎 ${item.dislikeCount}</span>
                     </div>
                     <div class="btn-copy-main" onclick="event.stopPropagation(); copyFromCard(${scriptsArrayData.indexOf(item)}, this)">COPY LOADSTRING</div>
-                    <h3 class="text-sm font-black uppercase mb-1 truncate">${item.title}</h3>
-                    <p class="text-[9px] text-zinc-600 font-bold uppercase truncate">${item.game ? item.game.name : "Universal"}</p>
+                    <h3 class="text-sm font-black uppercase mb-1 truncate flex items-center gap-1">${item.title} ${getVerifiedBadge(item.verified)}</h3>
+                    <p class="text-[9px] text-zinc-600 font-bold uppercase truncate">${item.game.name}</p>
                 </div>`;
             });
-            scriptGridElement.innerHTML = html || '<p class="text-center col-span-full py-20 uppercase font-black text-zinc-700">No scripts found.</p>';
+            scriptGridElement.innerHTML = html || '<p class="text-center col-span-full py-20 uppercase font-black text-zinc-800">No results found.</p>';
         }
 
-        // Logic Modal & Theme (เหมือนเดิมตามโค้ดฐาน)
         function openScriptDetailModal(index) {
             var s = scriptsArrayData[index];
-            document.getElementById('modalTitle').innerText = s.title;
-            document.getElementById('modalGame').innerText = s.game ? s.game.name : 'Universal';
-            document.getElementById('modalStats').innerHTML = `<span>👁 ${s.views}</span><span class="stat-like">👍 ${s.likeCount}</span><span class="stat-dislike">👎 ${s.dislikeCount}</span>`;
-            document.getElementById('modalScript').innerText = s.script || "-- No Script --";
+            document.getElementById('modalTitle').innerHTML = s.title + getVerifiedBadge(s.verified);
+            document.getElementById('modalStats').innerHTML = `<span>👁 ${s.views.toLocaleString()}</span><span style="color:#4ade80">👍 ${s.likeCount}</span><span style="color:#f87171">👎 ${s.dislikeCount}</span>`;
+            document.getElementById('modalGame').innerText = s.game.name;
+            document.getElementById('modalScript').innerText = s.script;
             document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
             modalElement.classList.remove('hidden');
             setTimeout(() => modalElement.classList.add('opacity-100'), 10);
             document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            modalElement.classList.remove('opacity-100');
-            setTimeout(() => { modalElement.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+        function closeModal() { modalElement.classList.remove('opacity-100'); setTimeout(() => { modalElement.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300); }
+        
+        function copyFromModal() {
+            navigator.clipboard.writeText(document.getElementById('modalScript').innerText).then(() => {
+                var btn = document.getElementById('modalCopyBtn'); btn.innerText = "COPIED!";
+                setTimeout(() => btn.innerText = "COPY SCRIPT", 2000);
+            });
         }
 
-        function setTheme(mode) {
-            if (mode === 'light') document.body.setAttribute('data-theme', 'light');
-            else document.body.removeAttribute('data-theme');
-            document.querySelectorAll('.t-btn').forEach(btn => btn.classList.toggle('active', btn.innerText.toLowerCase() === mode));
+        function copyFromCard(index, btn) {
+            navigator.clipboard.writeText(scriptsArrayData[index].script).then(() => {
+                btn.innerText = "COPIED!"; btn.style.backgroundColor = "#22c55e";
+                setTimeout(() => { btn.innerText = "COPY LOADSTRING"; btn.style.backgroundColor = ""; }, 1500);
+            });
+        }
+
+        function setTheme(m) {
+            document.body.setAttribute('data-theme', m);
+            document.querySelectorAll('.t-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase() === m));
         }
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(window.searchTimer);
-            window.searchTimer = setTimeout(() => fetchScriptsFromServer(e.target.value), 500);
+            clearTimeout(window.t); window.t = setTimeout(() => fetchScriptsFromServer(e.target.value), 500);
         });
 
         window.onload = () => fetchScriptsFromServer("");
