@@ -97,6 +97,9 @@
         .key-required { background-color: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
         .keyless { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
 
+        /* Verified Icon Style */
+        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 4px; vertical-align: middle; }
+
         /* --- Typography & Layout --- */
         .reth-title { font-size: 85px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         .reth-title-underline { height: 2px; width: 120px; background-color: var(--border-color); margin-top: -10px; }
@@ -156,7 +159,7 @@
     <div id="scriptModal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="modal-content relative">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px] tracking-widest">Close [X]</button>
-            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter"></h2>
+            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter flex items-center gap-2"></h2>
             <div id="modalStats" class="stats-row mb-3"></div>
             <p id="modalGame" class="text-[11px] text-zinc-500 font-bold uppercase tracking-widest mb-10"></p>
             
@@ -214,11 +217,22 @@
 
         function formatNum(num) { return (num || 0).toLocaleString(); }
 
+        // ฟังก์ชันสร้างไอคอน Verified
+        function getVerifiedBadge(isVerified) {
+            if (!isVerified) return "";
+            return `<span class="verified-badge" title="Verified">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+                </svg>
+            </span>`;
+        }
+
         function renderScriptsToUI(list) {
             var html = "";
             list.forEach((item, i) => {
                 var thumb = item.image && !item.image.includes('http') ? "https://scriptblox.com" + item.image : (item.game && item.game.imageUrl ? item.game.imageUrl : "https://via.placeholder.com/400x225/050505/222222?text=RETH+HUB");
                 var statusHtml = item.isPatched ? '<span class="status-dot patched"></span> Patched' : '<span class="status-dot working"></span> Working';
+                var verifiedIcon = getVerifiedBadge(item.verified);
 
                 html += `
                 <div class="reth-card p-6 group" onclick="openScriptDetailModal(${i})">
@@ -234,7 +248,9 @@
                     </div>
                     <div class="btn-copy-main" onclick="event.stopPropagation(); copyFromCard(${i}, this)">COPY LOADSTRING</div>
                     <div class="flex-grow">
-                        <h3 class="text-sm font-black uppercase truncate mb-1 tracking-tight">${item.title}</h3>
+                        <h3 class="text-sm font-black uppercase truncate mb-1 tracking-tight">
+                            ${item.title}${verifiedIcon}
+                        </h3>
                         <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest truncate">${item.game ? item.game.name : "Universal"}</p>
                     </div>
                 </div>`;
@@ -244,7 +260,8 @@
 
         function openScriptDetailModal(index) {
             var s = scriptsArrayData[index];
-            document.getElementById('modalTitle').innerText = s.title;
+            var verifiedIcon = getVerifiedBadge(s.verified);
+            document.getElementById('modalTitle').innerHTML = `${s.title}${verifiedIcon}`;
             document.getElementById('modalGame').innerText = s.game ? s.game.name : 'Universal Script';
             document.getElementById('modalScript').innerText = s.script || "-- No Script Provided --";
             document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
