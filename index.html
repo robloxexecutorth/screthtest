@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — ORIGINAL UI FIXED</title>
+    <title>RETH OFFICIAL — ORIGINAL UI STABLE</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -14,10 +14,10 @@
             --bg-color: #000000;
             --card-bg: #0a0a0a;
             --text-main: #ffffff;
-            --text-dim: #777777;
-            --border-color: #1a1a1a;
-            --search-bg: #0a0a0a;
-            --modal-bg: #0d0d0d;
+            --text-dim: #555555;
+            --border-color: #111111;
+            --search-bg: #050505;
+            --modal-bg: #080808;
             --accent: #5865F2;
         }
 
@@ -39,94 +39,86 @@
             transition: background-color 0.3s;
         }
 
-        /* --- Nav Controls (เหมือนในรูป) --- */
-        .nav-controls { position: absolute; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
-        .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
-        .t-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; }
-        .discord-btn { background: #5865F2; color: white; padding: 8px 20px; border-radius: 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        /* --- Header & Navigation (ปรับขนาดปุ่มตามรูป) --- */
+        .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
+        .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
+        .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px 18px; border-radius: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
+        .t-btn.active { background: #ffffff; color: #000000; }
+        .discord-btn { background: #5865F2; color: white; padding: 10px 22px; border-radius: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 
-        /* --- Header --- */
-        .reth-title { font-size: 80px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; margin-bottom: 5px; }
-        .reth-subtitle { font-size: 10px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.4em; }
+        /* --- Search & Filter --- */
+        .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
+        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 18px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; outline: none; }
+        .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 18px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
-        /* --- Search Area --- */
-        .search-container { display: flex; gap: 12px; max-width: 700px; margin: 50px auto; position: relative; }
-        .reth-search { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 18px; color: #fff; font-size: 12px; font-weight: 600; flex: 1; padding: 20px 25px; outline: none; }
-        .filter-btn { background: #0a0a0a; border: 1px solid #1a1a1a; color: #fff; padding: 0 25px; border-radius: 18px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
-
-        /* --- Card Design (ตามรูปเป๊ะ) --- */
-        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; overflow: hidden; position: relative; transition: 0.3s; cursor: pointer; }
+        /* --- Card Design (ปรับให้เหมือนรูปเป๊ะ) --- */
+        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; overflow: hidden; position: relative; cursor: pointer; transition: 0.3s; }
         .reth-card:hover { transform: translateY(-5px); border-color: #333; }
         
-        .card-img-container { position: relative; aspect-ratio: 16/9; background: #111; overflow: hidden; }
-        .card-img-container img { width: 100%; h-full: 100%; object-fit: cover; opacity: 0.6; }
+        .card-img-container { position: relative; aspect-ratio: 16/9; background: #111; }
+        .card-img-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; }
 
-        /* Badges inside Image */
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); padding: 4px 10px; border-radius: 20px; font-size: 8px; font-weight: 900; display: flex; align-items: center; gap: 5px; }
-        .key-badge { position: absolute; bottom: 12px; left: 12px; padding: 4px 12px; border-radius: 6px; font-size: 8px; font-weight: 900; text-transform: uppercase; }
-        .badge-keyless { background: #eab308; color: #000; }
-        .badge-key { background: #ef4444; color: #fff; }
-        .ver-badge { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; padding: 4px; border-radius: 6px; }
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 5px; }
+        .key-badge { position: absolute; bottom: 12px; left: 12px; border-radius: 6px; padding: 4px 12px; font-size: 8px; font-weight: 900; text-transform: uppercase; z-index: 15; }
+        .badge-keyless { background: #eab308; color: black; }
+        .badge-has-key { background: #ef4444; color: white; }
+        .ver-badge { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; padding: 5px; border-radius: 8px; z-index: 20; }
 
-        /* Card Content */
-        .card-body { padding: 20px; }
-        .btn-copy-white { background: #ffffff; color: #000000; width: 100%; padding: 12px; border-radius: 12px; font-size: 11px; font-weight: 900; text-transform: uppercase; text-align: center; margin-bottom: 15px; cursor: pointer; transition: 0.2s; }
-        .btn-copy-white:hover { background: #e0e0e0; }
+        .card-content { padding: 24px; }
+        .btn-copy-white { background: #ffffff; color: #000000; text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; }
 
-        .stats-row { display: flex; gap: 15px; font-size: 10px; font-weight: 800; color: #555; margin-bottom: 15px; }
-        .stats-row i { font-size: 11px; }
-
-        .script-title { font-size: 13px; font-weight: 900; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .game-title { font-size: 9px; font-weight: 700; color: #555; text-transform: uppercase; margin-top: 4px; }
+        .stats-row { display: flex; gap: 15px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; }
+        .dot { height: 6px; width: 6px; border-radius: 50%; }
+        .dot.working { background: #22c55e; }
+        .dot.patched { background: #ef4444; }
 
         /* --- Load More --- */
-        .load-more-container { display: flex; justify-content: center; padding: 50px 0; }
-        .btn-load-more { background: transparent; border: 1px solid #1a1a1a; color: #fff; padding: 15px 35px; border-radius: 15px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-load-more:hover { border-color: #fff; }
+        .load-more-container { display: flex; justify-content: center; padding: 60px 0; }
+        .btn-load-more { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 18px 40px; border-radius: 20px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
 
         /* --- Modal & Menu --- */
-        .float-filter-menu { position: absolute; top: calc(100% + 10px); right: 0; width: 250px; background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transition: 0.3s; }
-        .float-filter-menu.show { opacity: 1; visibility: visible; }
+        #modal { transition: opacity 0.3s; }
+        .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
+        .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
     </style>
 </head>
-<body>
+<body class="p-6 md:p-16">
 
     <div class="nav-controls">
         <div onclick="setTheme('dark')" id="dBtn" class="t-btn active">Dark</div>
         <div onclick="setTheme('light')" id="lBtn" class="t-btn">Light</div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-btn">
-            <i class="fa-brands fa-discord"></i> Discord
-        </a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-btn"><i class="fa-brands fa-discord"></i> DISCORD</a>
     </div>
 
-    <div class="max-w-7xl mx-auto px-6">
-        <header class="pt-32 pb-16 text-center">
+    <div class="max-w-7xl mx-auto">
+        <header class="py-20 text-center flex flex-col items-center">
             <h1 class="reth-title">RETH</h1>
-            <p class="reth-subtitle">Official Script Hub</p>
+            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-5">Official Script Hub</p>
         </header>
 
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
-            <button onclick="toggleFilter()" class="filter-btn">Filter</button>
+            <button onclick="toggleFilter()" id="filterBtn" class="filter-btn">Filter</button>
             <div id="filterMenu" class="float-filter-menu">
-                <label class="flex justify-between py-2 cursor-pointer text-[10px] font-bold uppercase"><span>Verified</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"></label>
-                <label class="flex justify-between py-2 cursor-pointer text-[10px] font-bold uppercase"><span>Keyless</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"></label>
+                <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-3">Quick Filters</h3>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"></label>
             </div>
         </div>
 
-        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
 
         <div class="load-more-container" id="loadMoreArea" style="display: none;">
-            <button onclick="loadMore()" id="btnLoadMore" class="btn-load-more">Load More</button>
+            <button onclick="loadMore()" id="btnLoadMore" class="btn-load-more">Load More Scripts</button>
         </div>
 
-        <footer class="py-20 text-center border-t border-[#1a1a1a] mt-20">
+        <footer class="py-20 text-center border-t border-[#111] mt-20">
             <p class="text-[9px] font-black text-[#444] uppercase tracking-widest">Powered by ScriptBlox & Reth Official</p>
         </footer>
     </div>
 
-    <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 opacity-0 transition-opacity duration-300">
-        <div class="bg-[#0d0d0d] border border-[#1a1a1a] rounded-[30px] max-w-2xl w-full p-10 relative">
+    <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 opacity-0">
+        <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
             <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
             <div id="mStats" class="stats-row mb-6"></div>
@@ -134,7 +126,7 @@
                 <button id="mCopy" onclick="copyFromModal()" class="bg-white text-black flex-1 py-4 rounded-xl font-black text-[11px] uppercase">Copy Script</button>
                 <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
             </div>
-            <div id="mCode" class="bg-black p-6 rounded-2xl font-mono text-xs text-zinc-500 max-h-[250px] overflow-auto whitespace-pre-wrap"></div>
+            <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-xs text-zinc-500 max-h-[250px] overflow-auto whitespace-pre-wrap"></div>
         </div>
     </div>
 
@@ -143,6 +135,7 @@
         let filters = { verified: false, keyless: false };
         let currentPage = 1;
         let currentQuery = "";
+        const maxPerPage = 20;
 
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('show'); }
         function updateFilter(k, v) { filters[k] = v; apply(); }
@@ -155,20 +148,28 @@
         async function load(q = "", page = 1, append = false) {
             currentQuery = q;
             currentPage = page;
-            const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=20&page=${page}` : `https://scriptblox.com/api/script/fetch?page=${page}&max=20`;
+            const api = q 
+                ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=${maxPerPage}&page=${page}` 
+                : `https://scriptblox.com/api/script/fetch?page=${page}&max=${maxPerPage}`;
+            
             try {
                 const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api));
                 const data = await res.json();
                 const newScripts = data.result.scripts || data.result.docs || [];
+                
                 scripts = append ? [...scripts, ...newScripts] : newScripts;
-                document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 0)) ? 'flex' : 'none';
+                const totalPages = data.result.totalPages || 0;
+                document.getElementById('loadMoreArea').style.display = (currentPage < totalPages) ? 'flex' : 'none';
                 apply();
-            } catch (e) { console.error("Error"); }
+            } catch (e) { console.error("Error loading"); }
         }
 
         function loadMore() {
-            document.getElementById('btnLoadMore').innerText = "LOADING...";
-            load(currentQuery, currentPage + 1, true).then(() => { document.getElementById('btnLoadMore').innerText = "Load More"; });
+            const btn = document.getElementById('btnLoadMore');
+            btn.innerText = "LOADING...";
+            load(currentQuery, currentPage + 1, true).then(() => {
+                btn.innerText = "Load More Scripts";
+            });
         }
 
         function apply() {
@@ -184,37 +185,37 @@
             let html = "";
             list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                const keyClass = s.key ? 'badge-key' : 'badge-keyless';
+                const keyBadgeClass = s.key ? 'badge-has-key' : 'badge-keyless';
                 const keyText = s.key ? 'Key' : 'Keyless';
                 const idx = scripts.indexOf(s);
                 
                 html += `
                 <div class="reth-card" onclick="openModal(${idx})">
                     <div class="card-img-container">
-                        ${s.verified ? '<div class="ver-badge"><i class="fa-solid fa-check text-[10px]"></i></div>' : ''}
-                        <div class="status-badge"><span class="w-1.5 h-1.5 rounded-full ${s.isPatched ? 'bg-red-500' : 'bg-green-500'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
-                        <div class="key-badge ${keyClass}">${keyText}</div>
+                        ${s.verified ? '<div class="ver-badge"><i class="fa-solid fa-check"></i></div>' : ''}
+                        <div class="key-badge ${keyBadgeClass}">${keyText}</div>
+                        <div class="status-badge"><span class="dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
                         <img src="${thumb}">
                     </div>
-                    <div class="card-body">
+                    <div class="card-content">
+                        <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${idx}, this)">Copy Loadstring</div>
                         <div class="stats-row">
                             <span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span>
                             <span class="text-green-500"><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount}</span>
                             <span class="text-red-500"><i class="fa-solid fa-thumbs-down"></i> ${s.dislikeCount}</span>
                         </div>
-                        <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${idx}, this)">Copy Loadstring</div>
-                        <h3 class="script-title">${s.title}</h3>
-                        <p class="game-title">${s.game.name}</p>
+                        <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
+                        <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1 truncate">${s.game.name}</p>
                     </div>
                 </div>`;
             });
-            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 opacity-20">NO RESULTS</p>';
+            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 font-black opacity-20">NO RESULTS FOUND</p>';
         }
 
         function openModal(idx) {
             const s = scripts[idx];
-            document.getElementById('mTitle').innerText = s.title;
-            document.getElementById('mStats').innerHTML = `<span>👁 ${s.views.toLocaleString()}</span> | <span class="text-green-500">👍 ${s.likeCount}</span> | <span class="text-red-500">👎 ${s.dislikeCount}</span>`;
+            document.getElementById('mTitle').innerHTML = s.title;
+            document.getElementById('mStats').innerHTML = `<span>👁 VIEWS: ${s.views.toLocaleString()}</span> | <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | <span class="text-red-500">👎 DISLIKES: ${s.dislikeCount}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
             const m = document.getElementById('modal');
