@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — FLOAT MENU UI</title>
+    <title>RETH OFFICIAL — FULL VERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -38,13 +38,13 @@
             transition: background-color 0.3s;
         }
 
-        /* --- Search & Filter Row (Same Position) --- */
+        /* --- Search & Filter Row --- */
         .search-container {
             display: flex;
             gap: 12px;
             max-width: 650px;
             margin: 0 auto 60px auto;
-            position: relative; /* สำหรับให้ Popup อ้างอิงตำแหน่ง */
+            position: relative;
         }
 
         .reth-search { 
@@ -79,7 +79,7 @@
         }
         .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); }
 
-        /* --- Floating Filter Menu (The New UI) --- */
+        /* --- Floating Filter Menu --- */
         .float-filter-menu {
             position: absolute;
             top: calc(100% + 15px);
@@ -106,7 +106,6 @@
         }
         .filter-option span { font-size: 11px; font-weight: 800; text-transform: uppercase; }
 
-        /* Custom Checkbox */
         .custom-check input { display: none; }
         .box { width: 18px; height: 18px; border: 2px solid var(--border-color); border-radius: 6px; position: relative; transition: 0.2s; }
         .custom-check input:checked + .box { background: var(--accent); border-color: var(--accent); }
@@ -125,6 +124,9 @@
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
         .btn-copy { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
 
+        /* Verified Badge */
+        .verified-icon { color: #3b82f6; flex-shrink: 0; }
+
         /* --- Header & Nav --- */
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
@@ -137,7 +139,13 @@
     <div class="nav-controls">
         <div onclick="setTheme('dark')" id="dBtn" class="t-btn active">Dark</div>
         <div onclick="setTheme('light')" id="lBtn" class="t-btn">Light</div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase flex items-center">Discord</a>
+        
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase flex items-center gap-2 hover:scale-105 transition-transform shadow-lg shadow-[#5865f2]/20">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.248.595.05.05 0 0 0-.023.07c.236.466.51.909.82 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"/>
+            </svg>
+            Discord
+        </a>
     </div>
 
     <div class="max-w-7xl mx-auto">
@@ -160,7 +168,7 @@
                 <label class="filter-option custom-check"><span>Verified</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"><div class="box"></div></label>
                 <label class="filter-option custom-check"><span>Keyless</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"><div class="box"></div></label>
                 <label class="filter-option custom-check"><span>Hide Patched</span><input type="checkbox" onchange="updateFilter('working', this.checked)"><div class="box"></div></label>
-                <button onclick="resetFilters()" class="w-full mt-4 py-3 border border-zinc-800 rounded-xl text-[10px] font-black uppercase hover:bg-white hover:text-black transition">Reset</button>
+                <button onclick="resetFilters()" class="w-full mt-4 py-3 border border-zinc-800 rounded-xl text-[10px] font-black uppercase hover:bg-white hover:text-black transition">Reset Filters</button>
             </div>
         </div>
 
@@ -170,19 +178,22 @@
     <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 transition-opacity duration-300 opacity-0">
         <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
-            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
+            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2 flex items-center gap-3"></h2>
             <div id="mStats" class="stats-row mb-6"></div>
             <div class="flex gap-4 mb-8">
                 <button id="mCopy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
                 <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
             </div>
-            <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-xs text-zinc-500 max-height-[250px] overflow-auto whitespace-pre-wrap"></div>
+            <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-xs text-zinc-500 max-h-[250px] overflow-auto whitespace-pre-wrap"></div>
         </div>
     </div>
 
     <script>
         let scripts = [];
         let filters = { universal: false, verified: false, keyless: false, working: false };
+
+        // Verified Icon Component
+        const verifiedBadge = `<svg class="verified-icon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg>`;
 
         function toggleFilter() {
             const menu = document.getElementById('filterMenu');
@@ -191,7 +202,7 @@
             btn.classList.toggle('active');
         }
 
-        // Close menu when clicking outside
+        // Close menu on outside click
         window.addEventListener('click', (e) => {
             if (!document.querySelector('.search-container').contains(e.target)) {
                 document.getElementById('filterMenu').classList.remove('show');
@@ -212,31 +223,33 @@
             document.getElementById('lBtn').className = m === 'light' ? 't-btn active' : 't-btn';
         }
 
-        async function load(q = "") {
-            const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
+        async function loadData(q = "") {
+            const url = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
             try {
-                const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api));
+                const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url));
                 const data = await res.json();
                 scripts = data.result.scripts || data.result.docs || [];
                 apply();
-            } catch (e) { console.error("Error"); }
+            } catch (e) { console.error("API Fetch Failed"); }
         }
 
         function apply() {
-            const f = scripts.filter(s => {
+            const filtered = scripts.filter(s => {
                 if (filters.universal && !s.isUniversal) return false;
                 if (filters.verified && !s.verified) return false;
                 if (filters.keyless && s.key) return false;
                 if (filters.working && s.isPatched) return false;
                 return true;
             });
-            render(f);
+            render(filtered);
         }
 
         function render(list) {
             let html = "";
-            list.forEach((s, idx) => {
+            list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
+                const vTag = s.verified ? verifiedBadge : "";
+                
                 html += `
                 <div class="reth-card p-6" onclick="openModal(${scripts.indexOf(s)})">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
@@ -249,19 +262,20 @@
                         <span class="text-red-500">👎 ${s.dislikeCount}</span>
                     </div>
                     <div class="btn-copy" onclick="event.stopPropagation(); quickCopy(${scripts.indexOf(s)}, this)">Copy Loadstring</div>
-                    <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
+                    <h3 class="text-sm font-black uppercase truncate flex items-center gap-2">${s.title} ${vTag}</h3>
                     <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1 truncate">${s.game.name}</p>
                 </div>`;
             });
-            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 font-black opacity-20">NO RESULTS FOUND</p>';
+            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 font-black opacity-20 uppercase">No Scripts Found</p>';
         }
 
         function openModal(idx) {
             const s = scripts[idx];
-            document.getElementById('mTitle').innerText = s.title;
-            document.getElementById('mStats').innerHTML = `<span>Views: ${s.views}</span> <span class="text-green-500">Likes: ${s.likeCount}</span> <span class="text-red-500">Dislikes: ${s.dislikeCount}</span>`;
-            document.getElementById('mCode').innerText = s.script;
+            document.getElementById('mTitle').innerHTML = `${s.title} ${s.verified ? verifiedBadge : ""}`;
+            document.getElementById('mStats').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span> <span class="text-green-500">Likes: ${s.likeCount}</span> <span class="text-red-500">Dislikes: ${s.dislikeCount}</span>`;
+            document.getElementById('mCode').innerText = s.script || "-- No script data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
+            
             const m = document.getElementById('modal');
             m.classList.replace('hidden', 'flex');
             setTimeout(() => m.classList.add('opacity-100'), 10);
@@ -288,12 +302,13 @@
             });
         }
 
+        let debounce;
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(window.t);
-            window.t = setTimeout(() => load(e.target.value), 500);
+            clearTimeout(debounce);
+            debounce = setTimeout(() => loadData(e.target.value), 500);
         });
 
-        window.onload = () => load("");
+        window.onload = () => loadData("");
     </script>
 </body>
 </html>
