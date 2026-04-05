@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — LOAD MORE VERSION</title>
+    <title>RETH OFFICIAL — STABLE VERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
@@ -38,44 +39,54 @@
             transition: background-color 0.3s;
         }
 
-        /* --- Header & Navigation --- */
+        /* --- Header --- */
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); }
 
-        /* --- Search & Filter --- */
+        /* --- Search --- */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
-        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; outline: none; transition: 0.3s; }
+        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; outline: none; }
         .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
 
-        /* --- Badges & Cards --- */
-        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
-        .reth-card:hover { transform: translateY(-5px); border-color: var(--text-dim); }
-        .reth-card img { opacity: 0.5; transition: 0.5s; }
+        /* --- Card (เพิ่มระบบ Hover Image สว่าง) --- */
+        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; position: relative; cursor: pointer; }
         
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 9px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
-        .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; border-radius: 8px; padding: 5px; z-index: 20; display: flex; align-items: center; justify-content: center; }
+        /* รูปภาพปกติจะมืด */
+        .reth-card img { 
+            opacity: 0.4; 
+            transition: opacity 0.4s ease, transform 0.4s ease; 
+        }
+
+        /* เมื่อเอาเมาส์ชี้: สว่างขึ้น + ขยายเล็กน้อย */
+        .reth-card:hover img { 
+            opacity: 1; 
+            transform: scale(1.05);
+        }
+
+        .reth-card:hover { 
+            transform: translateY(-8px); 
+            border-color: #333; 
+        }
         
-        .key-info-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; letter-spacing: 0.05em; }
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
+        .key-info-badge { position: absolute; bottom: 12px; left: 12px; border-radius: 6px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .badge-keyless { background: #eab308; color: black; }
         .badge-has-key { background: #ef4444; color: white; }
-        .no-ver .key-info-badge { left: 12px; }
+        .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; border-radius: 8px; padding: 5px; z-index: 20; }
 
         .dot { height: 6px; width: 6px; border-radius: 50%; }
         .dot.working { background: #22c55e; }
         .dot.patched { background: #ef4444; }
 
+        .btn-copy-white { background: #ffffff; color: #000000; text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
+        .btn-copy-white:hover { background: #e2e2e2; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
-        .btn-copy { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
 
-        /* --- Load More Button --- */
+        /* --- Modal & Load More --- */
         .load-more-container { display: flex; justify-content: center; padding: 60px 0; }
         .btn-load-more { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 18px 40px; border-radius: 20px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-load-more:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
-
-        /* --- Modal & Filter Menu --- */
-        #modal { transition: opacity 0.3s; }
         .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
         .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
     </style>
@@ -85,7 +96,7 @@
     <div class="nav-controls">
         <div onclick="setTheme('dark')" id="dBtn" class="t-btn active">Dark</div>
         <div onclick="setTheme('light')" id="lBtn" class="t-btn">Light</div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase">Discord</a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase"><i class="fa-brands fa-discord mr-1"></i> Discord</a>
     </div>
 
     <div class="max-w-7xl mx-auto">
@@ -117,7 +128,7 @@
             <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
             <div id="mStats" class="stats-row mb-6"></div>
             <div class="flex gap-4 mb-8">
-                <button id="mCopy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
+                <button id="mCopy" onclick="copyFromModal()" class="bg-white text-black flex-1 py-4 rounded-xl font-black text-[11px] uppercase">Copy Script</button>
                 <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
             </div>
             <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-xs text-zinc-500 max-h-[250px] overflow-auto whitespace-pre-wrap"></div>
@@ -130,8 +141,6 @@
         let currentPage = 1;
         let currentQuery = "";
         const maxPerPage = 20;
-
-        const verSVG = `<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg>`;
 
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('show'); }
         function updateFilter(k, v) { filters[k] = v; apply(); }
@@ -153,13 +162,7 @@
                 const data = await res.json();
                 const newScripts = data.result.scripts || data.result.docs || [];
                 
-                if (append) {
-                    scripts = [...scripts, ...newScripts];
-                } else {
-                    scripts = newScripts;
-                }
-
-                // ซ่อน/แสดงปุ่ม Load More
+                scripts = append ? [...scripts, ...newScripts] : newScripts;
                 const totalPages = data.result.totalPages || 0;
                 document.getElementById('loadMoreArea').style.display = (currentPage < totalPages) ? 'flex' : 'none';
 
@@ -188,27 +191,26 @@
             let html = "";
             list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                const vBadge = s.verified ? `<div class="ver-badge-cover">${verSVG}</div>` : "";
+                const vBadge = s.verified ? `<div class="ver-badge-cover"><i class="fa-solid fa-check text-[10px]"></i></div>` : "";
                 const keyBadge = s.key ? 
                     `<div class="key-info-badge badge-has-key">Key</div>` : 
                     `<div class="key-info-badge badge-keyless">Keyless</div>`;
-                
                 const idx = scripts.indexOf(s);
                 
                 html += `
-                <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${idx})">
+                <div class="reth-card p-6" onclick="openModal(${idx})">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
                         ${vBadge}
                         ${keyBadge}
                         <div class="status-badge"><span class="dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
+                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${idx}, this)">Copy Loadstring</div>
                     <div class="stats-row">
-                        <span>👁 ${s.views.toLocaleString()}</span>
-                        <span class="text-green-500">👍 ${s.likeCount}</span>
-                        <span class="text-red-500">👎 ${s.dislikeCount}</span>
+                        <span><i class="fa-solid fa-eye mr-1"></i> ${s.views.toLocaleString()}</span>
+                        <span class="text-green-500"><i class="fa-solid fa-thumbs-up mr-1"></i> ${s.likeCount}</span>
+                        <span class="text-red-500"><i class="fa-solid fa-thumbs-down mr-1"></i> ${s.dislikeCount}</span>
                     </div>
-                    <div class="btn-copy" onclick="event.stopPropagation(); quickCopy(${idx}, this)">Copy Loadstring</div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
                     <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1 truncate">${s.game.name}</p>
                 </div>`;
@@ -219,13 +221,9 @@
         function openModal(idx) {
             const s = scripts[idx];
             document.getElementById('mTitle').innerHTML = s.title;
-            document.getElementById('mStats').innerHTML = `
-                <span>👁 VIEWS: ${s.views.toLocaleString()}</span> | 
-                <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | 
-                <span class="text-red-500">👎 DISLIKES: ${s.dislikeCount}</span>`;
+            document.getElementById('mStats').innerHTML = `<span><i class="fa-solid fa-eye"></i> VIEWS: ${s.views.toLocaleString()}</span> | <span class="text-green-500">👍 LIKES: ${s.likeCount}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
-            
             const m = document.getElementById('modal');
             m.classList.replace('hidden', 'flex');
             setTimeout(() => m.classList.add('opacity-100'), 10);
@@ -240,8 +238,8 @@
 
         function quickCopy(idx, btn) {
             navigator.clipboard.writeText(scripts[idx].script).then(() => {
-                const old = btn.innerText; btn.innerText = "COPIED!"; btn.style.background = "#22c55e";
-                setTimeout(() => { btn.innerText = old; btn.style.background = ""; }, 1500);
+                const old = btn.innerText; btn.innerText = "COPIED!"; btn.style.background = "#22c55e"; btn.style.color = "#fff";
+                setTimeout(() => { btn.innerText = old; btn.style.background = ""; btn.style.color = ""; }, 1500);
             });
         }
 
