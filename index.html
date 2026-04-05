@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — NEW BLUE CHECKMARK</title>
+    <title>RETH OFFICIAL — COMPLETE VERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
             --border-color: #111111;
             --search-bg: #050505;
             --modal-bg: #080808;
-            --accent: #1D9BF0; /* สีฟ้า Twitter */
+            --accent: #1D9BF0;
         }
 
         [data-theme="light"] {
@@ -29,70 +29,48 @@
             --border-color: #e4e4e7;
             --search-bg: #ffffff;
             --modal-bg: #ffffff;
-            --accent: #1D9BF0;
         }
 
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            font-family: 'Inter', sans-serif; 
-            margin: 0;
-            transition: background-color 0.3s;
-        }
-
-        /* --- Header --- */
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; margin: 0; }
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
+        
+        /* --- Navigation --- */
         .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); }
 
-        /* --- Search --- */
+        /* --- Search & Filter --- */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
         .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; outline: none; }
         .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
+        .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
-        /* --- Card --- */
+        /* --- Card Design --- */
         .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; position: relative; cursor: pointer; }
-        
-        .reth-card img { 
-            opacity: 0.4; 
-            transition: opacity 0.4s ease, transform 0.4s ease; 
-        }
+        .reth-card img { opacity: 0.4; transition: 0.4s ease; }
+        .reth-card:hover img { opacity: 1; transform: scale(1.05); }
 
-        .reth-card:hover img { 
-            opacity: 1; 
-            transform: scale(1.05);
-        }
-
-        .reth-card:hover { 
-            transform: translateY(-8px); 
-            border-color: #333; 
-        }
-        
-        /* Badges Positioning */
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
-        
-        /* ปรับขนาดและตำแหน่ง ver-badge แบบใหม่ */
-        .ver-badge-cover { position: absolute; top: 10px; left: 10px; width: 28px; height: 28px; z-index: 20; display: flex; align-items: center; justify-content: center; }
-        
-        .key-info-badge { position: absolute; top: 12px; left: 46px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
+        /* --- Badges Positioning --- */
+        .ver-badge-container { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
+        .key-info-badge { position: absolute; top: 12px; left: 44px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .no-ver .key-info-badge { left: 12px; } 
-        
+
         .badge-keyless { background: #eab308; color: black; }
         .badge-has-key { background: #ef4444; color: white; }
-
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
         .dot { height: 6px; width: 6px; border-radius: 50%; }
         .dot.working { background: #22c55e; }
         .dot.patched { background: #ef4444; }
 
-        .btn-copy-white { background: #ffffff; color: #000000; text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; }
+        .btn-copy-white { background: #ffffff; color: #000000; text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
+        .btn-copy-white:hover { background: #e2e2e2; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
 
-        /* --- Modal & Load More --- */
+        /* --- Modal & UI --- */
         .load-more-container { display: flex; justify-content: center; padding: 60px 0; }
         .btn-load-more { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 18px 40px; border-radius: 20px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
-        .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        #modal { transition: opacity 0.3s ease; }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -119,7 +97,7 @@
             </div>
         </div>
 
-        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
 
         <div class="load-more-container" id="loadMoreArea" style="display: none;">
             <button onclick="loadMore()" id="btnLoadMore" class="btn-load-more">Load More Scripts</button>
@@ -129,11 +107,11 @@
     <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 opacity-0">
         <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
-            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
+            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2 flex items-center gap-2"></h2>
             <div id="mStats" class="stats-row mb-6"></div>
             <div class="flex gap-4 mb-8">
                 <button id="mCopy" onclick="copyFromModal()" class="bg-white text-black flex-1 py-4 rounded-xl font-black text-[11px] uppercase">Copy Script</button>
-                <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
+                <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase text-[var(--text-main)]">Source</a>
             </div>
             <div id="mCode" class="bg-black border border-zinc-900 p-6 rounded-2xl font-mono text-xs text-zinc-500 max-h-[250px] overflow-auto whitespace-pre-wrap"></div>
         </div>
@@ -146,11 +124,10 @@
         let currentQuery = "";
         const maxPerPage = 20;
 
-        // ตรา Verified แบบใหม่ (Twitter Blue Check) ตามรูปภาพ
         const verSVG = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
-            <path d="M22.5 12.5c0-1.58-.8-3.04-2.12-3.88.24-.92.36-1.89.36-2.84 0-2.22-1.32-4.14-3.26-4.94a7.512 7.512 0 0 0-2.12-.32c-.95 0-1.89.12-2.84.36C11.54 1.8 10.08 1 8.5 1c-2.22 0-4.14 1.32-4.94 3.26a7.512 7.512 0 0 0-.32 2.12c0 .95.12 1.89.36 2.84C2.8 10.08 2 11.54 2 13.12c0 1.58.8 3.04 2.12 3.88-.24.92-.36 1.89-.36 2.84 0 2.22 1.32 4.14 3.26 4.94a7.512 7.512 0 0 0 2.12.32c.95 0 1.89-.12 2.84-.36 1.02.5 2.08.76 3.16.76 1.58 0 3.04-.8 3.88-2.12.92.24 1.89.36 2.84.36 2.22 0 4.14-1.32 4.94-3.26a7.512 7.512 0 0 0 .32-2.12c0-.95-.12-1.89-.36-2.84 1.32-.84 2.12-2.3 2.12-3.88z" fill="#1D9BF0"/>
-            <path d="M11.09 15.65c-.26 0-.52-.1-.71-.29l-2.46-2.46a1 1 0 1 1 1.42-1.42l1.75 1.75 4.83-4.83a1 1 0 1 1 1.42 1.42l-5.54 5.54c-.2.2-.45.29-.71.29z" fill="white"/>
+        <svg viewBox="0 0 24 24" class="w-full h-full">
+            <path d="M22.5 12.5c0-1.58-.8-3.04-2.12-3.88.24-.92.36-1.89.36-2.84 0-2.22-1.32-4.14-3.26-4.94-.3-.12-.62-.22-.94-.3a7.44 7.44 0 0 0-3.3-.02c-.95-.24-1.9-.36-2.84-.36-2.22 0-4.14 1.32-4.94 3.26-.12.3-.22.62-.3.94a7.44 7.44 0 0 0-.02 3.3c-.24.95-.36 1.9-.36 2.84 0 2.22 1.32 4.14 3.26 4.94.3.12.62.22.94.3a7.44 7.44 0 0 0 3.3.02c.95.24 1.9.36 2.84.36 2.22 0 4.14-1.32 4.94-3.26.12-.3.22-.62.3-.94a7.44 7.44 0 0 0 .02-3.3c.24-.95.36-1.9.36-2.84z" fill="#1D9BF0"></path>
+            <path d="M11.09 15.65c-.26 0-.52-.1-.71-.29l-2.46-2.46a1 1 0 1 1 1.42-1.42l1.75 1.75 4.83-4.83a1 1 0 1 1 1.42 1.42l-5.54 5.54c-.2.2-.45.29-.71.29z" fill="white"></path>
         </svg>`;
 
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('show'); }
@@ -174,19 +151,16 @@
                 const newScripts = data.result.scripts || data.result.docs || [];
                 
                 scripts = append ? [...scripts, ...newScripts] : newScripts;
-                const totalPages = data.result.totalPages || 0;
+                const totalPages = data.result.totalPages || 1;
                 document.getElementById('loadMoreArea').style.display = (currentPage < totalPages) ? 'flex' : 'none';
-
                 apply();
-            } catch (e) { console.error("Error loading scripts"); }
+            } catch (e) { console.error("API Error"); }
         }
 
         function loadMore() {
             const btn = document.getElementById('btnLoadMore');
             btn.innerText = "LOADING...";
-            load(currentQuery, currentPage + 1, true).then(() => {
-                btn.innerText = "Load More Scripts";
-            });
+            load(currentQuery, currentPage + 1, true).then(() => btn.innerText = "Load More Scripts");
         }
 
         function apply() {
@@ -202,17 +176,15 @@
             let html = "";
             list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                const vBadge = s.verified ? `<div class="ver-badge-cover">${verSVG}</div>` : "";
-                const keyBadge = s.key ? 
-                    `<div class="key-info-badge badge-has-key">Key</div>` : 
-                    `<div class="key-info-badge badge-keyless">Keyless</div>`;
+                const vBadge = s.verified ? `<div class="ver-badge-container">${verSVG}</div>` : "";
+                const kBadge = s.key ? `<div class="key-info-badge badge-has-key">Key</div>` : `<div class="key-info-badge badge-keyless">Keyless</div>`;
                 const idx = scripts.indexOf(s);
                 
                 html += `
                 <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${idx})">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
                         ${vBadge}
-                        ${keyBadge}
+                        ${kBadge}
                         <div class="status-badge"><span class="dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
@@ -226,21 +198,20 @@
                     <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1 truncate">${s.game.name}</p>
                 </div>`;
             });
-            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 font-black opacity-20">NO RESULTS FOUND</p>';
+            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 font-black opacity-20 uppercase">No Results Found</p>';
         }
 
         function openModal(idx) {
             const s = scripts[idx];
-            // เพิ่มตราแบบใหม่เข้าไปใน Modal ด้วย
-            const mVerSVG = s.verified ? `<span class="align-middle ml-1">${verSVG}</span>` : "";
-            
-            document.getElementById('mTitle').innerHTML = `${s.title}${mVerSVG}`;
+            const mVer = s.verified ? `<div class="w-6 h-6 inline-block align-middle ml-1">${verSVG}</div>` : "";
+            document.getElementById('mTitle').innerHTML = `${s.title}${mVer}`;
             document.getElementById('mStats').innerHTML = `
                 <span><i class="fa-solid fa-eye"></i> VIEWS: ${s.views.toLocaleString()}</span> | 
                 <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | 
                 <span class="text-red-500">👎 DISLIKES: ${s.dislikeCount}</span>`;
-            document.getElementById('mCode').innerText = s.script || "-- No Data --";
+            document.getElementById('mCode').innerText = s.script || "-- No Data Available --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
+            
             const m = document.getElementById('modal');
             m.classList.replace('hidden', 'flex');
             setTimeout(() => m.classList.add('opacity-100'), 10);
@@ -255,14 +226,22 @@
 
         function quickCopy(idx, btn) {
             navigator.clipboard.writeText(scripts[idx].script).then(() => {
-                const old = btn.innerText; btn.innerText = "COPIED!"; btn.style.background = "#22c55e"; btn.style.color = "#fff";
-                setTimeout(() => { btn.innerText = old; btn.style.background = ""; btn.style.color = ""; }, 1500);
+                const oldText = btn.innerText;
+                btn.innerText = "COPIED!";
+                btn.style.background = "#22c55e";
+                btn.style.color = "#fff";
+                setTimeout(() => {
+                    btn.innerText = oldText;
+                    btn.style.background = "";
+                    btn.style.color = "";
+                }, 1500);
             });
         }
 
         function copyFromModal() {
             navigator.clipboard.writeText(document.getElementById('mCode').innerText).then(() => {
-                const btn = document.getElementById('mCopy'); btn.innerText = "COPIED!";
+                const btn = document.getElementById('mCopy');
+                btn.innerText = "COPIED!";
                 setTimeout(() => btn.innerText = "Copy Script", 1500);
             });
         }
