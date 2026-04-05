@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — SCRIPT HUB FULL</title>
+    <title>RETH OFFICIAL — FLOAT UI</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -16,8 +16,8 @@
             --text-dim: #555555;
             --border-color: #111111;
             --search-bg: #050505;
-            --modal-bg: #080808;
             --accent: #5865F2;
+            --float-bg: rgba(10, 10, 10, 0.8);
         }
 
         [data-theme="light"] {
@@ -27,217 +27,190 @@
             --text-dim: #a1a1aa;
             --border-color: #e4e4e7;
             --search-bg: #ffffff;
-            --modal-bg: #ffffff;
+            --float-bg: rgba(255, 255, 255, 0.9);
         }
 
         body { 
             background-color: var(--bg-color); 
             color: var(--text-main); 
             font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            -webkit-font-smoothing: antialiased; 
-            overflow-x: hidden;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
 
-        /* --- Header & Typography --- */
-        .reth-title { font-size: clamp(60px, 10vw, 90px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
-        .reth-title-underline { height: 2px; width: 120px; background-color: var(--border-color); margin-top: -10px; }
-        
-        /* --- Search Bar --- */
-        .search-wrapper { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; width: 100%; }
-        .reth-search { 
-            background: var(--search-bg); 
-            border: 1px solid var(--border-color); 
-            border-radius: 20px; 
-            color: var(--text-main); 
-            font-size: 14px; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 0.1em; 
-            flex: 1; 
-            padding: 22px 28px; 
-            outline: none;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .reth-search:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(88, 101, 242, 0.15); }
-
-        .filter-open-btn {
-            background: var(--card-bg);
+        /* --- Float UI Navigation --- */
+        .float-nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--float-bg);
             border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            padding: 10px 20px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .float-btn {
+            background: transparent;
             color: var(--text-main);
-            padding: 0 26px;
-            border-radius: 20px;
+            border: none;
+            padding: 10px 15px;
             font-size: 11px;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            display: flex; align-items: center; gap: 10px;
+            border-radius: 12px;
             transition: 0.2s;
         }
-        .filter-open-btn:hover { border-color: var(--text-dim); }
+        .float-btn:hover { background: rgba(255,255,255,0.05); }
+        .float-btn.active-filter { background: var(--accent); color: white; }
 
-        /* --- Sidebar Filter --- */
-        .filter-sidebar {
-            position: fixed; top: 0; right: -360px; width: 340px; height: 100%;
-            background: var(--modal-bg); border-left: 1px solid var(--border-color);
-            z-index: 1200; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 50px 35px; box-shadow: -20px 0 50px rgba(0,0,0,0.8);
+        /* --- Floating Filter Card --- */
+        .filter-popup {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--float-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(25px);
+            padding: 25px;
+            border-radius: 30px;
+            width: 320px;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
-        .filter-sidebar.active { right: 0; }
-        .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1199; display: none; backdrop-filter: blur(8px); }
-        .sidebar-overlay.active { display: block; }
+        .filter-popup.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
-        .filter-item { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--border-color); cursor: pointer; }
-        .filter-item span { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--text-dim); transition: 0.2s; }
-        .filter-item:hover span { color: var(--text-main); }
-
+        /* --- Custom Checkbox --- */
+        .filter-option {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 0; border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+        .filter-option span { font-size: 11px; font-weight: 800; text-transform: uppercase; }
         .custom-check input { display: none; }
-        .box { width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 8px; position: relative; transition: 0.3s; }
-        .custom-check input:checked + .box { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
-        .custom-check input:checked + .box::after { content: '✓'; position: absolute; color: white; font-size: 12px; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; }
+        .box { width: 18px; height: 18px; border: 2px solid var(--border-color); border-radius: 5px; position: relative; transition: 0.2s; }
+        .custom-check input:checked + .box { background: var(--accent); border-color: var(--accent); }
+        .custom-check input:checked + .box::after { content: '✓'; position: absolute; color: white; font-size: 10px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
-        /* --- Card & Badges --- */
-        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; cursor: pointer; }
-        .reth-card:hover { border-color: var(--text-dim); transform: translateY(-8px); }
-        .reth-card img { opacity: 0.45; transition: 0.6s; }
-        .reth-card:hover img { opacity: 0.85; transform: scale(1.08); }
+        /* --- Typography & Grid --- */
+        .reth-title { font-size: clamp(50px, 8vw, 80px); font-weight: 900; font-style: italic; text-transform: uppercase; text-align: center; }
+        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px 25px; width: 100%; outline: none; transition: 0.3s; }
+        .reth-search:focus { border-color: var(--accent); }
 
-        .status-badge { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 6px 14px; font-size: 10px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 8px; z-index: 30; backdrop-filter: blur(10px); }
-        .status-dot { height: 7px; width: 7px; border-radius: 50%; }
-        .status-dot.working { background: #22c55e; box-shadow: 0 0 10px #22c55e; }
-        .status-dot.patched { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
+        .reth-card:hover { transform: translateY(-5px); border-color: var(--text-dim); }
+        
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); border-radius: 8px; padding: 4px 10px; font-size: 9px; font-weight: 900; color: white; display: flex; align-items: center; gap: 5px; z-index: 10; }
+        .dot { height: 6px; width: 6px; border-radius: 50%; }
+        .dot.working { background: #22c55e; }
+        .dot.patched { background: #ef4444; }
 
-        .key-tag { position: absolute; top: 15px; left: 15px; font-size: 9px; font-weight: 900; text-transform: uppercase; padding: 6px 12px; border-radius: 10px; z-index: 30; }
-        .key-required { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
-        .keyless { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
-
-        .verified-badge { color: #3b82f6; margin-left: 6px; flex-shrink: 0; }
-
-        /* --- Stats Row --- */
-        .stats-row { display: flex; gap: 15px; font-size: 11px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; }
-        .stat-like { color: #22c55e; }
-        .stat-dislike { color: #ef4444; }
+        .stats-row { display: flex; gap: 10px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; }
+        .btn-copy { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 12px; border-radius: 12px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
 
         /* --- Modal --- */
-        #scriptModal { backdrop-filter: blur(15px); }
-        .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 35px; max-width: 700px; width: 95%; padding: 45px; position: relative; transform: scale(0.9); transition: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        #scriptModal.opacity-100 .modal-content { transform: scale(1); }
-        .script-box { background: #000000; border: 1px solid #111111; border-radius: 20px; padding: 25px; font-family: 'Courier New', monospace; font-size: 13px; color: #888; max-height: 300px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; margin-top: 20px; }
-
-        /* --- Buttons --- */
-        .btn-copy-main { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 16px 0; border-radius: 18px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
-        .btn-copy-main:hover { filter: brightness(0.85); transform: translateY(-2px); }
-
-        .nav-controls { position: fixed; top: 30px; right: 30px; display: flex; align-items: center; gap: 15px; z-index: 1000; }
-        .theme-toggle { display: flex; background: var(--card-bg); border: 1px solid var(--border-color); padding: 5px; border-radius: 14px; }
-        .t-btn { padding: 8px 16px; font-size: 10px; font-weight: 900; text-transform: uppercase; border-radius: 10px; cursor: pointer; color: var(--text-dim); transition: 0.3s; }
-        .t-btn.active { background: var(--text-main); color: var(--bg-color); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+        .modal-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 30px; width: 90%; max-width: 600px; padding: 40px; position: relative; }
+        .script-box { background: #000; border: 1px solid #111; border-radius: 15px; padding: 20px; font-family: monospace; font-size: 12px; color: #666; max-height: 200px; overflow-y: auto; white-space: pre-wrap; }
     </style>
 </head>
-<body class="p-6 md:p-16">
+<body class="p-6 md:p-12 pb-32">
 
-    <div class="nav-controls">
-        <div class="theme-toggle">
-            <div id="darkBtn" class="t-btn active" onclick="setTheme('dark')">Dark</div>
-            <div id="lightBtn" class="t-btn" onclick="setTheme('light')">Light</div>
-        </div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:scale-105 transition-all">Discord</a>
+    <div class="float-nav">
+        <button onclick="toggleFilterMenu()" id="filterToggleBtn" class="float-btn flex items-center gap-2">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
+            Filter
+        </button>
+        <div class="w-[1px] h-4 bg-zinc-800"></div>
+        <button onclick="setTheme('dark')" class="float-btn">Dark</button>
+        <button onclick="setTheme('light')" class="float-btn">Light</button>
+        <div class="w-[1px] h-4 bg-zinc-800"></div>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="float-btn" style="color:#5865F2">Discord</a>
     </div>
 
-    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
-    <aside id="filterSidebar" class="filter-sidebar">
-        <div class="flex justify-between items-center mb-12">
-            <h2 class="text-2xl font-black uppercase italic tracking-tighter">Script Filters</h2>
-            <button onclick="toggleSidebar()" class="text-zinc-500 hover:text-white font-bold text-[11px] uppercase">Close [X]</button>
-        </div>
-        <div class="space-y-2">
-            <label class="filter-item custom-check"><span>Universal Only</span><input type="checkbox" id="check-uni" onchange="toggleFilter('universal', this.checked)"><div class="box"></div></label>
-            <label class="filter-item custom-check"><span>Verified Scripts</span><input type="checkbox" id="check-ver" onchange="toggleFilter('verified', this.checked)"><div class="box"></div></label>
-            <label class="filter-item custom-check"><span>Keyless Only</span><input type="checkbox" id="check-key" onchange="toggleFilter('keyless', this.checked)"><div class="box"></div></label>
-            <label class="filter-item custom-check"><span>Hide Patched</span><input type="checkbox" id="check-work" onchange="toggleFilter('working', this.checked)"><div class="box"></div></label>
-        </div>
-        <button onclick="resetFilters()" class="w-full mt-12 py-5 border border-zinc-800 rounded-2xl text-[11px] font-black uppercase hover:bg-white hover:text-black transition-all">Clear All Filters</button>
-    </aside>
+    <div id="filterPopup" class="filter-popup">
+        <h3 class="text-xs font-black uppercase tracking-widest mb-4 text-zinc-500">Filter Options</h3>
+        <label class="filter-option custom-check"><span>Universal</span><input type="checkbox" onchange="updateFilter('universal', this.checked)"><div class="box"></div></label>
+        <label class="filter-option custom-check"><span>Verified</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"><div class="box"></div></label>
+        <label class="filter-option custom-check"><span>Keyless</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"><div class="box"></div></label>
+        <label class="filter-option custom-check"><span>Working</span><input type="checkbox" onchange="updateFilter('working', this.checked)"><div class="box"></div></label>
+        <button onclick="clearFilters()" class="w-full mt-4 py-3 rounded-xl text-[10px] font-black uppercase border border-zinc-800 hover:bg-white hover:text-black transition">Reset All</button>
+    </div>
 
-    <div class="max-w-7xl mx-auto">
-        <header class="py-20 md:py-32 text-center flex flex-col items-center">
-            <h1 class="reth-title">RETH</h1>
-            <div class="reth-title-underline"></div>
-            <p class="text-[11px] font-bold text-zinc-500 uppercase tracking-[0.6em] mt-6">Optimized Script Repository</p>
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-20">
+            <h1 class="reth-title italic">RETH HUB</h1>
+            <p class="text-center text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-2">Floating Interface v2</p>
         </header>
 
-        <div class="search-wrapper">
-            <input type="text" id="searchInput" placeholder="Search thousands of scripts..." class="reth-search">
-            <button onclick="toggleSidebar()" class="filter-open-btn">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" stroke-linecap="round"/></svg>
-                Filters
-            </button>
+        <div class="max-w-xl mx-auto mb-16">
+            <input type="text" id="searchInput" placeholder="SEARCH SCRIPTS..." class="reth-search text-center font-bold">
         </div>
 
-        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10"></div>
+        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
     </div>
 
-    <div id="scriptModal" class="fixed inset-0 bg-black/95 z-[2000] flex items-center justify-center hidden opacity-0 transition-all duration-300">
-        <div class="modal-content">
-            <button onclick="closeModal()" class="absolute top-10 right-10 text-zinc-500 hover:text-white font-black uppercase text-[11px]">Close [X]</button>
-            <div id="modalBadges" class="flex gap-3 mb-4"></div>
-            <h2 id="modalTitle" class="text-3xl font-black uppercase italic mb-2 tracking-tighter flex items-center"></h2>
-            <div id="modalStats" class="stats-row mb-6"></div>
-            <p id="modalGame" class="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-10 border-l-2 border-zinc-800 pl-4"></p>
-            
-            <div class="flex gap-5 mb-8">
-                <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0">Copy Loadstring</div>
-                <a href="#" id="modalWebLink" target="_blank" class="flex-1 border border-zinc-800 rounded-2xl flex items-center justify-center text-[12px] font-black uppercase hover:bg-white hover:text-black transition">Source Web</a>
+    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-[10px] font-black uppercase text-zinc-500">Close</button>
+            <h2 id="m-title" class="text-2xl font-black italic uppercase mb-2"></h2>
+            <div id="m-stats" class="stats-row mb-6"></div>
+            <div class="flex gap-3 mb-6">
+                <button id="m-copy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
+                <a id="m-link" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
             </div>
-            
-            <div id="modalScript" class="script-box"></div>
+            <div id="m-code" class="script-box"></div>
         </div>
     </div>
 
     <script>
-        let scriptsArray = [];
+        let scripts = [];
         let filters = { universal: false, verified: false, keyless: false, working: false };
 
-        function toggleSidebar() {
-            document.getElementById('filterSidebar').classList.toggle('active');
-            document.getElementById('sidebarOverlay').classList.toggle('active');
+        function toggleFilterMenu() {
+            const popup = document.getElementById('filterPopup');
+            const btn = document.getElementById('filterToggleBtn');
+            popup.classList.toggle('show');
+            btn.classList.toggle('active-filter');
         }
 
-        function toggleFilter(type, val) {
-            filters[type] = val;
+        function updateFilter(key, val) {
+            filters[key] = val;
             applyFilters();
         }
 
-        function resetFilters() {
+        function clearFilters() {
             filters = { universal: false, verified: false, keyless: false, working: false };
-            ['check-uni', 'check-ver', 'check-key', 'check-work'].forEach(id => document.getElementById(id).checked = false);
+            document.querySelectorAll('#filterPopup input').forEach(i => i.checked = false);
             applyFilters();
         }
 
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
-            document.getElementById('darkBtn').className = m === 'dark' ? 't-btn active' : 't-btn';
-            document.getElementById('lightBtn').className = m === 'light' ? 't-btn active' : 't-btn';
         }
 
-        async function fetchScripts(q) {
-            const grid = document.getElementById('scriptGrid');
-            grid.innerHTML = '<p class="col-span-full text-center py-20 font-black text-zinc-700 animate-pulse uppercase tracking-[0.3em]">Loading Scripts...</p>';
-            
-            const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=100` : "https://scriptblox.com/api/script/fetch?page=1&max=100";
+        async function loadData(q = "") {
+            const url = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
             try {
-                const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api));
+                const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url));
                 const data = await res.json();
-                scriptsArray = data.result.scripts || data.result.docs || [];
+                scripts = data.result.scripts || data.result.docs || [];
                 applyFilters();
-            } catch (e) {
-                grid.innerHTML = '<p class="col-span-full text-center py-20 text-red-500 font-black">ERROR FETCHING DATA</p>';
-            }
+            } catch (e) { console.error("Error loading data"); }
         }
 
         function applyFilters() {
-            const filtered = scriptsArray.filter(s => {
+            const filtered = scripts.filter(s => {
                 if (filters.universal && !s.isUniversal) return false;
                 if (filters.verified && !s.verified) return false;
                 if (filters.keyless && s.key) return false;
@@ -249,80 +222,66 @@
 
         function render(list) {
             let html = "";
-            list.forEach(s => {
-                const idx = scriptsArray.indexOf(s);
-                const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225/050505/222222?text=RETH+HUB");
-                const verified = s.verified ? '<span class="verified-badge"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>' : "";
-
+            list.forEach((s, i) => {
+                const thumb = s.image && !s.image.includes('http') ? "https://scriptblox.com"+s.image : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 html += `
-                <div class="reth-card p-7" onclick="openModal(${idx})">
-                    <div class="relative aspect-video bg-black rounded-[20px] mb-6 overflow-hidden">
-                        <div class="key-tag ${s.key ? 'key-required' : 'keyless'}">${s.key ? 'Key Required' : 'Keyless'}</div>
-                        <div class="status-badge"><span class="status-dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
-                        <img src="${thumb}" class="w-full h-full object-cover">
+                <div class="reth-card p-5" onclick="openModal(${scripts.indexOf(s)})">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-4 bg-zinc-900">
+                        <div class="status-badge"><span class="dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
+                        <img src="${thumb}" class="w-full h-full object-cover opacity-60">
                     </div>
                     <div class="stats-row">
-                        <span>👁 ${(s.views || 0).toLocaleString()}</span>
-                        <span class="stat-like">👍 ${(s.likeCount || 0).toLocaleString()}</span>
-                        <span class="stat-dislike">👎 ${(s.dislikeCount || 0).toLocaleString()}</span>
+                        <span>👁 ${s.views.toLocaleString()}</span>
+                        <span class="text-green-500">👍 ${s.likeCount}</span>
+                        <span class="text-red-500">👎 ${s.dislikeCount}</span>
                     </div>
-                    <div class="btn-copy-main" onclick="event.stopPropagation(); copyScript(${idx}, this)">Copy Loadstring</div>
-                    <h3 class="text-[15px] font-black uppercase truncate flex items-center">${s.title} ${verified}</h3>
-                    <p class="text-[10px] text-zinc-600 font-bold uppercase truncate mt-1">${s.game.name}</p>
+                    <div class="btn-copy" onclick="event.stopPropagation(); quickCopy(${scripts.indexOf(s)}, this)">Copy Loadstring</div>
+                    <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
+                    <p class="text-[9px] font-bold text-zinc-500 uppercase mt-1">${s.game.name}</p>
                 </div>`;
             });
-            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full py-24 text-center uppercase font-black text-zinc-800 tracking-widest">No matching results found</p>';
+            document.getElementById('scriptGrid').innerHTML = html || '<p class="col-span-full text-center py-20 uppercase font-black opacity-20">No Results</p>';
         }
 
         function openModal(idx) {
-            const s = scriptsArray[idx];
-            const m = document.getElementById('scriptModal');
+            const s = scripts[idx];
+            document.getElementById('m-title').innerText = s.title;
+            document.getElementById('m-stats').innerHTML = `<span>Views: ${s.views}</span> <span class="text-green-500">Likes: ${s.likeCount}</span> <span class="text-red-500">Dislikes: ${s.dislikeCount}</span>`;
+            document.getElementById('m-code').innerText = s.script;
+            document.getElementById('m-link').href = "https://scriptblox.com/script/" + s.slug;
             
-            document.getElementById('modalTitle').innerHTML = `${s.title} ${s.verified ? '<span class="verified-badge ml-3"><svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>' : ""}`;
-            document.getElementById('modalStats').innerHTML = `
-                <span>👁 ${(s.views || 0).toLocaleString()} Views</span>
-                <span class="stat-like">👍 ${(s.likeCount || 0).toLocaleString()} Likes</span>
-                <span class="stat-dislike">👎 ${(s.dislikeCount || 0).toLocaleString()} Dislikes</span>
-            `;
-            document.getElementById('modalGame').innerText = s.game.name;
-            document.getElementById('modalScript').innerText = s.script || "-- LOADSTRING NOT AVAILABLE --";
-            document.getElementById('modalWebLink').href = `https://scriptblox.com/script/${s.slug}`;
-            
-            m.classList.remove('hidden');
-            setTimeout(() => m.classList.add('opacity-100'), 10);
+            const m = document.getElementById('modalOverlay');
+            m.style.display = 'flex';
+            setTimeout(() => m.style.opacity = '1', 10);
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            const m = document.getElementById('scriptModal');
-            m.classList.remove('opacity-100');
-            setTimeout(() => { m.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
+            const m = document.getElementById('modalOverlay');
+            m.style.opacity = '0';
+            setTimeout(() => { m.style.display = 'none'; document.body.style.overflow = 'auto'; }, 300);
         }
 
-        function copyScript(idx, btn) {
-            navigator.clipboard.writeText(scriptsArray[idx].script).then(() => {
-                const old = btn.innerText; btn.innerText = "Copied!"; btn.style.background = "#22c55e"; btn.style.color = "#fff";
-                setTimeout(() => { btn.innerText = old; btn.style.background = ""; btn.style.color = ""; }, 1500);
+        function quickCopy(idx, btn) {
+            navigator.clipboard.writeText(scripts[idx].script).then(() => {
+                const old = btn.innerText; btn.innerText = "Copied!"; btn.style.background = "#22c55e";
+                setTimeout(() => { btn.innerText = old; btn.style.background = ""; }, 1500);
             });
         }
 
         function copyFromModal() {
-            const text = document.getElementById('modalScript').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('modalCopyBtn');
-                btn.innerText = "Loaded into Clipboard!"; btn.style.background = "#22c55e";
-                setTimeout(() => { btn.innerText = "Copy Loadstring"; btn.style.background = ""; }, 2000);
+            navigator.clipboard.writeText(document.getElementById('m-code').innerText).then(() => {
+                const btn = document.getElementById('m-copy'); btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = "Copy Script", 1500);
             });
         }
 
-        // Search Debounce
-        let t;
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(t);
-            t = setTimeout(() => fetchScripts(e.target.value), 500);
+            clearTimeout(window.t);
+            window.t = setTimeout(() => loadData(e.target.value), 500);
         });
 
-        window.onload = () => fetchScripts("");
+        window.onload = () => loadData("");
     </script>
 </body>
 </html>
