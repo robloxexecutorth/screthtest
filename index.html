@@ -98,7 +98,7 @@
         .keyless { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
 
         /* Verified Icon Style */
-        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 4px; vertical-align: middle; }
+        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 6px; vertical-align: middle; flex-shrink: 0; }
 
         /* --- Typography & Layout --- */
         .reth-title { font-size: 85px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
@@ -159,7 +159,7 @@
     <div id="scriptModal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="modal-content relative">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px] tracking-widest">Close [X]</button>
-            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter flex items-center gap-2"></h2>
+            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter flex items-center gap-1"></h2>
             <div id="modalStats" class="stats-row mb-3"></div>
             <p id="modalGame" class="text-[11px] text-zinc-500 font-bold uppercase tracking-widest mb-10"></p>
             
@@ -217,7 +217,6 @@
 
         function formatNum(num) { return (num || 0).toLocaleString(); }
 
-        // ฟังก์ชันสร้างไอคอน Verified
         function getVerifiedBadge(isVerified) {
             if (!isVerified) return "";
             return `<span class="verified-badge" title="Verified">
@@ -248,8 +247,8 @@
                     </div>
                     <div class="btn-copy-main" onclick="event.stopPropagation(); copyFromCard(${i}, this)">COPY LOADSTRING</div>
                     <div class="flex-grow">
-                        <h3 class="text-sm font-black uppercase truncate mb-1 tracking-tight">
-                            ${item.title}${verifiedIcon}
+                        <h3 class="text-sm font-black uppercase mb-1 tracking-tight flex items-center">
+                            <span class="truncate">${item.title}</span>${verifiedIcon}
                         </h3>
                         <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest truncate">${item.game ? item.game.name : "Universal"}</p>
                     </div>
@@ -261,7 +260,7 @@
         function openScriptDetailModal(index) {
             var s = scriptsArrayData[index];
             var verifiedIcon = getVerifiedBadge(s.verified);
-            document.getElementById('modalTitle').innerHTML = `${s.title}${verifiedIcon}`;
+            document.getElementById('modalTitle').innerHTML = `<span>${s.title}</span>${verifiedIcon}`;
             document.getElementById('modalGame').innerText = s.game ? s.game.name : 'Universal Script';
             document.getElementById('modalScript').innerText = s.script || "-- No Script Provided --";
             document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
