@@ -35,28 +35,30 @@
             font-family: 'Inter', sans-serif; 
             margin: 0px; 
             -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden;
             transition: background-color 0.3s;
         }
 
-        /* --- Filter Layout --- */
+        /* --- Filter Styles --- */
         .filter-container {
-            display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;
+            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;
         }
         .filter-pill {
-            padding: 8px 16px; border-radius: 100px; border: 1px solid var(--border-color);
-            background: var(--card-bg); color: var(--text-dim); font-size: 9px; font-weight: 900;
+            padding: 8px 18px; border-radius: 100px; border: 1px solid var(--border-color);
+            background: var(--card-bg); color: var(--text-dim); font-size: 10px; font-weight: 900;
             text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: 0.2s;
         }
         .filter-pill:hover { border-color: var(--text-main); color: var(--text-main); }
         .filter-pill.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
 
-        /* --- Navigation --- */
+        /* --- Navigation & Theme --- */
         .nav-controls {
             position: fixed; top: 25px; right: 25px;
             display: flex; align-items: center; gap: 12px; z-index: 100;
         }
         .theme-toggle {
-            display: flex; background: var(--card-bg); border: 1px solid var(--border-color);
+            display: flex; background: var(--card-bg);
+            border: 1px solid var(--border-color);
             padding: 4px; border-radius: 12px;
         }
         .t-btn {
@@ -67,15 +69,21 @@
         .t-btn.active { background: var(--text-main); color: var(--bg-color); }
 
         .discord-btn { 
-            background: #5865F2; color: white; padding: 12px 24px; border-radius: 14px;
-            font-size: 11px; font-weight: 900; text-transform: uppercase; text-decoration: none; 
+            background: #5865F2; color: white;
+            padding: 12px 24px; border-radius: 14px;
+            font-size: 11px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 0.1em; 
+            display: flex; align-items: center; gap: 10px; 
+            transition: all 0.3s ease; text-decoration: none; 
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4); 
         }
 
         /* --- Card Styles --- */
         .reth-card { 
             background: var(--card-bg); border: 1px solid var(--border-color); 
             border-radius: 24px; transition: 0.3s; height: 100%; 
-            display: flex; flex-direction: column; overflow: hidden; position: relative; cursor: pointer; 
+            display: flex; flex-direction: column; overflow: hidden; 
+            position: relative; cursor: pointer; 
         }
         .reth-card:hover { border-color: var(--text-dim); transform: translateY(-5px); }
         .reth-card img { opacity: 0.5; transition: opacity 0.5s ease; }
@@ -84,34 +92,36 @@
         .status-badge {
             position: absolute; top: 12px; right: 12px;
             background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px; padding: 5px 12px; font-size: 9px; font-weight: 900;
-            display: flex; align-items: center; gap: 6px; color: #ffffff; z-index: 10;
+            border-radius: 8px; padding: 5px 12px; font-size: 9px;
+            font-weight: 900; text-transform: uppercase;
+            display: flex; align-items: center; gap: 6px; 
+            backdrop-filter: blur(8px); z-index: 20; color: #ffffff;
         }
         .status-dot { height: 6px; width: 6px; border-radius: 50%; }
         .status-dot.working { background-color: #22c55e; box-shadow: 0 0 10px #22c55e; }
         .status-dot.patched { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
 
-        .key-tag { 
-            position: absolute; top: 12px; left: 12px; font-size: 8px; font-weight: 900; 
-            text-transform: uppercase; padding: 5px 10px; border-radius: 8px; z-index: 10; 
-        }
+        .key-tag { position: absolute; top: 12px; left: 12px; font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 5px 10px; border-radius: 8px; z-index: 20; }
         .key-required { background-color: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
         .keyless { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
 
-        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 6px; vertical-align: middle; }
+        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 6px; vertical-align: middle; flex-shrink: 0; }
 
-        /* --- Search & Header --- */
+        /* --- Typography & Layout --- */
         .reth-title { font-size: 85px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         .reth-title-underline { height: 2px; width: 120px; background-color: var(--border-color); margin-top: -10px; }
         .reth-subtitle { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5em; margin-top: 15px; }
-        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 13px; font-weight: 700; text-transform: uppercase; width: 100%; padding: 26px; outline: none; }
+        
+        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; width: 100%; padding: 26px; outline: none; }
         
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase; }
-        .stat-like { color: #4ade80; }
+        .stat-like { color: #4ade80; } .stat-dislike { color: #f87171; }
 
-        /* --- Modal --- */
+        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; transition: 0.2s; }
+        
         .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 30px; max-width: 650px; width: 95%; padding: 40px; color: var(--text-main); }
-        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
+        .modal-btn-web { flex: 1; border: 1px solid var(--border-color); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; text-transform: uppercase; transition: 0.2s; color: var(--text-main); text-decoration: none; }
+        .modal-btn-web:hover { background: #111111; color: white !important; border-color: #333333; }
         .script-box { background: #000000; border: 1px solid #111111; border-radius: 16px; padding: 20px; font-family: monospace; font-size: 12px; color: #777777; max-height: 250px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
     </style>
 </head>
@@ -137,10 +147,10 @@
         </div>
 
         <div class="filter-container">
-            <div id="filter-universal" class="filter-pill" onclick="toggleFilter('universal')">Universal Script</div>
+            <div id="filter-universal" class="filter-pill" onclick="toggleFilter('universal')">Universal</div>
             <div id="filter-verified" class="filter-pill" onclick="toggleFilter('verified')">Verified Only</div>
             <div id="filter-keyless" class="filter-pill" onclick="toggleFilter('keyless')">Keyless</div>
-            <div id="filter-working" class="filter-pill" onclick="toggleFilter('working')">Working</div>
+            <div id="filter-working" class="filter-pill" onclick="toggleFilter('working')">Working Only</div>
         </div>
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
@@ -148,11 +158,14 @@
 
     <div id="scriptModal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="modal-content relative">
-            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px]">Close [X]</button>
-            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 flex items-center gap-1"></h2>
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px] tracking-widest">Close [X]</button>
+            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter flex items-center gap-1"></h2>
             <div id="modalStats" class="stats-row mb-3"></div>
             <p id="modalGame" class="text-[11px] text-zinc-500 font-bold uppercase tracking-widest mb-10"></p>
-            <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main">COPY SCRIPT</div>
+            <div class="flex gap-4 mb-8">
+                <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0">COPY SCRIPT</div>
+                <a href="#" id="modalWebLink" target="_blank" class="modal-btn-web">VIEW WEB</a>
+            </div>
             <div id="modalScript" class="script-box"></div>
         </div>
     </div>
@@ -160,8 +173,10 @@
     <script>
         var scriptGridElement = document.getElementById('scriptGrid');
         var modalElement = document.getElementById('scriptModal');
+        var searchInputBox = document.getElementById('searchInput');
         var scriptsArrayData = [];
         
+        // สถานะการกรอง
         var activeFilters = {
             universal: false,
             verified: false,
@@ -184,6 +199,7 @@
             }
         }
 
+        // ฟังก์ชัน Toggle Filter
         function toggleFilter(type) {
             activeFilters[type] = !activeFilters[type];
             document.getElementById('filter-' + type).classList.toggle('active');
@@ -205,44 +221,50 @@
 
         function applyFilters() {
             var filteredList = scriptsArrayData.filter(item => {
-                var passUni = activeFilters.universal ? item.isUniversal === true : true; // อ้างอิงจาก image_040645.png
-                var passVer = activeFilters.verified ? item.verified === true : true; // อ้างอิงจาก image_030dcc.png
-                var passKey = activeFilters.keyless ? item.key === false : true;
-                var passWork = activeFilters.working ? item.isPatched === false : true;
-                return passUni && passVer && passKey && passWork;
+                var passUniversal = activeFilters.universal ? item.isUniversal === true : true;
+                var passVerified = activeFilters.verified ? item.verified === true : true;
+                var passKeyless = activeFilters.keyless ? item.key === false : true;
+                var passWorking = activeFilters.working ? item.isPatched === false : true;
+                return passUniversal && passVerified && passKeyless && passWorking;
             });
             renderScriptsToUI(filteredList);
         }
 
+        function getVerifiedBadge(isVerified) {
+            if (!isVerified) return "";
+            return `<span class="verified-badge" title="Verified"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>`;
+        }
+
         function renderScriptsToUI(list) {
             var html = "";
-            list.forEach((item) => {
+            list.forEach((item, i) => {
                 var thumb = item.image && !item.image.includes('http') ? "https://scriptblox.com" + item.image : (item.game && item.game.imageUrl ? item.game.imageUrl : "https://via.placeholder.com/400x225/050505/222222?text=RETH+HUB");
-                var vIcon = item.verified ? `<span class="verified-badge"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>` : "";
-                
+                var statusHtml = item.isPatched ? '<span class="status-dot patched"></span> Patched' : '<span class="status-dot working"></span> Working';
+                var verifiedIcon = getVerifiedBadge(item.verified);
                 html += `
                 <div class="reth-card p-6 group" onclick="openScriptDetailModal(${scriptsArrayData.indexOf(item)})">
                     <div class="relative aspect-video bg-black rounded-2xl mb-5 overflow-hidden">
                         <div class="key-tag ${item.key ? 'key-required' : 'keyless'}">${item.key ? 'Key Required' : 'Keyless'}</div>
-                        <div class="status-badge"><span class="status-dot ${item.isPatched ? 'patched' : 'working'}"></span> ${item.isPatched ? 'Patched' : 'Working'}</div>
+                        <div class="status-badge">${statusHtml}</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
                     <div class="stats-row"><span>👁 ${(item.views || 0).toLocaleString()}</span><span class="stat-like">👍 ${(item.likeCount || 0).toLocaleString()}</span></div>
                     <div class="btn-copy-main" onclick="event.stopPropagation(); copyFromCard(${scriptsArrayData.indexOf(item)}, this)">COPY LOADSTRING</div>
                     <div class="flex-grow">
-                        <h3 class="text-sm font-black uppercase mb-1 flex items-center"><span class="truncate">${item.title}</span>${vIcon}</h3>
-                        <p class="text-[9px] text-zinc-600 font-bold uppercase truncate">${item.game ? item.game.name : "Universal Script 🚀"}</p>
+                        <h3 class="text-sm font-black uppercase mb-1 flex items-center"><span class="truncate">${item.title}</span>${verifiedIcon}</h3>
+                        <p class="text-[9px] text-zinc-600 font-bold uppercase truncate">${item.game ? item.game.name : "Universal"}</p>
                     </div>
                 </div>`;
             });
-            scriptGridElement.innerHTML = html || '<p class="text-center col-span-full py-20 uppercase font-black text-zinc-700">No matching scripts.</p>';
+            scriptGridElement.innerHTML = html || '<p class="text-center col-span-full py-20 uppercase font-black text-zinc-700">No scripts matching filters.</p>';
         }
 
         function openScriptDetailModal(index) {
             var s = scriptsArrayData[index];
-            document.getElementById('modalTitle').innerHTML = s.title + (s.verified ? ' (Verified)' : '');
-            document.getElementById('modalGame').innerText = s.game ? s.game.name : 'Universal Script';
-            document.getElementById('modalScript').innerText = s.script || "-- No Code --";
+            document.getElementById('modalTitle').innerHTML = `<span>${s.title}</span>` + getVerifiedBadge(s.verified);
+            document.getElementById('modalGame').innerText = s.game ? s.game.name : 'Universal';
+            document.getElementById('modalScript').innerText = s.script || "-- No Script --";
+            document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
             modalElement.classList.remove('hidden');
             setTimeout(() => modalElement.classList.add('opacity-100'), 10);
             document.body.style.overflow = 'hidden';
@@ -255,23 +277,29 @@
 
         function copyFromModal() {
             navigator.clipboard.writeText(document.getElementById('modalScript').innerText).then(() => {
-                var btn = document.getElementById('modalCopyBtn'); btn.innerText = "COPIED!";
-                setTimeout(() => { btn.innerText = "COPY SCRIPT"; }, 2000);
+                var btn = document.getElementById('modalCopyBtn');
+                btn.innerText = "COPIED!"; btn.style.backgroundColor = "#22c55e";
+                setTimeout(() => { btn.innerText = "COPY SCRIPT"; btn.style.backgroundColor = ""; }, 2000);
             });
         }
 
         function copyFromCard(index, btn) {
             navigator.clipboard.writeText(scriptsArrayData[index].script).then(() => {
-                btn.innerText = "COPIED!"; setTimeout(() => { btn.innerText = "COPY LOADSTRING"; }, 1500);
+                btn.innerText = "COPIED!"; btn.style.backgroundColor = "#22c55e";
+                setTimeout(() => { btn.innerText = "COPY LOADSTRING"; btn.style.backgroundColor = ""; }, 1500);
             });
         }
 
-        document.getElementById('searchInput').addEventListener('input', (e) => {
+        searchInputBox.addEventListener('input', (e) => {
             clearTimeout(window.searchTimer);
             window.searchTimer = setTimeout(() => fetchScriptsFromServer(e.target.value), 500);
         });
 
-        window.onload = () => { if(localStorage.getItem('rethTheme') === 'light') setTheme('light'); fetchScriptsFromServer(""); };
+        window.onload = () => {
+            var saved = localStorage.getItem('rethTheme');
+            if (saved === 'light') setTheme('light');
+            fetchScriptsFromServer("");
+        };
     </script>
 </body>
 </html>
