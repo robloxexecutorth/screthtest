@@ -201,15 +201,18 @@
         let allScripts = []; let pageNum = 1; let currentSearch = "";
         const blueStarSVG = `<svg viewBox="0 0 24 24" class="w-full h-full"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
-        // LOGIC ดึงรูปภาพตามที่คุณต้องการ (คงเดิม 100%)
+        // --- จุดที่อัปเดต: ดึง imageUrl จากโครงสร้างที่คุณต้องการเป็นหลัก ---
         function getScriptImage(s) {
+            // 1. ดึงจาก game.imageUrl ก่อน (ตามรูปที่คุณส่งมา)
             if (s.game && s.game.imageUrl) {
                 let url = s.game.imageUrl;
                 return url.startsWith('//') ? 'https:' + url : url;
             }
+            // 2. ถ้าไม่มี ค่อยไปดึง s.image (Screenshot)
             if (s.image && s.image.startsWith('http')) {
                 return s.image;
             }
+            // 3. Fallback
             return "https://via.placeholder.com/400x225/0a0a0a/333333?text=RETH+OFFICIAL";
         }
 
