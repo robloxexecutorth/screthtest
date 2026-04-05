@@ -177,7 +177,6 @@
         var searchInputBox = document.getElementById('searchInput');
         var scriptsArrayData = [];
         
-        // สถานะการกรอง (เพิ่ม universal)
         var activeFilters = {
             universal: false,
             verified: false,
@@ -200,7 +199,6 @@
             }
         }
 
-        // ฟังก์ชัน Toggle Filter
         function toggleFilter(type) {
             activeFilters[type] = !activeFilters[type];
             document.getElementById('filter-' + type).classList.toggle('active');
@@ -222,7 +220,6 @@
 
         function applyFilters() {
             var filteredList = scriptsArrayData.filter(item => {
-                // Logic การกรองแบบ Multi-select
                 var passUniversal = activeFilters.universal ? item.isUniversal === true : true;
                 var passVerified = activeFilters.verified ? item.verified === true : true;
                 var passKeyless = activeFilters.keyless ? item.key === false : true;
@@ -250,7 +247,11 @@
                         <div class="status-badge">${statusHtml}</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
-                    <div class="stats-row"><span>👁 ${(item.views || 0).toLocaleString()}</span><span class="stat-like">👍 ${(item.likeCount || 0).toLocaleString()}</span></div>
+                    <div class="stats-row">
+                        <span>👁 ${(item.views || 0).toLocaleString()}</span>
+                        <span class="stat-like">👍 ${(item.likeCount || 0).toLocaleString()}</span>
+                        <span class="stat-dislike">👎 ${(item.dislikeCount || 0).toLocaleString()}</span>
+                    </div>
                     <div class="btn-copy-main" onclick="event.stopPropagation(); copyFromCard(${scriptsArrayData.indexOf(item)}, this)">COPY LOADSTRING</div>
                     <div class="flex-grow">
                         <h3 class="text-sm font-black uppercase mb-1 flex items-center"><span class="truncate">${item.title}</span>${verifiedIcon}</h3>
@@ -265,6 +266,13 @@
             var s = scriptsArrayData[index];
             document.getElementById('modalTitle').innerHTML = `<span>${s.title}</span>` + getVerifiedBadge(s.verified);
             document.getElementById('modalGame').innerText = s.game ? s.game.name : 'Universal';
+            
+            document.getElementById('modalStats').innerHTML = `
+                <span>👁 ${(s.views || 0).toLocaleString()}</span>
+                <span class="stat-like">👍 ${(s.likeCount || 0).toLocaleString()}</span>
+                <span class="stat-dislike">👎 ${(s.dislikeCount || 0).toLocaleString()}</span>
+            `;
+
             document.getElementById('modalScript').innerText = s.script || "-- No Script --";
             document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
             modalElement.classList.remove('hidden');
