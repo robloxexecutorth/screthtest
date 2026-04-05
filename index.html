@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — NEW VERIFIED ICON</title>
+    <title>RETH OFFICIAL — NEW BLUE CHECKMARK</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
             --border-color: #111111;
             --search-bg: #050505;
             --modal-bg: #080808;
-            --accent: #5865F2;
+            --accent: #1D9BF0; /* สีฟ้า Twitter */
         }
 
         [data-theme="light"] {
@@ -29,6 +29,7 @@
             --border-color: #e4e4e7;
             --search-bg: #ffffff;
             --modal-bg: #ffffff;
+            --accent: #1D9BF0;
         }
 
         body { 
@@ -71,10 +72,10 @@
         /* Badges Positioning */
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
         
-        /* สไตล์สำหรับตรา Verified แบบใหม่ (Roblox R) */
-        .ver-badge-cover { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 20; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 5px;}
+        /* ปรับขนาดและตำแหน่ง ver-badge แบบใหม่ */
+        .ver-badge-cover { position: absolute; top: 10px; left: 10px; width: 28px; height: 28px; z-index: 20; display: flex; align-items: center; justify-content: center; }
         
-        .key-info-badge { position: absolute; top: 12px; left: 44px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
+        .key-info-badge { position: absolute; top: 12px; left: 46px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .no-ver .key-info-badge { left: 12px; } 
         
         .badge-keyless { background: #eab308; color: black; }
@@ -145,11 +146,11 @@
         let currentQuery = "";
         const maxPerPage = 20;
 
-        // ตรา Verified แบบใหม่ (Roblox R) ตามรูปภาพ
+        // ตรา Verified แบบใหม่ (Twitter Blue Check) ตามรูปภาพ
         const verSVG = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 100 100">
-            <rect x="5" y="5" width="90" height="90" fill="#0074E1" rx="10" transform="rotate(-15, 50, 50)" />
-            <path d="M30 50 L45 65 L70 35" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24">
+            <path d="M22.5 12.5c0-1.58-.8-3.04-2.12-3.88.24-.92.36-1.89.36-2.84 0-2.22-1.32-4.14-3.26-4.94a7.512 7.512 0 0 0-2.12-.32c-.95 0-1.89.12-2.84.36C11.54 1.8 10.08 1 8.5 1c-2.22 0-4.14 1.32-4.94 3.26a7.512 7.512 0 0 0-.32 2.12c0 .95.12 1.89.36 2.84C2.8 10.08 2 11.54 2 13.12c0 1.58.8 3.04 2.12 3.88-.24.92-.36 1.89-.36 2.84 0 2.22 1.32 4.14 3.26 4.94a7.512 7.512 0 0 0 2.12.32c.95 0 1.89-.12 2.84-.36 1.02.5 2.08.76 3.16.76 1.58 0 3.04-.8 3.88-2.12.92.24 1.89.36 2.84.36 2.22 0 4.14-1.32 4.94-3.26a7.512 7.512 0 0 0 .32-2.12c0-.95-.12-1.89-.36-2.84 1.32-.84 2.12-2.3 2.12-3.88z" fill="#1D9BF0"/>
+            <path d="M11.09 15.65c-.26 0-.52-.1-.71-.29l-2.46-2.46a1 1 0 1 1 1.42-1.42l1.75 1.75 4.83-4.83a1 1 0 1 1 1.42 1.42l-5.54 5.54c-.2.2-.45.29-.71.29z" fill="white"/>
         </svg>`;
 
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('show'); }
@@ -230,7 +231,10 @@
 
         function openModal(idx) {
             const s = scripts[idx];
-            document.getElementById('mTitle').innerHTML = s.title;
+            // เพิ่มตราแบบใหม่เข้าไปใน Modal ด้วย
+            const mVerSVG = s.verified ? `<span class="align-middle ml-1">${verSVG}</span>` : "";
+            
+            document.getElementById('mTitle').innerHTML = `${s.title}${mVerSVG}`;
             document.getElementById('mStats').innerHTML = `
                 <span><i class="fa-solid fa-eye"></i> VIEWS: ${s.views.toLocaleString()}</span> | 
                 <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | 
