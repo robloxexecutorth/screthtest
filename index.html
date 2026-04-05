@@ -9,17 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ตัวแปรสีพื้นฐาน (CSS Variables) --- */
         :root {
             --bg-color: #000000;
             --card-bg: #050505;
             --text-main: #ffffff;
-            --border-color: #111111;
-            --secondary-text: #555555;
-            --search-bg: #050505;
+            --border-color: #1a1a1a;
+            --secondary-text: #666666;
+            --search-bg: #080808;
         }
 
-        /* --- ธีมสีสว่าง (Light Mode) --- */
         [data-theme="light"] {
             --bg-color: #f4f4f5;
             --card-bg: #ffffff;
@@ -33,118 +31,79 @@
             background-color: var(--bg-color); 
             color: var(--text-main); 
             font-family: 'Inter', sans-serif; 
-            transition: background-color 0.3s ease, color 0.3s ease;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
+            transition: all 0.3s ease;
+            min-height: 100vh;
         }
 
-        /* --- Theme Switcher (มุมขวาบน) --- */
+        /* --- Theme Switcher --- */
         .theme-container {
-            position: fixed;
-            top: 25px;
-            right: 210px; /* เว้นระยะจากปุ่ม Discord */
-            display: flex;
-            background: var(--card-bg);
+            position: fixed; top: 25px; right: 210px;
+            display: flex; background: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 5px;
-            border-radius: 12px;
-            z-index: 100;
-            gap: 5px;
+            padding: 4px; border-radius: 12px; z-index: 100;
         }
-
         .theme-btn {
-            padding: 8px 12px;
-            font-size: 9px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-            color: var(--secondary-text);
+            padding: 8px 16px; font-size: 10px; font-weight: 900;
+            text-transform: uppercase; border-radius: 8px;
+            cursor: pointer; transition: 0.2s; color: var(--secondary-text);
         }
-
         .theme-btn.active {
-            background: var(--text-main);
-            color: var(--bg-color);
+            background: var(--text-main); color: var(--bg-color);
         }
 
         /* --- Discord Button --- */
         .discord-btn { 
-            position: fixed; 
-            top: 25px; 
-            right: 25px; 
-            background: #5865F2; 
-            color: white; 
-            padding: 12px 24px; 
-            border-radius: 14px; 
-            font-size: 11px; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            z-index: 100; 
-            text-decoration: none; 
+            position: fixed; top: 25px; right: 25px;
+            background: #5865F2; color: white;
+            padding: 12px 24px; border-radius: 14px;
+            font-size: 11px; font-weight: 900;
+            text-transform: uppercase; z-index: 100;
+            text-decoration: none; display: flex; align-items: center; gap: 10px;
         }
 
-        /* --- UI Elements ปรับตามตัวแปรสี --- */
-        .reth-title { font-size: 85px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
-        .reth-title-underline { height: 2px; width: 120px; background-color: var(--border-color); margin-top: -10px; }
-        .reth-subtitle { font-size: 10px; font-weight: 700; color: var(--secondary-text); text-transform: uppercase; letter-spacing: 0.5em; margin-top: 15px; }
-
+        /* --- Search Bar --- */
         .reth-search { 
-            background: var(--search-bg); 
-            border: 1px solid var(--border-color); 
-            border-radius: 20px; 
-            color: var(--text-main); 
-            width: 100%; 
-            padding: 26px; 
-            outline: none; 
-            font-weight: 700;
-            text-transform: uppercase;
+            background: var(--search-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px; color: var(--text-main);
+            width: 100%; padding: 24px; outline: none;
+            font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.1em; transition: 0.3s;
         }
+        .reth-search:focus { border-color: var(--secondary-text); }
 
+        /* --- Card Layout Fix --- */
         .reth-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border-color); 
-            border-radius: 24px; 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px; display: flex; flex-direction: column;
+            overflow: hidden; transition: 0.3s; cursor: pointer;
+            height: 100%;
         }
-        .reth-card:hover { border-color: var(--secondary-text); transform: translateY(-5px); }
+        .reth-card:hover { transform: translateY(-5px); border-color: #444; }
 
-        .btn-copy-main { 
-            background-color: var(--text-main); 
-            color: var(--bg-color); 
-            text-align: center; 
-            padding: 14px 0; 
-            border-radius: 14px; 
-            font-size: 11px; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            cursor: pointer; 
-            margin-bottom: 15px;
+        .card-image-area {
+            position: relative; aspect-ratio: 16/9;
+            background: #000; overflow: hidden;
+        }
+        .card-image-area img {
+            width: 100%; height: 100%; object-cover: cover;
+            opacity: 0.6; transition: 0.5s;
+        }
+        .reth-card:hover img { opacity: 1; }
+
+        .status-tag {
+            position: absolute; top: 12px; right: 12px;
+            background: rgba(0,0,0,0.7); padding: 4px 10px;
+            border-radius: 8px; font-size: 9px; font-weight: 900;
+            text-transform: uppercase; backdrop-filter: blur(4px);
         }
 
-        /* Modal UI */
-        .modal-content { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border-color); 
-            border-radius: 30px; 
-            max-width: 650px; 
-            width: 95%; 
-            padding: 40px;
-            color: var(--text-main);
-        }
-        .script-box { 
-            background: #000000; 
-            border: 1px solid #111111; 
-            border-radius: 16px; 
-            padding: 20px; 
-            font-family: 'Courier New', monospace; 
-            color: #777777; 
+        .btn-copy {
+            background: var(--text-main); color: var(--bg-color);
+            text-align: center; padding: 12px; border-radius: 12px;
+            font-size: 11px; font-weight: 900; text-transform: uppercase;
+            margin: 15px 0; transition: 0.2s;
         }
     </style>
 </head>
@@ -155,130 +114,106 @@
         <div id="lightBtn" class="theme-btn" onclick="setTheme('light')">Light</div>
     </div>
 
-    <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-btn">
-        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"/>
-        </svg>
-        Join Discord
-    </a>
+    <a href="#" class="discord-btn">JOIN DISCORD</a>
 
     <div class="max-w-7xl mx-auto">
-        <header class="py-16 md:py-24 text-center flex flex-col items-center">
-            <h1 class="reth-title">RETH</h1>
-            <div class="reth-title-underline"></div>
-            <p class="reth-subtitle">OFFICIAL SCRIPT HUB</p>
+        <header class="py-16 text-center">
+            <h1 class="text-7xl md:text-8xl font-black italic mb-2">RETH</h1>
+            <p class="text-[10px] font-bold tracking-[0.5em] text-zinc-500 uppercase">Official Script Hub</p>
         </header>
 
-        <div class="search-container">
+        <div class="max-w-2xl mx-auto mb-16">
             <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
         </div>
 
-        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             </div>
-    </div>
-
-    <div id="scriptModal" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-        <div class="modal-content relative">
-            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px]">Close [X]</button>
-            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2"></h2>
-            <div id="modalStats" class="flex gap-4 text-[10px] font-bold mb-4"></div>
-            <div class="flex gap-4 mb-8">
-                <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0">COPY SCRIPT</div>
-                <a href="#" id="modalWebLink" target="_blank" class="border border-zinc-800 text-[10px] font-black uppercase rounded-[12px] flex items-center justify-center px-8">VIEW WEB</a>
-            </div>
-            <div id="modalScript" class="script-box"></div>
-        </div>
     </div>
 
     <script>
-        // --- ระบบสลับธีม (Theme Logic) ---
-        function setTheme(themeName) {
-            var bodyElement = document.body;
-            var darkBtn = document.getElementById('darkBtn');
-            var lightBtn = document.getElementById('lightBtn');
+        var allScripts = [];
 
-            if (themeName === 'light') {
-                bodyElement.setAttribute('data-theme', 'light');
-                lightBtn.classList.add('active');
-                darkBtn.classList.remove('active');
+        // ฟังก์ชันสลับธีมแบบเขียนเต็ม (Verbose)
+        function setTheme(mode) {
+            var body = document.body;
+            var dark = document.getElementById('darkBtn');
+            var light = document.getElementById('lightBtn');
+
+            if (mode === 'light') {
+                body.setAttribute('data-theme', 'light');
+                light.classList.add('active');
+                dark.classList.remove('active');
             } else {
-                bodyElement.removeAttribute('data-theme');
-                darkBtn.classList.add('active');
-                lightBtn.classList.remove('active');
+                body.removeAttribute('data-theme');
+                dark.classList.add('active');
+                light.classList.remove('active');
             }
         }
 
-        // --- ส่วนการดึงข้อมูลสคริปต์ ---
-        var scriptsData = [];
-        var grid = document.getElementById('scriptGrid');
-
-        async function fetchScripts(query) {
-            var url = query 
-                ? "https://scriptblox.com/api/script/search?q=" + encodeURIComponent(query) + "&max=50"
-                : "https://scriptblox.com/api/script/fetch?page=1&max=50";
+        async function loadScripts(query) {
+            var api = query 
+                ? "https://scriptblox.com/api/script/search?q=" + encodeURIComponent(query) 
+                : "https://scriptblox.com/api/script/fetch?page=1&max=20";
             
-            var proxy = "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url);
+            var proxy = "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api);
 
             try {
-                var response = await fetch(proxy);
-                var data = await response.json();
-                scriptsData = data.result.scripts || data.result.docs || [];
-                renderScripts(scriptsData);
-            } catch (e) {
-                console.error(e);
+                var res = await fetch(proxy);
+                var json = await res.json();
+                allScripts = json.result.scripts || json.result.docs || [];
+                renderUI(allScripts);
+            } catch (err) {
+                console.error("Fetch error:", err);
             }
         }
 
-        function renderScripts(list) {
+        function renderUI(list) {
+            var grid = document.getElementById('scriptGrid');
             var html = "";
+
             for (var i = 0; i < list.length; i++) {
                 var s = list[i];
-                html += '<div class="reth-card p-6" onclick="openModal(' + i + ')">';
-                html += '    <div class="stats-row text-[10px] mb-2">👁 ' + (s.views || 0).toLocaleString() + '</div>';
-                html += '    <div class="btn-copy-main" onclick="event.stopPropagation(); copyByIndex(' + i + ', this)">COPY</div>';
-                html += '    <h3 class="text-sm font-black uppercase truncate">' + s.title + '</h3>';
+                // ตรวจสอบรูปภาพ
+                var img = s.image && s.image.startsWith('/') 
+                    ? "https://scriptblox.com" + s.image 
+                    : (s.game.imageUrl || "https://via.placeholder.com/400x225");
+
+                html += '<div class="reth-card p-4">';
+                html += '  <div class="card-image-area rounded-xl mb-4">';
+                html += '    <img src="' + img + '">';
+                html += '    <div class="status-tag">' + (s.isPatched ? "Patched" : "Working") + '</div>';
+                html += '  </div>';
+                html += '  <div class="flex-grow">';
+                html += '    <div class="text-[10px] font-bold text-zinc-500 mb-1">👁 ' + (s.views || 0).toLocaleString() + '</div>';
+                html += '    <h3 class="font-black uppercase text-sm truncate">' + s.title + '</h3>';
+                html += '    <p class="text-[9px] text-zinc-600 font-bold">' + (s.game.name || "Universal") + '</p>';
+                html += '  </div>';
+                html += '  <div class="btn-copy" onclick="copyScript(' + i + ', this)">COPY LOADSTRING</div>';
                 html += '</div>';
             }
             grid.innerHTML = html;
         }
 
-        function openModal(index) {
-            var s = scriptsData[index];
-            document.getElementById('modalTitle').innerText = s.title;
-            document.getElementById('modalScript').innerText = s.script || "--";
-            document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
-            
-            var modal = document.getElementById('scriptModal');
-            modal.classList.remove('hidden');
-            setTimeout(function() { modal.classList.add('opacity-100'); }, 10);
-        }
-
-        function closeModal() {
-            var modal = document.getElementById('scriptModal');
-            modal.classList.remove('opacity-100');
-            setTimeout(function() { modal.classList.add('hidden'); }, 300);
-        }
-
-        function copyByIndex(index, btn) {
-            navigator.clipboard.writeText(scriptsData[index].script);
-            btn.innerText = "DONE!";
-            setTimeout(function() { btn.innerText = "COPY"; }, 1000);
-        }
-
-        function copyFromModal() {
-            var code = document.getElementById('modalScript').innerText;
+        function copyScript(index, btn) {
+            var code = allScripts[index].script;
             navigator.clipboard.writeText(code);
-            alert("Copied!");
+            var oldText = btn.innerText;
+            btn.innerText = "COPIED!";
+            btn.style.backgroundColor = "#22c55e";
+            setTimeout(function() { 
+                btn.innerText = oldText; 
+                btn.style.backgroundColor = "";
+            }, 1500);
         }
 
-        // Search Debounce
+        // Search System
         var timer;
         document.getElementById('searchInput').addEventListener('input', function(e) {
             clearTimeout(timer);
-            timer = setTimeout(function() { fetchScripts(e.target.value); }, 500);
+            timer = setTimeout(function() { loadScripts(e.target.value); }, 500);
         });
 
-        window.onload = function() { fetchScripts(""); };
+        window.onload = function() { loadScripts(""); };
     </script>
 </body>
 </html>
