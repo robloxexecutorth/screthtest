@@ -39,12 +39,55 @@
             transition: background-color 0.3s;
         }
 
+        /* --- New Search & Filter Container --- */
+        .search-container {
+            display: flex;
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+            position: relative;
+        }
+
+        .reth-search { 
+            background: var(--search-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            color: var(--text-main); 
+            font-size: 13px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            width: 100%; 
+            padding: 20px 24px; 
+            outline: none;
+            transition: 0.3s;
+        }
+        .reth-search:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(88, 101, 242, 0.1); }
+
+        .filter-trigger-btn {
+            background: var(--accent); 
+            color: white;
+            border: none;
+            padding: 0 25px; 
+            border-radius: 16px; 
+            font-size: 11px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        .filter-trigger-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+
         /* --- Sidebar Filter Styles --- */
         .filter-sidebar {
             position: fixed; top: 0; right: -350px; width: 320px; height: 100%;
             background: var(--modal-bg); border-left: 1px solid var(--border-color);
             z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 30px; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            padding: 40px 30px; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
         }
         .filter-sidebar.active { right: 0; }
         
@@ -56,120 +99,94 @@
 
         .filter-option {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 0; border-bottom: 1px solid var(--border-color);
+            padding: 16px 0; border-bottom: 1px solid var(--border-color);
             cursor: pointer; transition: 0.2s;
         }
-        .filter-option:hover span { color: var(--accent); }
-        .filter-option span { font-size: 13px; font-weight: 600; text-transform: capitalize; }
+        .filter-option span { font-size: 13px; font-weight: 600; }
         
-        /* Custom Checkbox */
         .checkbox-container input { display: none; }
         .checkmark {
             width: 20px; height: 20px; border: 2px solid var(--border-color);
             border-radius: 6px; display: inline-block; position: relative; transition: 0.2s;
         }
-        .checkbox-container input:checked + .checkmark {
-            background: var(--accent); border-color: var(--accent);
-        }
+        .checkbox-container input:checked + .checkmark { background: var(--accent); border-color: var(--accent); }
         .checkbox-container input:checked + .checkmark::after {
-            content: '✓'; position: absolute; color: white; font-size: 12px;
+            content: '✓'; position: absolute; color: white; font-size: 11px;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
         }
 
-        /* --- Navigation & Controls --- */
-        .nav-controls {
-            position: fixed; top: 25px; right: 25px;
-            display: flex; align-items: center; gap: 12px; z-index: 100;
-        }
-        .filter-trigger-btn {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            padding: 10px 18px; border-radius: 12px; font-size: 11px; font-weight: 900;
-            text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;
-        }
-
-        .theme-toggle { display: flex; background: var(--card-bg); border: 1px solid var(--border-color); padding: 4px; border-radius: 12px; }
-        .t-btn { padding: 8px 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; border-radius: 8px; cursor: pointer; color: var(--text-dim); transition: 0.2s; }
-        .t-btn.active { background: var(--text-main); color: var(--bg-color); }
-        .discord-btn { background: #5865F2; color: white; padding: 12px 24px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4); }
-
-        /* --- Card & Search --- */
-        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; cursor: pointer; }
-        .reth-card:hover { border-color: var(--text-dim); transform: translateY(-5px); }
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 5px 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); z-index: 20; color: #ffffff; }
-        .status-dot.working { background-color: #22c55e; box-shadow: 0 0 10px #22c55e; }
-        .status-dot.patched { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
-        .key-tag { position: absolute; top: 12px; left: 12px; font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 5px 10px; border-radius: 8px; z-index: 20; }
-        .key-required { background-color: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
-        .keyless { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
-        .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; width: 100%; padding: 26px; outline: none; }
-        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); margin-bottom: 12px; text-transform: uppercase; }
-        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; transition: 0.2s; }
-        .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 30px; max-width: 650px; width: 95%; padding: 40px; color: var(--text-main); }
-        .script-box { background: #000000; border: 1px solid #111111; border-radius: 16px; padding: 20px; font-family: monospace; font-size: 12px; color: #777777; max-height: 250px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
-        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 6px; vertical-align: middle; }
+        /* --- Other Styles --- */
+        .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; align-items: center; gap: 12px; z-index: 100; }
+        .reth-title { font-size: 85px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
+        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 5px 12px; font-size: 9px; font-weight: 900; display: flex; align-items: center; gap: 6px; z-index: 20; color: #ffffff; }
+        .status-dot.working { background-color: #22c55e; }
+        .status-dot.patched { background-color: #ef4444; }
+        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; cursor: pointer; margin-bottom: 15px; }
+        .script-box { background: #000000; border: 1px solid #111111; border-radius: 16px; padding: 20px; font-family: monospace; font-size: 12px; color: #777777; max-height: 250px; overflow-y: auto; }
     </style>
 </head>
 <body class="p-6 md:p-16">
 
     <div class="nav-controls">
-        <button onclick="toggleSidebar()" class="filter-trigger-btn">
-            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
-            Advanced Filter
-        </button>
-        <div class="theme-toggle">
-            <div id="darkBtn" class="t-btn active" onclick="setTheme('dark')">Dark</div>
-            <div id="lightBtn" class="t-btn" onclick="setTheme('light')">Light</div>
+        <div class="theme-toggle flex bg-zinc-900 p-1 rounded-xl border border-zinc-800">
+            <div id="darkBtn" class="px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg active bg-white text-black" onclick="setTheme('dark')">Dark</div>
+            <div id="lightBtn" class="px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg text-zinc-500" onclick="setTheme('light')">Light</div>
         </div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-btn">Join Discord</a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-indigo-500/20">Discord</a>
     </div>
 
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <aside id="filterSidebar" class="filter-sidebar">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-xl font-black uppercase italic italic">Advanced Search</h2>
-            <button onclick="toggleSidebar()" class="text-zinc-500 hover:text-white font-bold text-[10px]">CLOSE [X]</button>
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-xl font-black uppercase italic tracking-tighter">Advanced Search</h2>
+            <button onclick="toggleSidebar()" class="text-zinc-500 hover:text-white font-bold text-[10px] uppercase">Close [X]</button>
         </div>
 
-        <div class="mb-10">
-            <p class="text-[10px] font-black uppercase text-zinc-600 mb-4 tracking-widest">Filter By Category</p>
+        <div class="mb-12">
+            <p class="text-[9px] font-black uppercase text-zinc-600 mb-4 tracking-[0.2em]">Filter Options</p>
             
             <label class="filter-option checkbox-container">
-                <span>Verified Only</span>
+                <span class="uppercase font-bold text-xs tracking-tight">Verified Only</span>
                 <input type="checkbox" onchange="updateFilter('verified', this.checked)">
                 <span class="checkmark"></span>
             </label>
 
             <label class="filter-option checkbox-container">
-                <span>Universal</span>
+                <span class="uppercase font-bold text-xs tracking-tight">Universal Scripts</span>
                 <input type="checkbox" onchange="updateFilter('universal', this.checked)">
                 <span class="checkmark"></span>
             </label>
 
             <label class="filter-option checkbox-container">
-                <span>Patched (Show Patched)</span>
-                <input type="checkbox" onchange="updateFilter('showPatched', this.checked)">
+                <span class="uppercase font-bold text-xs tracking-tight">Hide Patched</span>
+                <input type="checkbox" checked onchange="updateFilter('hidePatched', this.checked)">
                 <span class="checkmark"></span>
             </label>
 
             <label class="filter-option checkbox-container">
-                <span>Key System (Requires Key)</span>
+                <span class="uppercase font-bold text-xs tracking-tight">Requires Key</span>
                 <input type="checkbox" onchange="updateFilter('keySystem', this.checked)">
                 <span class="checkmark"></span>
             </label>
         </div>
 
-        <button onclick="resetFilters()" class="w-full py-4 border border-zinc-800 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition">Reset All Filters</button>
+        <button onclick="resetFilters()" class="w-full py-4 border border-zinc-800 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Reset All Filters</button>
     </aside>
 
     <div class="max-w-7xl mx-auto">
         <header class="py-16 md:py-24 text-center flex flex-col items-center">
-            <h1 class="reth-title italic font-black text-8xl tracking-tighter">RETH</h1>
-            <div class="reth-title-underline"></div>
-            <p class="reth-subtitle">OFFICIAL SCRIPT HUB</p>
+            <h1 class="reth-title italic">RETH</h1>
+            <div class="w-24 h-0.5 bg-zinc-800 -mt-2"></div>
+            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-4">OFFICIAL SCRIPT HUB</p>
         </header>
 
-        <div class="max-w-[600px] mx-auto mb-20">
+        <div class="search-container">
             <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
+            <button onclick="toggleSidebar()" class="filter-trigger-btn">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
+                Filter
+            </button>
         </div>
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
@@ -177,29 +194,28 @@
 
     <div id="scriptModal" class="fixed inset-0 bg-black/95 z-[1100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="modal-content relative">
-            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px] tracking-widest">Close [X]</button>
-            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter flex items-center gap-1"></h2>
-            <div id="modalStats" class="stats-row mb-3"></div>
-            <p id="modalGame" class="text-[11px] text-zinc-500 font-bold uppercase tracking-widest mb-10"></p>
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px]">Close [X]</button>
+            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-4 tracking-tighter"></h2>
+            <div id="modalStats" class="stats-row flex gap-4 text-[10px] font-black uppercase text-zinc-500 mb-6"></div>
             <div class="flex gap-4 mb-8">
-                <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0">COPY SCRIPT</div>
-                <a href="#" id="modalWebLink" target="_blank" class="modal-btn-web" style="flex:1; border:1px solid var(--border-color); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; text-transform:uppercase; color:var(--text-main); text-decoration:none;">VIEW WEB</a>
+                <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0 py-4">COPY SCRIPT</div>
+                <a href="#" id="modalWebLink" target="_blank" class="flex-1 border border-zinc-800 rounded-2xl flex items-center justify-center text-[11px] font-black uppercase hover:bg-white hover:text-black transition">VIEW WEB</a>
             </div>
             <div id="modalScript" class="script-box"></div>
         </div>
     </div>
 
     <script>
-        var scriptGridElement = document.getElementById('scriptGrid');
-        var modalElement = document.getElementById('scriptModal');
+        var scriptGrid = document.getElementById('scriptGrid');
+        var modal = document.getElementById('scriptModal');
         var sidebar = document.getElementById('filterSidebar');
         var overlay = document.getElementById('sidebarOverlay');
-        var scriptsArrayData = [];
+        var scriptsArray = [];
         
-        var activeFilters = {
+        var filters = {
             universal: false,
             verified: false,
-            showPatched: false,
+            hidePatched: true,
             keySystem: false
         };
 
@@ -209,104 +225,90 @@
         }
 
         function updateFilter(type, value) {
-            activeFilters[type] = value;
+            filters[type] = value;
             applyFilters();
         }
 
         function resetFilters() {
-            activeFilters = { universal: false, verified: false, showPatched: false, keySystem: false };
-            document.querySelectorAll('.filter-sidebar input').forEach(i => i.checked = false);
+            filters = { universal: false, verified: false, hidePatched: true, keySystem: false };
+            document.querySelectorAll('.filter-sidebar input').forEach(i => i.checked = (i.onchange.toString().includes('hidePatched') ? true : false));
             applyFilters();
         }
 
-        async function fetchScriptsFromServer(searchQuery) {
-            var api = searchQuery ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(searchQuery)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
-            var proxy = "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api);
+        async function fetchScripts(query) {
+            var url = query ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(query)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
             try {
-                var response = await fetch(proxy);
-                var data = await response.json();
-                scriptsArrayData = data.result.scripts || data.result.docs || [];
+                var res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url));
+                var data = await res.json();
+                scriptsArray = data.result.scripts || data.result.docs || [];
                 applyFilters();
             } catch (e) { console.error(e); }
         }
 
         function applyFilters() {
-            var filtered = scriptsArrayData.filter(item => {
-                var passUni = activeFilters.universal ? item.isUniversal === true : true;
-                var passVer = activeFilters.verified ? item.verified === true : true;
-                var passPatch = activeFilters.showPatched ? true : item.isPatched === false;
-                var passKey = activeFilters.keySystem ? item.key === true : true;
-                return passUni && passVer && passPatch && passKey;
+            var filtered = scriptsArray.filter(item => {
+                if (filters.universal && !item.isUniversal) return false;
+                if (filters.verified && !item.verified) return false;
+                if (filters.hidePatched && item.isPatched) return false;
+                if (filters.keySystem && !item.key) return false;
+                return true;
             });
-            renderScriptsToUI(filtered);
+            render(filtered);
         }
 
-        function getVerifiedBadge(isVerified) {
-            return isVerified ? `<span class="verified-badge"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>` : "";
-        }
-
-        function renderScriptsToUI(list) {
+        function render(list) {
             var html = "";
             list.forEach((item) => {
                 var thumb = item.image && !item.image.includes('http') ? "https://scriptblox.com" + item.image : (item.game.imageUrl || "https://via.placeholder.com/400x225");
                 html += `
-                <div class="reth-card p-6" onclick="openScriptDetailModal(${scriptsArrayData.indexOf(item)})">
+                <div class="reth-card p-6" onclick="openModal(${scriptsArray.indexOf(item)})">
                     <div class="relative aspect-video bg-black rounded-2xl mb-5 overflow-hidden">
-                        <div class="key-tag ${item.key ? 'key-required' : 'keyless'}">${item.key ? 'Key' : 'Keyless'}</div>
-                        <div class="status-badge"><span class="status-dot ${item.isPatched ? 'patched' : 'working'}"></span> ${item.isPatched ? 'Patched' : 'Working'}</div>
+                        <div class="status-badge"><span class="status-dot w-1.5 h-1.5 rounded-full ${item.isPatched ? 'patched' : 'working'}"></span> ${item.isPatched ? 'Patched' : 'Working'}</div>
                         <img src="${thumb}" class="w-full h-full object-cover opacity-60">
                     </div>
-                    <div class="stats-row">
+                    <div class="stats-row flex gap-3 text-[9px] font-black uppercase text-zinc-500 mb-4">
                         <span>👁 ${item.views.toLocaleString()}</span>
-                        <span style="color:#4ade80">👍 ${item.likeCount}</span>
-                        <span style="color:#f87171">👎 ${item.dislikeCount}</span>
+                        <span class="text-green-500">👍 ${item.likeCount}</span>
                     </div>
-                    <div class="btn-copy-main" onclick="event.stopPropagation(); copyFromCard(${scriptsArrayData.indexOf(item)}, this)">COPY LOADSTRING</div>
-                    <h3 class="text-sm font-black uppercase mb-1 truncate flex items-center gap-1">${item.title} ${getVerifiedBadge(item.verified)}</h3>
+                    <div class="btn-copy-main" onclick="event.stopPropagation(); copyScript(${scriptsArray.indexOf(item)}, this)">COPY LOADSTRING</div>
+                    <h3 class="text-sm font-black uppercase truncate">${item.title}</h3>
                     <p class="text-[9px] text-zinc-600 font-bold uppercase truncate">${item.game.name}</p>
                 </div>`;
             });
-            scriptGridElement.innerHTML = html || '<p class="text-center col-span-full py-20 uppercase font-black text-zinc-800">No results found.</p>';
+            scriptGrid.innerHTML = html || '<p class="col-span-full py-20 text-center font-black text-zinc-800 uppercase tracking-widest">No scripts found</p>';
         }
 
-        function openScriptDetailModal(index) {
-            var s = scriptsArrayData[index];
-            document.getElementById('modalTitle').innerHTML = s.title + getVerifiedBadge(s.verified);
-            document.getElementById('modalStats').innerHTML = `<span>👁 ${s.views.toLocaleString()}</span><span style="color:#4ade80">👍 ${s.likeCount}</span><span style="color:#f87171">👎 ${s.dislikeCount}</span>`;
-            document.getElementById('modalGame').innerText = s.game.name;
+        function openModal(idx) {
+            var s = scriptsArray[idx];
+            document.getElementById('modalTitle').innerText = s.title;
+            document.getElementById('modalStats').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span> <span>Likes: ${s.likeCount}</span>`;
             document.getElementById('modalScript').innerText = s.script;
             document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
-            modalElement.classList.remove('hidden');
-            setTimeout(() => modalElement.classList.add('opacity-100'), 10);
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.add('opacity-100'), 10);
             document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() { modalElement.classList.remove('opacity-100'); setTimeout(() => { modalElement.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300); }
-        
-        function copyFromModal() {
-            navigator.clipboard.writeText(document.getElementById('modalScript').innerText).then(() => {
-                var btn = document.getElementById('modalCopyBtn'); btn.innerText = "COPIED!";
-                setTimeout(() => btn.innerText = "COPY SCRIPT", 2000);
-            });
-        }
+        function closeModal() { modal.classList.remove('opacity-100'); setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300); }
 
-        function copyFromCard(index, btn) {
-            navigator.clipboard.writeText(scriptsArrayData[index].script).then(() => {
-                btn.innerText = "COPIED!"; btn.style.backgroundColor = "#22c55e";
-                setTimeout(() => { btn.innerText = "COPY LOADSTRING"; btn.style.backgroundColor = ""; }, 1500);
+        function copyScript(idx, btn) {
+            navigator.clipboard.writeText(scriptsArray[idx].script).then(() => {
+                var oldText = btn.innerText; btn.innerText = "COPIED!"; btn.style.backgroundColor = "#22c55e";
+                setTimeout(() => { btn.innerText = oldText; btn.style.backgroundColor = ""; }, 1500);
             });
         }
 
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
-            document.querySelectorAll('.t-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase() === m));
+            document.getElementById('darkBtn').className = m === 'dark' ? 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg bg-white text-black' : 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg text-zinc-500';
+            document.getElementById('lightBtn').className = m === 'light' ? 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg bg-black text-white' : 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg text-zinc-500';
         }
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(window.t); window.t = setTimeout(() => fetchScriptsFromServer(e.target.value), 500);
+            clearTimeout(window.t); window.t = setTimeout(() => fetchScripts(e.target.value), 500);
         });
 
-        window.onload = () => fetchScriptsFromServer("");
+        window.onload = () => fetchScripts("");
     </script>
 </body>
 </html>
