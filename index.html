@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — ORIGINAL ARRAY VER.</title>
+    <title>RETH OFFICIAL — ULTIMATE CUSTOM VER.</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -32,6 +32,7 @@
 
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; margin: 0; overflow-x: hidden; }
         
+        /* --- BLOCK BLUE GLOW & OUTLINE --- */
         * { -webkit-tap-highlight-color: transparent; outline: none !important; }
         *:focus { outline: none !important; box-shadow: none !important; }
 
@@ -56,6 +57,7 @@
         .reth-card img { opacity: 0.4; transition: 0.4s ease; }
         .reth-card:hover img { opacity: 1; transform: scale(1.05); }
 
+        /* Badges */
         .ver-badge-container { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .key-info-badge { position: absolute; top: 12px; left: 46px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .no-ver .key-info-badge { left: 12px; } 
@@ -69,8 +71,26 @@
         .btn-copy-white:hover { background: #e2e2e2; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
         
-        .btn-load-more { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 18px 40px; border-radius: 20px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); }
+        /* ปรับปุ่ม LOAD MORE เป็นแบบ OUTLINE */
+        .btn-load-more { 
+            background: transparent; 
+            border: 2px solid var(--border-color); 
+            color: var(--text-dim); 
+            padding: 16px 45px; 
+            border-radius: 20px; 
+            font-size: 11px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+        }
+        .btn-load-more:hover { 
+            background: var(--text-main); 
+            border-color: var(--text-main);
+            color: var(--bg-color);
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -118,10 +138,11 @@
     </div>
 
     <script>
-        let allScripts = []; // กลับมาใช้ Array ปกติ (ไม่กันซ้ำ)
+        let allScripts = []; // ใช้ Array ปกติ แสดงผลตามข้อมูลดิบ
         let currentPage = 1;
         let searchQuery = "";
         
+        // ไอคอนดาวสีน้ำเงิน
         const verStarSVG = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/>
             <path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/>
@@ -142,7 +163,7 @@
                 if (!append) {
                     allScripts = newScripts;
                 } else {
-                    allScripts = [...allScripts, ...newScripts]; // ต่อท้าย Array ตรงๆ ไม่เช็คซ้ำ
+                    allScripts = [...allScripts, ...newScripts];
                 }
 
                 document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 1)) ? 'flex' : 'none';
@@ -162,7 +183,6 @@
 
             let html = "";
             filtered.forEach((s, index) => {
-                const id = s._id || s.id || s.slug;
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 html += `
                 <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${index})">
