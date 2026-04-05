@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — VERIFIED ON COVER</title>
+    <title>RETH OFFICIAL — KEYLESS & VERIFIED ON COVER</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -111,15 +111,22 @@
         .custom-check input:checked + .box { background: var(--accent); border-color: var(--accent); }
         .custom-check input:checked + .box::after { content: '✓'; position: absolute; color: white; font-size: 10px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
-        /* --- Card Styles --- */
+        /* --- Card Styles & Badges --- */
         .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
         .reth-card:hover { transform: translateY(-5px); border-color: var(--text-dim); }
         .reth-card img { opacity: 0.5; transition: 0.5s; }
         
+        /* Status Badge (Right Side) */
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 9px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
         
-        /* Verified Badge on Cover */
-        .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: rgba(59, 130, 246, 0.9); color: white; border-radius: 8px; padding: 5px; z-index: 10; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        /* Verified Badge (Left Side) */
+        .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; border-radius: 8px; padding: 5px; z-index: 20; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        /* Keyless Badge (Next to Verified) */
+        .keyless-badge-cover { position: absolute; top: 12px; left: 45px; background: #eab308; color: black; border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        /* Adjust Keyless if NO verified badge */
+        .no-ver .keyless-badge-cover { left: 12px; }
 
         .dot { height: 6px; width: 6px; border-radius: 50%; }
         .dot.working { background: #22c55e; }
@@ -140,10 +147,7 @@
     <div class="nav-controls">
         <div onclick="setTheme('dark')" id="dBtn" class="t-btn active">Dark</div>
         <div onclick="setTheme('light')" id="lBtn" class="t-btn">Light</div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase flex items-center gap-2 hover:scale-105 transition-transform">
-            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.248.595.05.05 0 0 0-.023.07c.236.466.51.909.82 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"/></svg>
-            Discord
-        </a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase flex items-center gap-2 hover:scale-105 transition-transform">Discord</a>
     </div>
 
     <div class="max-w-7xl mx-auto">
@@ -176,7 +180,7 @@
     <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 transition-opacity duration-300 opacity-0">
         <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
-            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2 flex items-center gap-3"></h2>
+            <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
             <div id="mStats" class="stats-row mb-6"></div>
             <div class="flex gap-4 mb-8">
                 <button id="mCopy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
@@ -190,7 +194,7 @@
         let scripts = [];
         let filters = { universal: false, verified: false, keyless: false, working: false };
 
-        const verifiedBadge = `<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg>`;
+        const verSVG = `<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg>`;
 
         function toggleFilter() {
             const menu = document.getElementById('filterMenu');
@@ -233,7 +237,8 @@
             const f = scripts.filter(s => {
                 if (filters.universal && !s.isUniversal) return false;
                 if (filters.verified && !s.verified) return false;
-                if (filters.keyless && s.key) return false; // Fixed: s.key is true if it HAS a key, so if we want Keyless, s.key must be false
+                // LOGIC: Keyless filter only shows scripts where key is false
+                if (filters.keyless && s.key !== false) return false;
                 if (filters.working && s.isPatched) return false;
                 return true;
             });
@@ -244,12 +249,17 @@
             let html = "";
             list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                const vOnCover = s.verified ? `<div class="ver-badge-cover">${verifiedBadge}</div>` : "";
+                const vBadge = s.verified ? `<div class="ver-badge-cover">${verSVG}</div>` : "";
+                
+                // LOGIC: Show Badge if Keyless (s.key is false)
+                const isKeyless = s.key === false;
+                const kBadge = isKeyless ? `<div class="keyless-badge-cover">Keyless</div>` : "";
                 
                 html += `
-                <div class="reth-card p-6" onclick="openModal(${scripts.indexOf(s)})">
+                <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${scripts.indexOf(s)})">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
-                        ${vOnCover}
+                        ${vBadge}
+                        ${kBadge}
                         <div class="status-badge"><span class="dot ${s.isPatched ? 'patched' : 'working'}"></span> ${s.isPatched ? 'Patched' : 'Working'}</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
@@ -268,8 +278,7 @@
 
         function openModal(idx) {
             const s = scripts[idx];
-            // In Modal, we still keep it near title for clarity
-            document.getElementById('mTitle').innerHTML = `${s.title} ${s.verified ? '<span class="text-blue-500">'+verifiedBadge+'</span>' : ""}`;
+            document.getElementById('mTitle').innerHTML = `${s.title} ${s.verified ? '<span class="text-blue-500 ml-2 inline-block">'+verSVG+'</span>' : ""}`;
             document.getElementById('mStats').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span> <span class="text-green-500">Likes: ${s.likeCount}</span> <span class="text-red-500">Dislikes: ${s.dislikeCount}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- NO SCRIPT DATA --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
