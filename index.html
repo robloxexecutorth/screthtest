@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — ULTIMATE VERSION</title>
+    <title>RETH OFFICIAL — LOAD MORE VERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -44,27 +44,20 @@
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); }
 
-        /* --- Search & Filter Row --- */
+        /* --- Search & Filter --- */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
         .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; outline: none; transition: 0.3s; }
-        .reth-search:focus { border-color: var(--accent); }
         .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
-        .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); }
 
-        /* --- Floating Filter Menu --- */
-        .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; box-shadow: 0 20px 40px rgba(0,0,0,0.5); opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
-        .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
-
-        /* --- Card Styles & Badges --- */
+        /* --- Badges & Cards --- */
         .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
         .reth-card:hover { transform: translateY(-5px); border-color: var(--text-dim); }
         .reth-card img { opacity: 0.5; transition: 0.5s; }
         
-        /* Badges on Cover */
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 9px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
-        .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; border-radius: 8px; padding: 5px; z-index: 20; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .ver-badge-cover { position: absolute; top: 12px; left: 12px; background: #3b82f6; color: white; border-radius: 8px; padding: 5px; z-index: 20; display: flex; align-items: center; justify-content: center; }
         
-        .key-info-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .key-info-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 4px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; letter-spacing: 0.05em; }
         .badge-keyless { background: #eab308; color: black; }
         .badge-has-key { background: #ef4444; color: white; }
         .no-ver .key-info-badge { left: 12px; }
@@ -76,8 +69,15 @@
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
         .btn-copy { background: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; }
 
-        /* --- Modal --- */
+        /* --- Load More Button --- */
+        .load-more-container { display: flex; justify-content: center; padding: 60px 0; }
+        .btn-load-more { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 18px 40px; border-radius: 20px; font-size: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .btn-load-more:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+
+        /* --- Modal & Filter Menu --- */
         #modal { transition: opacity 0.3s; }
+        .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; }
+        .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -85,39 +85,37 @@
     <div class="nav-controls">
         <div onclick="setTheme('dark')" id="dBtn" class="t-btn active">Dark</div>
         <div onclick="setTheme('light')" id="lBtn" class="t-btn">Light</div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase hover:scale-105 transition-transform flex items-center gap-2">Discord</a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-2.5 rounded-xl text-[9px] font-black uppercase">Discord</a>
     </div>
 
     <div class="max-w-7xl mx-auto">
         <header class="py-20 text-center flex flex-col items-center">
             <h1 class="reth-title">RETH</h1>
-            <div class="h-[2px] w-24 bg-zinc-800 -mt-2"></div>
             <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-5">Official Script Hub</p>
         </header>
 
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
-            <button onclick="toggleFilter()" id="filterBtn" class="filter-btn">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
-                Filter
-            </button>
-
+            <button onclick="toggleFilter()" id="filterBtn" class="filter-btn">Filter</button>
             <div id="filterMenu" class="float-filter-menu">
                 <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-3">Quick Filters</h3>
                 <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" onchange="updateFilter('verified', this.checked)"></label>
                 <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" onchange="updateFilter('keyless', this.checked)"></label>
-                <button onclick="resetFilters()" class="w-full mt-4 py-3 border border-zinc-800 rounded-xl text-[10px] font-black uppercase hover:bg-white hover:text-black transition">Reset</button>
             </div>
         </div>
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+
+        <div class="load-more-container" id="loadMoreArea" style="display: none;">
+            <button onclick="loadMore()" id="btnLoadMore" class="btn-load-more">Load More Scripts</button>
+        </div>
     </div>
 
     <div id="modal" class="fixed inset-0 bg-black/95 z-[2000] hidden items-center justify-center p-6 opacity-0">
         <div class="bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-[35px] max-w-2xl w-full p-10 relative">
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
             <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
-            <div id="mStats" class="stats-row mb-6 text-zinc-400"></div>
+            <div id="mStats" class="stats-row mb-6"></div>
             <div class="flex gap-4 mb-8">
                 <button id="mCopy" onclick="copyFromModal()" class="btn-copy flex-1 mb-0">Copy Script</button>
                 <a id="mLink" href="#" target="_blank" class="flex-1 border border-zinc-800 rounded-xl flex items-center justify-center text-[11px] font-black uppercase">Source</a>
@@ -129,39 +127,61 @@
     <script>
         let scripts = [];
         let filters = { verified: false, keyless: false };
+        let currentPage = 1;
+        let currentQuery = "";
+        const maxPerPage = 20;
+
         const verSVG = `<svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg>`;
 
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('show'); }
         function updateFilter(k, v) { filters[k] = v; apply(); }
-        function resetFilters() {
-            filters = { verified: false, keyless: false };
-            document.querySelectorAll('#filterMenu input').forEach(i => i.checked = false);
-            apply();
-        }
-
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
             document.getElementById('dBtn').className = m === 'dark' ? 't-btn active' : 't-btn';
             document.getElementById('lBtn').className = m === 'light' ? 't-btn active' : 't-btn';
         }
 
-        async function load(q = "") {
-            const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
+        async function load(q = "", page = 1, append = false) {
+            currentQuery = q;
+            currentPage = page;
+            const api = q 
+                ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=${maxPerPage}&page=${page}` 
+                : `https://scriptblox.com/api/script/fetch?page=${page}&max=${maxPerPage}`;
+            
             try {
                 const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api));
                 const data = await res.json();
-                scripts = data.result.scripts || data.result.docs || [];
+                const newScripts = data.result.scripts || data.result.docs || [];
+                
+                if (append) {
+                    scripts = [...scripts, ...newScripts];
+                } else {
+                    scripts = newScripts;
+                }
+
+                // ซ่อน/แสดงปุ่ม Load More
+                const totalPages = data.result.totalPages || 0;
+                document.getElementById('loadMoreArea').style.display = (currentPage < totalPages) ? 'flex' : 'none';
+
                 apply();
-            } catch (e) { console.error("API Fetch Error"); }
+            } catch (e) { console.error("Error loading scripts"); }
+        }
+
+        function loadMore() {
+            const btn = document.getElementById('btnLoadMore');
+            btn.innerText = "LOADING...";
+            load(currentQuery, currentPage + 1, true).then(() => {
+                btn.innerText = "Load More Scripts";
+            });
         }
 
         function apply() {
-            const filtered = scripts.filter(s => {
+            const f = scripts.filter(s => {
                 if (filters.verified && !s.verified) return false;
                 if (filters.keyless && s.key !== false) return false;
                 return true;
             });
-            render(filtered);
+            render(f);
         }
 
         function render(list) {
@@ -169,8 +189,6 @@
             list.forEach((s) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 const vBadge = s.verified ? `<div class="ver-badge-cover">${verSVG}</div>` : "";
-                
-                // Key Badge Logic
                 const keyBadge = s.key ? 
                     `<div class="key-info-badge badge-has-key">Key</div>` : 
                     `<div class="key-info-badge badge-keyless">Keyless</div>`;
@@ -205,7 +223,7 @@
                 <span>👁 VIEWS: ${s.views.toLocaleString()}</span> | 
                 <span class="text-green-500">👍 LIKES: ${s.likeCount}</span> | 
                 <span class="text-red-500">👎 DISLIKES: ${s.dislikeCount}</span>`;
-            document.getElementById('mCode').innerText = s.script || "-- No Script Data Found --";
+            document.getElementById('mCode').innerText = s.script || "-- No Data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
             
             const m = document.getElementById('modal');
@@ -237,10 +255,10 @@
         let debounce;
         document.getElementById('searchInput').addEventListener('input', (e) => {
             clearTimeout(debounce);
-            debounce = setTimeout(() => load(e.target.value), 500);
+            debounce = setTimeout(() => load(e.target.value, 1, false), 500);
         });
 
-        window.onload = () => load("");
+        window.onload = () => load("", 1, false);
     </script>
 </body>
 </html>
