@@ -126,7 +126,12 @@
         let allScriptsMap = new Map(); // คีย์หลักป้องกันสคริปต์ซ้ำ
         let currentPage = 1;
         let searchQuery = "";
-        const verSVG = `<svg viewBox="0 0 24 24" class="w-full h-full"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34z" fill="#1D9BF0"/><path d="M10 16.5l-4.5-4.5 1.41-1.41L10 13.67l7.09-7.09L18.5 8l-8.5 8.5z" fill="white"/></svg>`;
+        
+        // --- NEW VERIFIED STAR BADGE ---
+        const verStarSVG = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/>
+            <path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/>
+        </svg>`;
 
         async function fetchScripts(query = "", page = 1, append = false) {
             searchQuery = query;
@@ -170,7 +175,7 @@
                 html += `
                 <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal('${id}')">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
-                        ${s.verified ? `<div class="ver-badge-container">${verSVG}</div>` : ""}
+                        ${s.verified ? `<div class="ver-badge-container">${verStarSVG}</div>` : ""}
                         <div class="key-info-badge ${s.key ? 'badge-has-key' : 'badge-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
                         <div class="status-badge"><span class="dot working"></span> Working</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
@@ -195,7 +200,7 @@
 
         function openModal(id) {
             const s = allScriptsMap.get(id);
-            document.getElementById('mTitle').innerHTML = `${s.title}${s.verified ? `<div class="w-6 h-6 inline-block ml-2">${verSVG}</div>` : ""}`;
+            document.getElementById('mTitle').innerHTML = `${s.title}${s.verified ? `<div class="w-6 h-6 inline-block align-middle ml-2">${verStarSVG}</div>` : ""}`;
             document.getElementById('mStats').innerHTML = `VIEWS: ${s.views.toLocaleString()} | 👍 ${s.likeCount || 0} | 👎 ${s.dislikeCount || 0}`;
             document.getElementById('mCode').innerText = s.script || "-- No Script Data --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
