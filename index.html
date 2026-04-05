@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — ULTIMATE CUSTOM VER.</title>
+    <title>RETH OFFICIAL — FIXED VER.</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -32,9 +32,7 @@
 
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; margin: 0; overflow-x: hidden; }
         
-        /* --- BLOCK BLUE GLOW & OUTLINE --- */
         * { -webkit-tap-highlight-color: transparent; outline: none !important; }
-        *:focus { outline: none !important; box-shadow: none !important; }
 
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         
@@ -57,7 +55,6 @@
         .reth-card img { opacity: 0.4; transition: 0.4s ease; }
         .reth-card:hover img { opacity: 1; transform: scale(1.05); }
 
-        /* Badges */
         .ver-badge-container { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .key-info-badge { position: absolute; top: 12px; left: 46px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .no-ver .key-info-badge { left: 12px; } 
@@ -71,7 +68,7 @@
         .btn-copy-white:hover { background: #e2e2e2; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
         
-        /* ปรับปุ่ม LOAD MORE เป็นแบบ OUTLINE */
+        /* สไตล์ปุ่มแบบ OUTLINE */
         .btn-load-more { 
             background: transparent; 
             border: 2px solid var(--border-color); 
@@ -138,15 +135,11 @@
     </div>
 
     <script>
-        let allScripts = []; // ใช้ Array ปกติ แสดงผลตามข้อมูลดิบ
+        let allScripts = [];
         let currentPage = 1;
         let searchQuery = "";
         
-        // ไอคอนดาวสีน้ำเงิน
-        const verStarSVG = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/>
-            <path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/>
-        </svg>`;
+        const verStarSVG = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
         async function fetchScripts(query = "", page = 1, append = false) {
             searchQuery = query;
@@ -156,19 +149,20 @@
                 : `https://scriptblox.com/api/script/fetch?page=${page}&max=20`;
             
             try {
-                const res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api));
+                // แก้ไขจุดนี้: เปลี่ยน Proxy เป็นตัวที่เสถียรกว่า
+                const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(api)}`);
                 const data = await res.json();
                 const newScripts = data.result.scripts || data.result.docs || [];
                 
-                if (!append) {
-                    allScripts = newScripts;
-                } else {
-                    allScripts = [...allScripts, ...newScripts];
-                }
+                if (!append) allScripts = newScripts;
+                else allScripts = [...allScripts, ...newScripts];
 
                 document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 1)) ? 'flex' : 'none';
                 render();
-            } catch (e) { console.error("API Error"); }
+            } catch (e) { 
+                console.error("Fetch Error:", e);
+                document.getElementById('scriptGrid').innerHTML = '<p class="col-span-full text-center py-20 opacity-20 uppercase font-black">Connection Error. Please Refresh.</p>';
+            }
         }
 
         function render() {
@@ -219,10 +213,7 @@
             
             const m = document.getElementById('modal');
             m.classList.replace('hidden', 'flex');
-            setTimeout(() => { 
-                m.classList.add('opacity-100'); 
-                document.getElementById('modalContent').classList.replace('scale-95', 'scale-100'); 
-            }, 10);
+            setTimeout(() => { m.classList.add('opacity-100'); document.getElementById('modalContent').classList.replace('scale-95', 'scale-100'); }, 10);
             document.body.style.overflow = 'hidden';
         }
 
@@ -238,11 +229,7 @@
             navigator.clipboard.writeText(s.script).then(() => {
                 const old = btn.innerText; btn.innerText = "COPIED!";
                 btn.style.background = "#22c55e"; btn.style.color = "#fff";
-                setTimeout(() => { 
-                    btn.innerText = old; 
-                    btn.style.background = ""; 
-                    btn.style.color = ""; 
-                }, 1500);
+                setTimeout(() => { btn.innerText = old; btn.style.background = ""; btn.style.color = ""; }, 1500);
             });
         }
 
