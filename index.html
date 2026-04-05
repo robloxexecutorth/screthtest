@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — FIXED VER.</title>
+    <title>RETH OFFICIAL — FULL FUNCTION FIXED</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -18,31 +18,34 @@
             --border-color: #111111;
             --search-bg: #050505;
             --modal-bg: #080808;
+            --btn-copy-border: transparent;
         }
 
         [data-theme="light"] {
-            --bg-color: #f4f4f5;
+            --bg-color: #ffffff;
             --card-bg: #ffffff;
             --text-main: #000000;
-            --text-dim: #a1a1aa;
-            --border-color: #e4e4e7;
+            --text-dim: #555555;
+            --border-color: #000000; /* ขอบดำในธีมขาว */
             --search-bg: #ffffff;
             --modal-bg: #ffffff;
+            --btn-copy-border: #000000; /* ขอบปุ่มดำในธีมขาว */
         }
 
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; margin: 0; overflow-x: hidden; }
-        
         * { -webkit-tap-highlight-color: transparent; outline: none !important; }
 
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         
         .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
-        .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; border: none; }
-        .t-btn.active { background: var(--text-main); color: var(--bg-color); }
+        .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; }
+        .t-btn.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
 
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
         .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; transition: 0.3s; }
         .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        
+        /* Floating Filter Menu */
         .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
@@ -52,42 +55,34 @@
             overflow: hidden; position: relative; cursor: pointer;
         }
         .reth-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--text-dim); }
-        .reth-card img { opacity: 0.4; transition: 0.4s ease; }
-        .reth-card:hover img { opacity: 1; transform: scale(1.05); }
+        .reth-card img { opacity: 0.5; transition: 0.4s ease; }
+        .reth-card:hover img { opacity: 1; }
 
+        /* Badges */
         .ver-badge-container { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .key-info-badge { position: absolute; top: 12px; left: 46px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .no-ver .key-info-badge { left: 12px; } 
         .badge-keyless { background: #eab308; color: black; }
         .badge-has-key { background: #ef4444; color: white; }
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; }
-        .dot { height: 6px; width: 6px; border-radius: 50%; }
-        .dot.working { background: #22c55e; }
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
+        .dot { height: 6px; width: 6px; border-radius: 50%; background: #22c55e; }
 
-        .btn-copy-white { background: #ffffff; color: #000000; text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; border: none; transition: 0.2s; }
+        /* Buttons */
+        .btn-copy-white { 
+            background: #ffffff; color: #000000; border: 1.5px solid var(--btn-copy-border);
+            text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; 
+            text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; 
+        }
         .btn-copy-white:hover { background: #e2e2e2; }
-        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
         
-        /* สไตล์ปุ่มแบบ OUTLINE */
+        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
+
         .btn-load-more { 
-            background: transparent; 
-            border: 2px solid var(--border-color); 
-            color: var(--text-dim); 
-            padding: 16px 45px; 
-            border-radius: 20px; 
-            font-size: 11px; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            letter-spacing: 0.1em;
+            background: transparent; border: 2px solid var(--border-color); color: var(--text-main); 
+            padding: 16px 45px; border-radius: 20px; font-size: 11px; font-weight: 900; 
+            text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.1em;
         }
-        .btn-load-more:hover { 
-            background: var(--text-main); 
-            border-color: var(--text-main);
-            color: var(--bg-color);
-            transform: translateY(-3px);
-        }
+        .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -149,7 +144,6 @@
                 : `https://scriptblox.com/api/script/fetch?page=${page}&max=20`;
             
             try {
-                // แก้ไขจุดนี้: เปลี่ยน Proxy เป็นตัวที่เสถียรกว่า
                 const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(api)}`);
                 const data = await res.json();
                 const newScripts = data.result.scripts || data.result.docs || [];
@@ -183,7 +177,7 @@
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
                         ${s.verified ? `<div class="ver-badge-container">${verStarSVG}</div>` : ""}
                         <div class="key-info-badge ${s.key ? 'badge-has-key' : 'badge-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
-                        <div class="status-badge"><span class="dot working"></span> Working</div>
+                        <div class="status-badge"><span class="dot"></span> Working</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
                     <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${index}, this)">Copy Loadstring</div>
