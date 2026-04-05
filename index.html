@@ -36,155 +36,170 @@
             font-family: 'Inter', sans-serif; 
             margin: 0px; 
             -webkit-font-smoothing: antialiased; 
+            overflow-x: hidden;
             transition: background-color 0.3s;
         }
 
-        /* --- New Search & Filter Container --- */
-        .search-container {
+        /* --- Search & Filter Section --- */
+        .search-wrapper {
             display: flex;
             gap: 12px;
-            max-width: 700px;
+            max-width: 600px;
             margin: 0 auto 60px auto;
-            position: relative;
         }
 
         .reth-search { 
             background: var(--search-bg); 
             border: 1px solid var(--border-color); 
-            border-radius: 16px; 
+            border-radius: 18px; 
             color: var(--text-main); 
             font-size: 13px; 
             font-weight: 700; 
             text-transform: uppercase; 
-            letter-spacing: 0.1em; 
+            letter-spacing: 0.15em; 
             width: 100%; 
-            padding: 20px 24px; 
+            padding: 22px 26px; 
             outline: none;
             transition: 0.3s;
         }
         .reth-search:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(88, 101, 242, 0.1); }
 
-        .filter-trigger-btn {
-            background: var(--accent); 
-            color: white;
-            border: none;
-            padding: 0 25px; 
-            border-radius: 16px; 
-            font-size: 11px; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
+        .filter-open-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0 24px;
+            border-radius: 18px;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
             gap: 10px;
-            transition: 0.3s;
-            white-space: nowrap;
+            transition: 0.2s;
         }
-        .filter-trigger-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+        .filter-open-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-        /* --- Sidebar Filter Styles --- */
+        /* --- Sidebar Styles --- */
         .filter-sidebar {
             position: fixed; top: 0; right: -350px; width: 320px; height: 100%;
             background: var(--modal-bg); border-left: 1px solid var(--border-color);
-            z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1200; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 40px 30px; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
         }
         .filter-sidebar.active { right: 0; }
         
         .sidebar-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            z-index: 999; display: none; backdrop-filter: blur(4px);
+            z-index: 1199; display: none; backdrop-filter: blur(4px);
         }
         .sidebar-overlay.active { display: block; }
 
-        .filter-option {
+        .filter-item {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 16px 0; border-bottom: 1px solid var(--border-color);
+            padding: 18px 0; border-bottom: 1px solid var(--border-color);
             cursor: pointer; transition: 0.2s;
         }
-        .filter-option span { font-size: 13px; font-weight: 600; }
-        
-        .checkbox-container input { display: none; }
-        .checkmark {
-            width: 20px; height: 20px; border: 2px solid var(--border-color);
-            border-radius: 6px; display: inline-block; position: relative; transition: 0.2s;
-        }
-        .checkbox-container input:checked + .checkmark { background: var(--accent); border-color: var(--accent); }
-        .checkbox-container input:checked + .checkmark::after {
-            content: '✓'; position: absolute; color: white; font-size: 11px;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-        }
+        .filter-item:hover { border-bottom-color: var(--text-dim); }
+        .filter-item span { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* --- Other Styles --- */
+        /* Custom Checkbox Design */
+        .custom-check input { display: none; }
+        .box { width: 20px; height: 20px; border: 2px solid var(--border-color); border-radius: 6px; position: relative; transition: 0.2s; background: transparent; }
+        .custom-check input:checked + .box { background: var(--accent); border-color: var(--accent); }
+        .custom-check input:checked + .box::after { content: '✓'; position: absolute; color: white; font-size: 10px; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; }
+
+        /* --- Navigation & Theme --- */
         .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; align-items: center; gap: 12px; z-index: 100; }
+        .theme-toggle { display: flex; background: var(--card-bg); border: 1px solid var(--border-color); padding: 4px; border-radius: 12px; }
+        .t-btn { padding: 8px 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; border-radius: 8px; cursor: pointer; color: var(--text-dim); transition: 0.2s; }
+        .t-btn.active { background: var(--text-main); color: var(--bg-color); }
+        .discord-btn { background: #5865F2; color: white; padding: 12px 24px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; transition: 0.3s; text-decoration: none; box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4); }
+        .discord-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* --- Script Card Styles --- */
+        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; cursor: pointer; }
+        .reth-card:hover { border-color: var(--text-dim); transform: translateY(-5px); }
+        .reth-card img { opacity: 0.45; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reth-card:hover img { opacity: 0.8; transform: scale(1.05); }
+
+        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(10, 10, 10, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 5px 12px; font-size: 9px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 6px; backdrop-filter: blur(8px); z-index: 20; color: #ffffff; }
+        .status-dot { height: 6px; width: 6px; border-radius: 50%; }
+        .status-dot.working { background-color: #22c55e; box-shadow: 0 0 10px #22c55e; }
+        .status-dot.patched { background-color: #ef4444; box-shadow: 0 0 10px #ef4444; }
+
+        .key-tag { position: absolute; top: 12px; left: 12px; font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 5px 10px; border-radius: 8px; z-index: 20; }
+        .key-required { background-color: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
+        .keyless { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
+        .verified-badge { color: #3b82f6; display: inline-flex; align-items: center; margin-left: 6px; }
+
+        /* --- Typography --- */
         .reth-title { font-size: 85px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
-        .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; transition: 0.3s; overflow: hidden; position: relative; cursor: pointer; }
-        .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(10, 10, 10, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 5px 12px; font-size: 9px; font-weight: 900; display: flex; align-items: center; gap: 6px; z-index: 20; color: #ffffff; }
-        .status-dot.working { background-color: #22c55e; }
-        .status-dot.patched { background-color: #ef4444; }
-        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; cursor: pointer; margin-bottom: 15px; }
-        .script-box { background: #000000; border: 1px solid #111111; border-radius: 16px; padding: 20px; font-family: monospace; font-size: 12px; color: #777777; max-height: 250px; overflow-y: auto; }
+        .reth-title-underline { height: 2px; width: 120px; background-color: var(--border-color); margin-top: -10px; }
+        .reth-subtitle { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5em; margin-top: 15px; }
+        .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; transition: 0.2s; }
+        .btn-copy-main:hover { filter: brightness(0.8); }
+
+        /* --- Modal Styles --- */
+        .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 30px; max-width: 650px; width: 95%; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .script-box { background: #000000; border: 1px solid #111111; border-radius: 16px; padding: 20px; font-family: monospace; font-size: 12px; color: #777777; max-height: 250px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
     </style>
 </head>
 <body class="p-6 md:p-16">
 
     <div class="nav-controls">
-        <div class="theme-toggle flex bg-zinc-900 p-1 rounded-xl border border-zinc-800">
-            <div id="darkBtn" class="px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg active bg-white text-black" onclick="setTheme('dark')">Dark</div>
-            <div id="lightBtn" class="px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg text-zinc-500" onclick="setTheme('light')">Light</div>
+        <div class="theme-toggle">
+            <div id="darkBtn" class="t-btn active" onclick="setTheme('dark')">Dark</div>
+            <div id="lightBtn" class="t-btn" onclick="setTheme('light')">Light</div>
         </div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="bg-[#5865F2] text-white px-5 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-indigo-500/20">Discord</a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-btn">Join Discord</a>
     </div>
 
     <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <aside id="filterSidebar" class="filter-sidebar">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter">Advanced Search</h2>
+            <h2 class="text-xl font-black uppercase italic tracking-tighter">Advanced Filters</h2>
             <button onclick="toggleSidebar()" class="text-zinc-500 hover:text-white font-bold text-[10px] uppercase">Close [X]</button>
         </div>
 
-        <div class="mb-12">
-            <p class="text-[9px] font-black uppercase text-zinc-600 mb-4 tracking-[0.2em]">Filter Options</p>
-            
-            <label class="filter-option checkbox-container">
-                <span class="uppercase font-bold text-xs tracking-tight">Verified Only</span>
-                <input type="checkbox" onchange="updateFilter('verified', this.checked)">
-                <span class="checkmark"></span>
+        <div class="space-y-1">
+            <label class="filter-item custom-check">
+                <span>Universal Scripts</span>
+                <input type="checkbox" id="check-universal" onchange="toggleFilter('universal', this.checked)">
+                <div class="box"></div>
             </label>
-
-            <label class="filter-option checkbox-container">
-                <span class="uppercase font-bold text-xs tracking-tight">Universal Scripts</span>
-                <input type="checkbox" onchange="updateFilter('universal', this.checked)">
-                <span class="checkmark"></span>
+            <label class="filter-item custom-check">
+                <span>Verified Only</span>
+                <input type="checkbox" id="check-verified" onchange="toggleFilter('verified', this.checked)">
+                <div class="box"></div>
             </label>
-
-            <label class="filter-option checkbox-container">
-                <span class="uppercase font-bold text-xs tracking-tight">Hide Patched</span>
-                <input type="checkbox" checked onchange="updateFilter('hidePatched', this.checked)">
-                <span class="checkmark"></span>
+            <label class="filter-item custom-check">
+                <span>Keyless Only</span>
+                <input type="checkbox" id="check-keyless" onchange="toggleFilter('keyless', this.checked)">
+                <div class="box"></div>
             </label>
-
-            <label class="filter-option checkbox-container">
-                <span class="uppercase font-bold text-xs tracking-tight">Requires Key</span>
-                <input type="checkbox" onchange="updateFilter('keySystem', this.checked)">
-                <span class="checkmark"></span>
+            <label class="filter-item custom-check">
+                <span>Hide Patched</span>
+                <input type="checkbox" id="check-working" onchange="toggleFilter('working', this.checked)">
+                <div class="box"></div>
             </label>
         </div>
 
-        <button onclick="resetFilters()" class="w-full py-4 border border-zinc-800 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Reset All Filters</button>
+        <button onclick="resetFilters()" class="w-full mt-10 py-4 border border-zinc-800 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Reset All Filters</button>
     </aside>
 
     <div class="max-w-7xl mx-auto">
         <header class="py-16 md:py-24 text-center flex flex-col items-center">
-            <h1 class="reth-title italic">RETH</h1>
-            <div class="w-24 h-0.5 bg-zinc-800 -mt-2"></div>
-            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.5em] mt-4">OFFICIAL SCRIPT HUB</p>
+            <h1 class="reth-title">RETH</h1>
+            <div class="reth-title-underline"></div>
+            <p class="reth-subtitle">OFFICIAL SCRIPT HUB</p>
         </header>
 
-        <div class="search-container">
+        <div class="search-wrapper">
             <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
-            <button onclick="toggleSidebar()" class="filter-trigger-btn">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
+            <button onclick="toggleSidebar()" class="filter-open-btn">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/></svg>
                 Filter
             </button>
         </div>
@@ -192,123 +207,193 @@
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
     </div>
 
-    <div id="scriptModal" class="fixed inset-0 bg-black/95 z-[1100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div id="scriptModal" class="fixed inset-0 bg-black/95 z-[2000] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="modal-content relative">
-            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px]">Close [X]</button>
-            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-4 tracking-tighter"></h2>
-            <div id="modalStats" class="stats-row flex gap-4 text-[10px] font-black uppercase text-zinc-500 mb-6"></div>
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-zinc-600 hover:text-white font-bold uppercase text-[10px] tracking-widest">Close [X]</button>
+            <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter flex items-center gap-1"></h2>
+            
+            <div id="modalStats" class="flex gap-4 text-[10px] font-black text-zinc-500 mb-4 uppercase"></div>
+            <p id="modalGame" class="text-[11px] text-zinc-500 font-bold uppercase tracking-widest mb-10"></p>
+            
             <div class="flex gap-4 mb-8">
-                <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0 py-4">COPY SCRIPT</div>
+                <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0">COPY SCRIPT</div>
                 <a href="#" id="modalWebLink" target="_blank" class="flex-1 border border-zinc-800 rounded-2xl flex items-center justify-center text-[11px] font-black uppercase hover:bg-white hover:text-black transition">VIEW WEB</a>
             </div>
+            
             <div id="modalScript" class="script-box"></div>
         </div>
     </div>
 
     <script>
+        // Global Variables
         var scriptGrid = document.getElementById('scriptGrid');
         var modal = document.getElementById('scriptModal');
         var sidebar = document.getElementById('filterSidebar');
         var overlay = document.getElementById('sidebarOverlay');
         var scriptsArray = [];
         
-        var filters = {
-            universal: false,
-            verified: false,
-            hidePatched: true,
-            keySystem: false
+        var filters = { 
+            universal: false, 
+            verified: false, 
+            keyless: false, 
+            working: false 
         };
 
+        // UI Handlers
         function toggleSidebar() {
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
         }
 
-        function updateFilter(type, value) {
-            filters[type] = value;
+        function toggleFilter(type, val) {
+            filters[type] = val;
             applyFilters();
         }
 
         function resetFilters() {
-            filters = { universal: false, verified: false, hidePatched: true, keySystem: false };
-            document.querySelectorAll('.filter-sidebar input').forEach(i => i.checked = (i.onchange.toString().includes('hidePatched') ? true : false));
+            filters = { universal: false, verified: false, keyless: false, working: false };
+            document.getElementById('check-universal').checked = false;
+            document.getElementById('check-verified').checked = false;
+            document.getElementById('check-keyless').checked = false;
+            document.getElementById('check-working').checked = false;
             applyFilters();
         }
 
+        function setTheme(mode) {
+            var body = document.body;
+            if (mode === 'light') {
+                body.setAttribute('data-theme', 'light');
+                document.getElementById('lightBtn').classList.add('active');
+                document.getElementById('darkBtn').classList.remove('active');
+                localStorage.setItem('rethTheme', 'light');
+            } else {
+                body.removeAttribute('data-theme');
+                document.getElementById('darkBtn').classList.add('active');
+                document.getElementById('lightBtn').classList.remove('active');
+                localStorage.setItem('rethTheme', 'dark');
+            }
+        }
+
+        // Data Management
         async function fetchScripts(query) {
-            var url = query ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(query)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
+            var api = query ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(query)}&max=50` : "https://scriptblox.com/api/script/fetch?page=1&max=50";
+            var proxy = "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api);
+            
             try {
-                var res = await fetch("https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(url));
+                var res = await fetch(proxy);
                 var data = await res.json();
-                scriptsArray = data.result.scripts || data.result.docs || [];
-                applyFilters();
-            } catch (e) { console.error(e); }
+                if (data && data.result) {
+                    scriptsArray = data.result.scripts || data.result.docs || [];
+                    applyFilters();
+                }
+            } catch (e) { 
+                console.error("API Error:", e); 
+                scriptGrid.innerHTML = '<p class="col-span-full py-20 text-center font-black text-red-500 uppercase">Failed to load scripts</p>';
+            }
         }
 
         function applyFilters() {
             var filtered = scriptsArray.filter(item => {
                 if (filters.universal && !item.isUniversal) return false;
                 if (filters.verified && !item.verified) return false;
-                if (filters.hidePatched && item.isPatched) return false;
-                if (filters.keySystem && !item.key) return false;
+                if (filters.keyless && item.key) return false;
+                if (filters.working && item.isPatched) return false;
                 return true;
             });
-            render(filtered);
+            renderScripts(filtered);
         }
 
-        function render(list) {
+        // UI Rendering
+        function renderScripts(list) {
             var html = "";
             list.forEach((item) => {
-                var thumb = item.image && !item.image.includes('http') ? "https://scriptblox.com" + item.image : (item.game.imageUrl || "https://via.placeholder.com/400x225");
+                var index = scriptsArray.indexOf(item);
+                var thumb = item.image && !item.image.includes('http') ? "https://scriptblox.com" + item.image : (item.game && item.game.imageUrl ? item.game.imageUrl : "https://via.placeholder.com/400x225/050505/222222?text=RETH+HUB");
+                
+                var statusIcon = item.isPatched ? '<span class="status-dot patched"></span> Patched' : '<span class="status-dot working"></span> Working';
+                var keyStatus = item.key ? '<div class="key-tag key-required">Key Required</div>' : '<div class="key-tag keyless">Keyless</div>';
+                var verifiedBadge = item.verified ? `<span class="verified-badge"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/></svg></span>` : "";
+
                 html += `
-                <div class="reth-card p-6" onclick="openModal(${scriptsArray.indexOf(item)})">
+                <div class="reth-card p-6" onclick="openModal(${index})">
                     <div class="relative aspect-video bg-black rounded-2xl mb-5 overflow-hidden">
-                        <div class="status-badge"><span class="status-dot w-1.5 h-1.5 rounded-full ${item.isPatched ? 'patched' : 'working'}"></span> ${item.isPatched ? 'Patched' : 'Working'}</div>
-                        <img src="${thumb}" class="w-full h-full object-cover opacity-60">
+                        ${keyStatus}
+                        <div class="status-badge">${statusIcon}</div>
+                        <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
                     <div class="stats-row flex gap-3 text-[9px] font-black uppercase text-zinc-500 mb-4">
-                        <span>👁 ${item.views.toLocaleString()}</span>
-                        <span class="text-green-500">👍 ${item.likeCount}</span>
+                        <span>👁 ${(item.views || 0).toLocaleString()}</span>
+                        <span class="text-green-500">👍 ${(item.likeCount || 0).toLocaleString()}</span>
                     </div>
-                    <div class="btn-copy-main" onclick="event.stopPropagation(); copyScript(${scriptsArray.indexOf(item)}, this)">COPY LOADSTRING</div>
-                    <h3 class="text-sm font-black uppercase truncate">${item.title}</h3>
-                    <p class="text-[9px] text-zinc-600 font-bold uppercase truncate">${item.game.name}</p>
+                    <div class="btn-copy-main" onclick="event.stopPropagation(); copyScript(${index}, this)">COPY LOADSTRING</div>
+                    <h3 class="text-sm font-black uppercase truncate flex items-center">${item.title} ${verifiedBadge}</h3>
+                    <p class="text-[9px] text-zinc-600 font-bold uppercase truncate">${item.game ? item.game.name : "Universal"}</p>
                 </div>`;
             });
-            scriptGrid.innerHTML = html || '<p class="col-span-full py-20 text-center font-black text-zinc-800 uppercase tracking-widest">No scripts found</p>';
+            scriptGrid.innerHTML = html || '<p class="col-span-full py-20 text-center font-black text-zinc-800 uppercase tracking-widest">No scripts matching filters</p>';
         }
 
+        // Modal Handlers
         function openModal(idx) {
             var s = scriptsArray[idx];
-            document.getElementById('modalTitle').innerText = s.title;
-            document.getElementById('modalStats').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span> <span>Likes: ${s.likeCount}</span>`;
-            document.getElementById('modalScript').innerText = s.script;
+            document.getElementById('modalTitle').innerHTML = `<span>${s.title}</span>`;
+            document.getElementById('modalStats').innerHTML = `<span>👁 ${(s.views || 0).toLocaleString()} Views</span> <span class="text-green-500">👍 ${s.likeCount} Likes</span>`;
+            document.getElementById('modalGame').innerText = s.game ? s.game.name : "Universal Script";
+            document.getElementById('modalScript').innerText = s.script || "-- No loadstring found --";
             document.getElementById('modalWebLink').href = "https://scriptblox.com/script/" + s.slug;
+            
             modal.classList.remove('hidden');
             setTimeout(() => modal.classList.add('opacity-100'), 10);
             document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() { modal.classList.remove('opacity-100'); setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300); }
+        function closeModal() {
+            modal.classList.remove('opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
 
+        // Copy Functions
         function copyScript(idx, btn) {
             navigator.clipboard.writeText(scriptsArray[idx].script).then(() => {
-                var oldText = btn.innerText; btn.innerText = "COPIED!"; btn.style.backgroundColor = "#22c55e";
-                setTimeout(() => { btn.innerText = oldText; btn.style.backgroundColor = ""; }, 1500);
+                var oldText = btn.innerText;
+                btn.innerText = "COPIED!";
+                btn.style.backgroundColor = "#22c55e";
+                btn.style.color = "#ffffff";
+                setTimeout(() => {
+                    btn.innerText = oldText;
+                    btn.style.backgroundColor = "";
+                    btn.style.color = "";
+                }, 1500);
+            });
+        }
+        
+        function copyFromModal() {
+            var scriptText = document.getElementById('modalScript').innerText;
+            navigator.clipboard.writeText(scriptText).then(() => {
+                var btn = document.getElementById('modalCopyBtn');
+                btn.innerText = "COPIED!";
+                btn.style.backgroundColor = "#22c55e";
+                setTimeout(() => {
+                    btn.innerText = "COPY SCRIPT";
+                    btn.style.backgroundColor = "";
+                }, 2000);
             });
         }
 
-        function setTheme(m) {
-            document.body.setAttribute('data-theme', m);
-            document.getElementById('darkBtn').className = m === 'dark' ? 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg bg-white text-black' : 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg text-zinc-500';
-            document.getElementById('lightBtn').className = m === 'light' ? 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg bg-black text-white' : 'px-3 py-1.5 text-[9px] font-black uppercase cursor-pointer rounded-lg text-zinc-500';
-        }
-
+        // Event Listeners
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(window.t); window.t = setTimeout(() => fetchScripts(e.target.value), 500);
+            clearTimeout(window.searchTimer);
+            window.searchTimer = setTimeout(() => fetchScripts(e.target.value), 500);
         });
 
-        window.onload = () => fetchScripts("");
+        window.onload = () => {
+            var savedTheme = localStorage.getItem('rethTheme');
+            if (savedTheme === 'light') setTheme('light');
+            fetchScripts("");
+        };
     </script>
 </body>
 </html>
