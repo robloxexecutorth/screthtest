@@ -39,7 +39,7 @@
             transition: background-color 0.3s;
         }
 
-        /* --- Navigation Controls --- */
+        /* --- Navigation & Theme --- */
         .nav-controls {
             position: fixed; top: 25px; right: 25px;
             display: flex; align-items: center; gap: 12px; z-index: 100;
@@ -97,6 +97,7 @@
         .key-required { background-color: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
         .keyless { background-color: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.4); }
 
+        /* --- Typography & Layout --- */
         .reth-title { font-size: 85px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         .reth-title-underline { height: 2px; width: 120px; background-color: var(--border-color); margin-top: -10px; }
         .reth-subtitle { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5em; margin-top: 15px; }
@@ -108,7 +109,17 @@
 
         .btn-copy-main { background-color: var(--text-main); color: var(--bg-color); text-align: center; padding: 14px 0; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; transition: 0.2s; }
         
+        /* --- Modal & Buttons --- */
         .modal-content { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 30px; max-width: 650px; width: 95%; padding: 40px; color: var(--text-main); }
+        
+        .modal-btn-web { 
+            flex: 1; border: 1px solid var(--border-color); border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 11px; font-weight: 900; text-transform: uppercase; 
+            transition: 0.2s; color: var(--text-main); text-decoration: none;
+        }
+        .modal-btn-web:hover { background: #111111; color: white !important; border-color: #333333; }
+
         .script-box { background: #000000; border: 1px solid #111111; border-radius: 16px; padding: 20px; font-family: monospace; font-size: 12px; color: #777777; max-height: 250px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
     </style>
 </head>
@@ -148,10 +159,12 @@
             <h2 id="modalTitle" class="text-2xl font-black uppercase italic mb-2 tracking-tighter"></h2>
             <div id="modalStats" class="stats-row mb-3"></div>
             <p id="modalGame" class="text-[11px] text-zinc-500 font-bold uppercase tracking-widest mb-10"></p>
+            
             <div class="flex gap-4 mb-8">
                 <div onclick="copyFromModal()" id="modalCopyBtn" class="btn-copy-main flex-1 mb-0">COPY SCRIPT</div>
-                <a href="#" id="modalWebLink" target="_blank" class="px-8 border border-zinc-800 rounded-xl flex items-center text-[11px] font-black uppercase text-white hover:bg-zinc-900 justify-center">VIEW WEB</a>
+                <a href="#" id="modalWebLink" target="_blank" class="modal-btn-web">VIEW WEB</a>
             </div>
+
             <div class="space-y-3">
                 <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">Source Code Output:</p>
                 <div id="modalScript" class="script-box"></div>
@@ -165,31 +178,25 @@
         var searchInputBox = document.getElementById('searchInput');
         var scriptsArrayData = [];
 
-        // ฟังก์ชัน setTheme ที่เพิ่มระบบจำค่า (localStorage)
         function setTheme(mode) {
             var body = document.body;
             var d = document.getElementById('darkBtn');
             var l = document.getElementById('lightBtn');
-            
             if (mode === 'light') {
                 body.setAttribute('data-theme', 'light');
                 l.classList.add('active'); d.classList.remove('active');
-                localStorage.setItem('rethTheme', 'light'); // จำไว้ว่าเป็น light
+                localStorage.setItem('rethTheme', 'light');
             } else {
                 body.removeAttribute('data-theme');
                 d.classList.add('active'); l.classList.remove('active');
-                localStorage.setItem('rethTheme', 'dark'); // จำไว้ว่าเป็น dark
+                localStorage.setItem('rethTheme', 'dark');
             }
         }
 
-        // ฟังก์ชันโหลด Theme ที่เคยเลือกไว้ตอนเปิดหน้าเว็บ
         function loadSavedTheme() {
             var savedTheme = localStorage.getItem('rethTheme');
-            if (savedTheme === 'light') {
-                setTheme('light');
-            } else {
-                setTheme('dark'); // Default
-            }
+            if (savedTheme === 'light') setTheme('light');
+            else setTheme('dark');
         }
 
         async function fetchScriptsFromServer(searchQuery) {
@@ -274,7 +281,6 @@
             searchTimer = setTimeout(() => fetchScriptsFromServer(e.target.value), 500);
         });
 
-        // เมื่อโหลดหน้าเว็บเสร็จ ให้โหลด Theme และ Fetch ข้อมูล
         window.onload = () => {
             loadSavedTheme();
             fetchScriptsFromServer("");
