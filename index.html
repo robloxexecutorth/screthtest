@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — ULTIMATE COMPLETE VER.</title>
+    <title>RETH OFFICIAL — ORIGINAL ARRAY VER.</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -32,25 +32,21 @@
 
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; margin: 0; overflow-x: hidden; }
         
-        /* --- BLOCK BLUE GLOW & OUTLINE --- */
         * { -webkit-tap-highlight-color: transparent; outline: none !important; }
         *:focus { outline: none !important; box-shadow: none !important; }
 
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         
-        /* Navigation */
         .nav-controls { position: fixed; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; border: none; }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); }
 
-        /* Search & Filter UI */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; }
         .reth-search { background: var(--search-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; transition: 0.3s; }
         .filter-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0 25px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 10px; }
         .float-filter-menu { position: absolute; top: calc(100% + 15px); right: 0; width: 280px; background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 20px; z-index: 1000; opacity: 0; visibility: hidden; transform: translateY(10px); transition: 0.3s; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .float-filter-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
-        /* Card Design & Effects */
         .reth-card { 
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; 
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease; 
@@ -60,7 +56,6 @@
         .reth-card img { opacity: 0.4; transition: 0.4s ease; }
         .reth-card:hover img { opacity: 1; transform: scale(1.05); }
 
-        /* Badges */
         .ver-badge-container { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .key-info-badge { position: absolute; top: 12px; left: 46px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .no-ver .key-info-badge { left: 12px; } 
@@ -123,11 +118,10 @@
     </div>
 
     <script>
-        let allScriptsMap = new Map(); // คีย์หลักป้องกันสคริปต์ซ้ำ
+        let allScripts = []; // กลับมาใช้ Array ปกติ (ไม่กันซ้ำ)
         let currentPage = 1;
         let searchQuery = "";
         
-        // --- NEW VERIFIED STAR BADGE ---
         const verStarSVG = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/>
             <path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/>
@@ -145,12 +139,11 @@
                 const data = await res.json();
                 const newScripts = data.result.scripts || data.result.docs || [];
                 
-                if (!append) allScriptsMap.clear(); 
-                
-                newScripts.forEach(s => {
-                    const id = s._id || s.id || s.slug;
-                    allScriptsMap.set(id, s); // ถ้า ID ซ้ำ จะเขียนทับตัวเดิม ไม่เกิดตัวใหม่
-                });
+                if (!append) {
+                    allScripts = newScripts;
+                } else {
+                    allScripts = [...allScripts, ...newScripts]; // ต่อท้าย Array ตรงๆ ไม่เช็คซ้ำ
+                }
 
                 document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 1)) ? 'flex' : 'none';
                 render();
@@ -160,27 +153,26 @@
         function render() {
             const isVerOnly = document.getElementById('fVer').checked;
             const isKeylessOnly = document.getElementById('fKey').checked;
-            const list = Array.from(allScriptsMap.values());
 
-            const filtered = list.filter(s => {
+            const filtered = allScripts.filter(s => {
                 if (isVerOnly && !s.verified) return false;
                 if (isKeylessOnly && s.key !== false) return false;
                 return true;
             });
 
             let html = "";
-            filtered.forEach((s) => {
+            filtered.forEach((s, index) => {
                 const id = s._id || s.id || s.slug;
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 html += `
-                <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal('${id}')">
+                <div class="reth-card p-6 ${!s.verified ? 'no-ver' : ''}" onclick="openModal(${index})">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900">
                         ${s.verified ? `<div class="ver-badge-container">${verStarSVG}</div>` : ""}
                         <div class="key-info-badge ${s.key ? 'badge-has-key' : 'badge-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
                         <div class="status-badge"><span class="dot working"></span> Working</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
-                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy('${id}', this)">Copy Loadstring</div>
+                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${index}, this)">Copy Loadstring</div>
                     <div class="stats-row">
                         <span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span>
                         <span class="text-green-500">👍 ${s.likeCount || 0}</span>
@@ -198,8 +190,8 @@
             fetchScripts(searchQuery, currentPage + 1, true).then(() => btn.innerText = "Load More Scripts");
         }
 
-        function openModal(id) {
-            const s = allScriptsMap.get(id);
+        function openModal(index) {
+            const s = allScripts[index];
             document.getElementById('mTitle').innerHTML = `${s.title}${s.verified ? `<div class="w-6 h-6 inline-block align-middle ml-2">${verStarSVG}</div>` : ""}`;
             document.getElementById('mStats').innerHTML = `VIEWS: ${s.views.toLocaleString()} | 👍 ${s.likeCount || 0} | 👎 ${s.dislikeCount || 0}`;
             document.getElementById('mCode').innerText = s.script || "-- No Script Data --";
@@ -221,8 +213,8 @@
             setTimeout(() => { m.classList.replace('flex', 'hidden'); document.body.style.overflow = 'auto'; }, 300);
         }
 
-        function quickCopy(id, btn) {
-            const s = allScriptsMap.get(id);
+        function quickCopy(index, btn) {
+            const s = allScripts[index];
             navigator.clipboard.writeText(s.script).then(() => {
                 const old = btn.innerText; btn.innerText = "COPIED!";
                 btn.style.background = "#22c55e"; btn.style.color = "#fff";
