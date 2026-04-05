@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- ตัวแปรสีสำหรับระบบธีม --- */
         :root {
             --bg-color: #000000;
             --card-bg: #050505;
@@ -17,6 +16,7 @@
             --text-dim: #555555;
             --border-color: #111111;
             --search-bg: #050505;
+            --modal-bg: rgba(5, 5, 5, 0.98);
         }
 
         [data-theme="light"] {
@@ -26,6 +26,7 @@
             --text-dim: #a1a1aa;
             --border-color: #e4e4e7;
             --search-bg: #ffffff;
+            --modal-bg: rgba(255, 255, 255, 0.98);
         }
 
         body { 
@@ -33,17 +34,16 @@
             color: var(--text-main); 
             font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        /* --- จัดตำแหน่งส่วนบน (Header & Buttons) --- */
-        .top-nav-area {
+        /* --- Navigation & Buttons --- */
+        .nav-container {
             position: fixed; top: 25px; right: 25px;
-            display: flex; align-items: center; gap: 15px; z-index: 100;
+            display: flex; align-items: center; gap: 12px; z-index: 1000;
         }
 
-        /* Theme Switcher */
-        .theme-box {
+        .theme-switcher {
             display: flex; background: var(--card-bg);
             border: 1px solid var(--border-color);
             padding: 4px; border-radius: 12px;
@@ -55,114 +55,121 @@
         }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); }
 
-        /* Discord Button */
-        .discord-btn { 
+        .discord-link { 
             background: #5865F2; color: white;
-            padding: 12px 24px; border-radius: 14px;
-            font-size: 11px; font-weight: 900;
+            padding: 12px 20px; border-radius: 14px;
+            font-size: 10px; font-weight: 900;
             text-transform: uppercase; text-decoration: none;
-            display: flex; align-items: center; gap: 10px;
+            display: flex; align-items: center; gap: 8px;
         }
 
-        /* --- Main Layout (จัดให้เหมือนต้นฉบับ) --- */
-        .main-wrapper {
-            max-width: 1200px; margin: 0 auto; padding: 60px 20px;
-            display: flex; flex-direction: column; align-items: center;
+        /* --- Header & Search --- */
+        .hero-section {
+            padding: 80px 20px 40px 20px; text-align: center;
         }
+        .logo-text { font-size: 80px; font-weight: 900; font-style: italic; letter-spacing: -0.05em; line-height: 1; }
+        .tagline { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.5em; text-transform: uppercase; margin-top: 10px; }
 
-        .reth-header { text-align: center; margin-bottom: 40px; }
-        .reth-logo { font-size: 85px; font-weight: 900; font-style: italic; line-height: 0.9; }
-        .reth-tagline { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 0.5em; margin-top: 10px; text-transform: uppercase; }
-
-        /* Search Bar */
-        .search-box-container { width: 100%; max-width: 600px; margin-bottom: 80px; }
+        .search-area { width: 100%; max-width: 600px; margin: 40px auto 80px auto; }
         .reth-input { 
             width: 100%; background: var(--search-bg);
             border: 1px solid var(--border-color);
-            border-radius: 20px; padding: 26px;
+            border-radius: 20px; padding: 24px;
             color: var(--text-main); font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.2em; outline: none;
+            text-transform: uppercase; letter-spacing: 0.1em; outline: none;
         }
 
-        /* --- Card UI --- */
-        .script-grid {
-            display: grid; width: 100%;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 25px;
+        /* --- Card Grid System --- */
+        .grid-container {
+            max-width: 1400px; margin: 0 auto; padding: 0 40px 100px 40px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;
         }
         .reth-card {
             background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 24px; padding: 20px; display: flex; flex-direction: column;
-            transition: 0.3s; cursor: pointer;
+            border-radius: 26px; padding: 20px; display: flex; flex-direction: column;
+            transition: 0.3s; cursor: pointer; position: relative;
         }
-        .reth-card:hover { transform: translateY(-5px); border-color: #333; }
+        .reth-card:hover { transform: translateY(-8px); border-color: var(--text-dim); }
 
-        .thumb-wrap {
+        .image-box {
             position: relative; aspect-ratio: 16/9; border-radius: 18px;
             overflow: hidden; background: #000; margin-bottom: 15px;
         }
-        .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+        .image-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 0.5s; }
+        .reth-card:hover img { opacity: 0.9; }
         
-        .badge { position: absolute; font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
-        .b-keyless { top: 10px; left: 10px; background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-        .b-key { top: 10px; left: 10px; background: rgba(234, 179, 8, 0.2); color: #facc15; }
-        .b-status { top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: #fff; }
+        .badge { position: absolute; font-size: 8px; font-weight: 900; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; z-index: 10; }
+        .b-keyless { top: 12px; left: 12px; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .b-key { top: 12px; left: 12px; background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+        .b-status { top: 12px; right: 12px; background: rgba(0,0,0,0.6); color: #fff; border: 1px solid #222; }
 
-        .copy-btn {
-            background: #fff; color: #000; text-align: center;
-            padding: 14px; border-radius: 12px; font-size: 11px;
+        .copy-btn-fast {
+            background: var(--text-main); color: var(--bg-color); text-align: center;
+            padding: 14px; border-radius: 14px; font-size: 11px;
             font-weight: 900; text-transform: uppercase; margin-bottom: 15px;
         }
 
-        /* --- Modal --- */
-        .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; display: flex; items-center; justify-center; }
-        .modal-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 30px; width: 90%; max-width: 650px; padding: 40px; position: relative; }
+        /* --- Modal System --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; display: flex; align-items: center; justify-center; padding: 20px; }
+        .modal-box { 
+            background: var(--modal-bg); border: 1px solid var(--border-color); 
+            border-radius: 32px; width: 100%; max-width: 700px; padding: 40px; 
+            position: relative; backdrop-filter: blur(10px);
+        }
+        .code-display { 
+            background: #000; border: 1px solid #111; border-radius: 16px; 
+            padding: 20px; font-family: monospace; font-size: 11px; color: #666; 
+            max-height: 250px; overflow-y: auto; white-space: pre-wrap; word-break: break-all;
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-nav-area">
-        <div class="theme-box">
-            <div id="darkBtn" class="t-btn active" onclick="changeTheme('dark')">Dark</div>
-            <div id="lightBtn" class="t-btn" onclick="changeTheme('light')">Light</div>
+    <div class="nav-container">
+        <div class="theme-switcher">
+            <div id="darkBtn" class="t-btn active" onclick="switchTheme('dark')">Dark</div>
+            <div id="lightBtn" class="t-btn" onclick="switchTheme('light')">Light</div>
         </div>
-        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-btn">Discord</a>
+        <a href="https://discord.gg/Yp2bXVvU9B" target="_blank" class="discord-link">Discord</a>
     </div>
 
-    <div class="main-wrapper">
-        <header class="reth-header">
-            <h1 class="reth-logo">RETH</h1>
-            <p class="reth-tagline">Official Script Hub</p>
-        </header>
-
-        <div class="search-box-container">
+    <div class="hero-section">
+        <h1 class="logo-text">RETH</h1>
+        <p class="tagline">Official Script Hub</p>
+        
+        <div class="search-area">
             <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-input">
         </div>
-
-        <div id="scriptGrid" class="script-grid">
-            </div>
     </div>
 
-    <div id="detailModal" class="modal-bg hidden">
+    <div id="scriptGrid" class="grid-container">
+        </div>
+
+    <div id="modalOverlay" class="modal-overlay hidden">
         <div class="modal-box">
-            <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
-            <h2 id="m-title" class="text-2xl font-black uppercase italic mb-4"></h2>
-            <div class="flex gap-4 mb-6">
-                <button onclick="copyFromModal()" class="flex-1 bg-white text-black py-4 rounded-xl font-black text-[11px] uppercase">Copy Script</button>
-                <a id="m-web" href="#" target="_blank" class="px-8 border border-zinc-800 rounded-xl flex items-center text-[11px] font-black uppercase text-white">View Web</a>
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 hover:text-white uppercase">Close [X]</button>
+            <h2 id="modalTitle" class="text-3xl font-black uppercase italic mb-2 tracking-tighter"></h2>
+            <div id="modalStats" class="flex gap-4 text-[10px] font-bold text-zinc-500 mb-6 uppercase"></div>
+            
+            <div class="flex gap-4 mb-8">
+                <button id="modalCopyBtn" onclick="copyFromModal()" class="flex-1 bg-white text-black py-4 rounded-xl font-black text-[11px] uppercase transition-all">Copy Script</button>
+                <a id="modalWebBtn" href="#" target="_blank" class="px-8 border border-zinc-800 rounded-xl flex items-center text-[10px] font-black uppercase text-white hover:bg-zinc-900">View Web</a>
             </div>
-            <div id="m-code" class="bg-black p-5 rounded-xl font-mono text-[11px] text-zinc-600 max-h-60 overflow-y-auto break-all"></div>
+
+            <p class="text-[9px] font-black text-zinc-600 uppercase mb-2">Script Output:</p>
+            <div id="modalCode" class="code-display"></div>
         </div>
     </div>
 
     <script>
-        var scripts = [];
+        var masterData = [];
 
-        // ฟังก์ชันสลับธีม (Verbose)
-        function changeTheme(mode) {
+        // 🌗 Theme Function (Standard Verbose)
+        function switchTheme(mode) {
             var body = document.body;
             var d = document.getElementById('darkBtn');
             var l = document.getElementById('lightBtn');
+
             if (mode === 'light') {
                 body.setAttribute('data-theme', 'light');
                 l.classList.add('active'); d.classList.remove('active');
@@ -172,64 +179,86 @@
             }
         }
 
-        async function loadData(q) {
-            var api = q ? "https://scriptblox.com/api/script/search?q=" + encodeURIComponent(q) : "https://scriptblox.com/api/script/fetch?page=1&max=20";
+        // 🌐 API Fetching
+        async function loadScripts(query) {
+            var api = query ? "https://scriptblox.com/api/script/search?q=" + encodeURIComponent(query) + "&max=24" : "https://scriptblox.com/api/script/fetch?page=1&max=24";
             var proxy = "https://api.codetabs.com/v1/proxy/?quest=" + encodeURIComponent(api);
+
             try {
-                var r = await fetch(proxy);
-                var j = await r.json();
-                scripts = j.result.scripts || j.result.docs || [];
-                render(scripts);
-            } catch (e) { console.error(e); }
+                var response = await fetch(proxy);
+                var json = await response.json();
+                masterData = json.result.scripts || json.result.docs || [];
+                renderGrid(masterData);
+            } catch (err) { console.error("Error loading scripts:", err); }
         }
 
-        function render(list) {
-            var g = document.getElementById('scriptGrid');
-            var h = "";
+        // 🎨 Rendering UI
+        function renderGrid(list) {
+            var container = document.getElementById('scriptGrid');
+            var html = "";
+
             for (var i = 0; i < list.length; i++) {
                 var s = list[i];
-                var img = s.image && s.image.startsWith('/') ? "https://scriptblox.com" + s.image : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                
-                h += '<div class="reth-card" onclick="openModal(' + i + ')">';
-                h += '  <div class="thumb-wrap">';
-                h += '    <img src="' + img + '">';
-                h += '    <div class="badge ' + (s.key ? 'b-key' : 'b-keyless') + '">' + (s.key ? 'Key' : 'Keyless') + '</div>';
-                h += '    <div class="badge b-status">' + (s.isPatched ? 'Patched' : 'Working') + '</div>';
-                h += '  </div>';
-                h += '  <div class="flex flex-col flex-grow">';
-                h += '    <div class="flex gap-2 text-[9px] font-black text-zinc-500 mb-2">👁 ' + (s.views || 0).toLocaleString() + ' • 👍 ' + (s.likeCount || 0) + '</div>';
-                h += '    <div class="copy-btn" onclick="event.stopPropagation(); fastCopy(' + i + ', this)">Copy Loadstring</div>';
-                h += '    <h3 class="text-sm font-black uppercase truncate mb-1">' + s.title + '</h3>';
-                h += '    <p class="text-[9px] font-bold text-zinc-600 truncate">' + (s.game.name || "Universal") + '</p>';
-                h += '  </div>';
-                h += '</div>';
+                var thumb = s.image && s.image.startsWith('/') ? "https://scriptblox.com" + s.image : (s.game.imageUrl || "https://via.placeholder.com/400x225/000/333?text=RETH+HUB");
+
+                html += '<div class="reth-card" onclick="openDetail(' + i + ')">';
+                html += '  <div class="image-box">';
+                html += '    <img src="' + thumb + '">';
+                html += '    <div class="badge ' + (s.key ? 'b-key' : 'b-keyless') + '">' + (s.key ? 'Key Required' : 'Keyless') + '</div>';
+                html += '    <div class="badge b-status">' + (s.isPatched ? 'Patched' : 'Working') + '</div>';
+                html += '  </div>';
+                html += '  <div class="flex flex-col flex-grow">';
+                html += '    <div class="flex gap-2 text-[9px] font-black text-zinc-500 mb-2 uppercase">👁 ' + (s.views || 0).toLocaleString() + ' • 👍 ' + (s.likeCount || 0) + '</div>';
+                html += '    <div class="copy-btn-fast" onclick="event.stopPropagation(); fastCopy(' + i + ', this)">Copy Loadstring</div>';
+                html += '    <h3 class="text-sm font-black uppercase truncate mb-1">' + s.title + '</h3>';
+                html += '    <p class="text-[9px] font-bold text-zinc-600 truncate">' + (s.game.name || "Universal Script") + '</p>';
+                html += '  </div>';
+                html += '</div>';
             }
-            g.innerHTML = h;
+            container.innerHTML = html;
         }
 
-        function openModal(idx) {
-            var s = scripts[idx];
-            document.getElementById('m-title').innerText = s.title;
-            document.getElementById('m-code').innerText = s.script;
-            document.getElementById('m-web').href = "https://scriptblox.com/script/" + s.slug;
-            document.getElementById('detailModal').classList.remove('hidden');
+        // 📦 Modal Actions
+        function openDetail(index) {
+            var data = masterData[index];
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalCode').innerText = data.script || "-- No Code Found --";
+            document.getElementById('modalWebBtn').href = "https://scriptblox.com/script/" + data.slug;
+            document.getElementById('modalStats').innerHTML = "Views: " + (data.views || 0).toLocaleString() + " • Likes: " + (data.likeCount || 0) + " • Dislikes: " + (data.dislikeCount || 0);
+            
+            var modal = document.getElementById('modalOverlay');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
-
-        function fastCopy(idx, btn) {
-            navigator.clipboard.writeText(scripts[idx].script);
-            btn.innerText = "Done!"; btn.style.backgroundColor = "#22c55e"; btn.style.color = "#fff";
-            setTimeout(function() { btn.innerText = "Copy Loadstring"; btn.style.backgroundColor = ""; btn.style.color = ""; }, 1200);
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+            document.body.style.overflow = 'auto';
         }
 
-        var t;
+        function fastCopy(index, btn) {
+            navigator.clipboard.writeText(masterData[index].script);
+            var original = btn.innerText;
+            btn.innerText = "COPIED!"; btn.style.backgroundColor = "#22c55e"; btn.style.color = "#fff";
+            setTimeout(function() { btn.innerText = original; btn.style.backgroundColor = ""; btn.style.color = ""; }, 1500);
+        }
+
+        function copyFromModal() {
+            var code = document.getElementById('modalCode').innerText;
+            navigator.clipboard.writeText(code);
+            var btn = document.getElementById('modalCopyBtn');
+            btn.innerText = "DONE!"; btn.style.backgroundColor = "#22c55e"; btn.style.color = "#fff";
+            setTimeout(function() { btn.innerText = "Copy Script"; btn.style.backgroundColor = ""; btn.style.color = ""; }, 2000);
+        }
+
+        // 🔍 Search System
+        var timer;
         document.getElementById('searchInput').addEventListener('input', function(e) {
-            clearTimeout(t);
-            t = setTimeout(function() { loadData(e.target.value); }, 500);
+            clearTimeout(timer);
+            timer = setTimeout(function() { loadScripts(e.target.value); }, 600);
         });
 
-        window.onload = function() { loadData(""); };
+        window.onload = function() { loadScripts(""); };
     </script>
 </body>
 </html>
