@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RETH OFFICIAL — COMPLETE VERSION</title>
+    <title>RETH OFFICIAL — ULTIMATE VERSION</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -19,6 +19,7 @@
             --modal-bg: #080808;
             --code-bg: #000000;
             --code-text: #ffffff;
+            --btn-copy-white-border: transparent;
         }
 
         [data-theme="light"] {
@@ -28,12 +29,12 @@
             --text-dim: #555555;
             --border-color: #000000;
             --modal-bg: #ffffff;
-            --code-bg: #ffffff; /* ช่องสคริปต์ขาวขอบดำตามสั่ง */
-            --code-text: #000000;
+            --code-bg: #ffffff; /* ช่องสคริปต์สีขาว */
+            --code-text: #000000; /* ตัวอักษรดำ */
+            --btn-copy-white-border: #000000;
         }
 
         body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; margin: 0; overflow-x: hidden; }
-        
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         
         /* Navigation */
@@ -52,10 +53,9 @@
         /* Card System */
         .reth-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; position: relative; cursor: pointer; }
         .reth-card:hover { transform: translateY(-8px); border-color: var(--text-main); }
-        .reth-card img { opacity: 0.6; transition: 0.4s; }
+        .reth-card img { opacity: 0.5; transition: 0.4s; }
         .reth-card:hover img { opacity: 1; }
 
-        /* Badges */
         .ver-badge { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
         .dot { height: 6px; width: 6px; border-radius: 50%; background: #22c55e; }
@@ -63,29 +63,32 @@
         .bg-key { background: #ef4444; color: white; }
         .bg-keyless { background: #eab308; color: black; }
 
-        /* Buttons & Stats */
-        .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--border-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
+        .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--btn-copy-white-border); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
+
+        /* Load More Animation */
+        .btn-load-more { 
+            background: transparent; border: 2px solid var(--border-color); color: var(--text-main); 
+            padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; 
+            text-transform: uppercase; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); 
+            letter-spacing: 0.15em;
+        }
+        .btn-load-more:hover { 
+            background: var(--text-main); color: var(--bg-color); border-color: var(--text-main);
+            transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
         /* Modal */
         #modal { backdrop-filter: blur(12px); }
-        #modalImageContainer { border: 2px solid var(--border-color); border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 25px; }
+        #modalImgArea { border: 2px solid var(--border-color); border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 25px; }
         #mCode { 
-            background: var(--code-bg); 
-            color: var(--code-text); 
-            border: 2px solid var(--border-color); 
-            padding: 20px; 
-            border-radius: 18px; 
-            font-family: monospace; 
-            font-size: 10px; 
-            max-height: 180px; 
-            overflow: auto; 
-            white-space: pre-wrap; 
-            word-break: break-all;
+            background: var(--code-bg); color: var(--code-text); border: 2px solid var(--border-color); 
+            padding: 20px; border-radius: 18px; font-family: monospace; font-size: 10px; 
+            max-height: 180px; overflow: auto; white-space: pre-wrap; word-break: break-all;
         }
 
-        /* Toast Notification */
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 30px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; z-index: 3000; display: none; }
+        /* Toast */
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 30px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; z-index: 3000; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -116,8 +119,8 @@
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
         
-        <div class="flex justify-center py-20" id="loadMoreArea" style="display: none;">
-            <button onclick="loadMore()" class="t-btn !px-12 !py-5 !text-[11px]">Load More Scripts</button>
+        <div class="flex justify-center py-24" id="loadMoreArea" style="display: none;">
+            <button onclick="loadMore()" class="btn-load-more">Load More Scripts</button>
         </div>
     </div>
 
@@ -126,11 +129,7 @@
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
             <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
             <div id="mStatsRow" class="stats-row mb-6"></div>
-            
-            <div id="modalImageContainer">
-                <img id="mImg" src="" class="w-full h-full object-cover">
-            </div>
-
+            <div id="modalImgArea"><img id="mImg" src="" class="w-full h-full object-cover"></div>
             <div class="flex gap-4 mb-8">
                 <button onclick="copyFromModal()" class="bg-white text-black border-2 border-[var(--border-color)] flex-1 py-4 rounded-xl font-black text-[11px] uppercase transition hover:bg-zinc-200">Copy Script</button>
                 <a id="mLink" href="#" target="_blank" class="flex-1 border-2 border-[var(--border-color)] rounded-xl flex items-center justify-center text-[11px] font-black uppercase text-[var(--text-main)]">Source Link</a>
@@ -140,9 +139,7 @@
     </div>
 
     <script>
-        let allScripts = [];
-        let currentPage = 1;
-        let currentQuery = "";
+        let allScripts = []; let currentPage = 1; let currentQuery = "";
         const verStar = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
         function setTheme(m) {
@@ -196,7 +193,6 @@
             document.getElementById('mStatsRow').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount || 0}</span><span>Game: ${s.game.name}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Code --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
-            
             const m = document.getElementById('modal');
             m.classList.replace('hidden', 'flex');
             setTimeout(() => m.classList.add('opacity-100'), 10);
@@ -208,34 +204,15 @@
             setTimeout(() => m.classList.replace('flex', 'hidden'), 300);
         }
 
-        function showToast() {
-            const t = document.getElementById('toast');
-            t.style.display = 'block';
-            setTimeout(() => t.style.display = 'none', 2000);
-        }
-
-        function copyFromModal() {
-            navigator.clipboard.writeText(document.getElementById('mCode').innerText);
-            showToast();
-        }
-
-        function quickCopy(i) {
-            navigator.clipboard.writeText(allScripts[i].script);
-            showToast();
-        }
-
+        function showToast() { const t = document.getElementById('toast'); t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 2000); }
+        function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
+        function quickCopy(i) { navigator.clipboard.writeText(allScripts[i].script); showToast(); }
         function loadMore() { fetchScripts(currentQuery, currentPage + 1, true); }
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('show'); }
 
-        window.onload = () => {
-            setTheme(localStorage.getItem('reth-theme') || 'dark');
-            fetchScripts();
-        };
-
-        let db;
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(db);
-            db = setTimeout(() => fetchScripts(e.target.value, 1, false), 500);
+        window.onload = () => { setTheme(localStorage.getItem('reth-theme') || 'dark'); fetchScripts(); };
+        let db; document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(db); db = setTimeout(() => fetchScripts(e.target.value, 1, false), 500);
         });
     </script>
 </body>
