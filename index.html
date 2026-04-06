@@ -21,6 +21,7 @@
             --code-bg: #000000;
             --code-text: #ffffff;
             --discord-color: #5865F2;
+            --accent-glow: #ffffff;
         }
 
         [data-theme="light"] {
@@ -32,6 +33,7 @@
             --modal-bg: #ffffff;
             --code-bg: #ffffff;
             --code-text: #000000;
+            --accent-glow: #000000;
         }
 
         body { margin: 0; background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; overflow-x: hidden; position: relative; }
@@ -43,42 +45,33 @@
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
 
-        /* Discord Glowing Button */
+        /* Discord Button */
         .discord-btn {
-            background: var(--discord-color);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 9px;
-            font-weight: 900;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            transition: 0.3s;
-            box-shadow: 0 0 15px rgba(88, 101, 242, 0.4);
-            animation: discordGlow 2s infinite;
+            background: var(--discord-color); color: white; padding: 10px 20px; border-radius: 12px;
+            font-size: 9px; font-weight: 900; text-transform: uppercase; display: flex; align-items: center;
+            transition: 0.3s; box-shadow: 0 0 15px rgba(88, 101, 242, 0.4); animation: discordGlow 2s infinite;
         }
-
         @keyframes discordGlow {
-            0% { box-shadow: 0 0 5px rgba(88, 101, 242, 0.4); transform: scale(1); }
+            0%, 100% { box-shadow: 0 0 5px rgba(88, 101, 242, 0.4); transform: scale(1); }
             50% { box-shadow: 0 0 20px rgba(88, 101, 242, 0.8); transform: scale(1.02); }
-            100% { box-shadow: 0 0 5px rgba(88, 101, 242, 0.4); transform: scale(1); }
         }
-
-        .discord-btn:hover { background: #4752c4; box-shadow: 0 0 30px rgba(88, 101, 242, 1); }
 
         /* Skeleton Animation */
         .skeleton {
             background: linear-gradient(90deg, var(--card-bg) 25%, rgba(255,255,255,0.05) 50%, var(--card-bg) 75%);
-            background-size: 200% 100%;
-            animation: skeletonShimmer 1.5s infinite linear;
-            border-radius: 12px;
+            background-size: 200% 100%; animation: skeletonShimmer 1.5s infinite linear; border-radius: 12px;
         }
+        @keyframes skeletonShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
-        @keyframes skeletonShimmer {
-            from { background-position: 200% 0; }
-            to { background-position: -200% 0; }
+        /* Floating Plus Button */
+        .fab-plus {
+            position: fixed; bottom: 40px; right: 40px; width: 65px; height: 65px;
+            background: var(--text-main); color: var(--bg-color); border-radius: 50%;
+            display: flex; items-center; justify-content: center; font-size: 24px;
+            cursor: pointer; z-index: 1500; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .fab-plus:hover { transform: scale(1.1) rotate(90deg); box-shadow: 0 0 30px var(--accent-glow); }
 
         /* Search & Filter & Categories */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 20px auto; position: relative; width: 100%; z-index: 10; }
@@ -94,52 +87,50 @@
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; 
             position: relative; cursor: pointer; backdrop-filter: blur(12px);
         }
-
         .card-pop { animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
-
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: scale(0.8) translateY(30px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
+        @keyframes cardEntrance { from { opacity: 0; transform: scale(0.8) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         .reth-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--text-main); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .reth-card img { opacity: 0.6; transition: 0.4s; }
         .reth-card:hover img { opacity: 1; }
 
-        /* Badges */
+        /* Badges & Stats */
         .ver-badge { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
         .dot { height: 6px; width: 6px; border-radius: 50%; background: #22c55e; }
         .key-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .bg-key { background: #ef4444; color: white; }
         .bg-keyless { background: #eab308; color: black; }
-
-        /* Stats & Buttons */
         .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--border-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
 
-        /* Load More */
-        .btn-load-more { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); letter-spacing: 0.15em; backdrop-filter: blur(10px); }
-        .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        /* Trending Grid In Modal */
+        .trending-grid { display: grid; grid-cols: 1 sm:grid-cols-2 lg:grid-cols-3; gap: 15px; margin-top: 20px; }
+        .trending-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 20px; padding: 15px; cursor: pointer; transition: 0.3s; }
+        .trending-item:hover { background: rgba(255,255,255,0.1); transform: translateY(-5px); }
+        .trending-item img { border-radius: 12px; margin-bottom: 10px; aspect-ratio: 1; object-fit: cover; }
 
-        /* Modal */
-        #modal { backdrop-filter: blur(20px); position: fixed; inset: 0; }
+        /* Modal & UI Elements */
+        #modal, #trendingModal { backdrop-filter: blur(25px); position: fixed; inset: 0; }
+        .modal-content { background: var(--modal-bg); border: 2px solid var(--border-color); rounded-[40px]; max-width: 2xl; w-full; p-10; relative; }
         #modalImgArea { border: 2px solid var(--border-color); border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 25px; }
         #mCode { background: var(--code-bg); color: var(--code-text); border: 2px solid var(--border-color); padding: 20px; border-radius: 18px; font-family: monospace; font-size: 10px; max-height: 180px; overflow: auto; white-space: pre-wrap; word-break: break-all; }
-
-        /* Toast */
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 30px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; z-index: 3000; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
-        /* Footer */
+        .btn-load-more { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); letter-spacing: 0.15em; backdrop-filter: blur(10px); }
+        .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); transform: scale(1.05); }
+
         .reth-footer { margin-top: 40px; padding: 40px 0; border-top: 1px solid var(--border-color); text-align: center; }
         .credit-link { color: var(--text-main); font-weight: 900; text-decoration: none; font-style: italic; transition: 0.3s; }
-        .credit-link:hover { opacity: 0.7; }
     </style>
 </head>
 <body class="p-6 md:p-16">
 
     <canvas id="bg-canvas"></canvas>
     <div id="toast">Copied to Clipboard!</div>
+
+    <div class="fab-plus" onclick="openTrending()">
+        <i class="fa-solid fa-plus"></i>
+    </div>
 
     <div class="nav-controls">
         <button onclick="setTheme('dark')" id="dBtn" class="t-btn">Dark</button>
@@ -171,7 +162,6 @@
             <button class="chip" onclick="filterByCategory('Pet Simulator', this)">Pet Sim 99</button>
             <button class="chip" onclick="filterByCategory('Brookhaven', this)">Brookhaven</button>
             <button class="chip" onclick="filterByCategory('Doors', this)">Doors</button>
-            <button class="chip" onclick="filterByCategory('Murder Mystery 2', this)">MM2</button>
         </div>
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
@@ -203,8 +193,51 @@
         </div>
     </div>
 
+    <div id="trendingModal" class="fixed inset-0 z-[2000] hidden items-center justify-center p-6 bg-black/80 opacity-0 transition-opacity duration-300">
+        <div class="bg-[var(--modal-bg)] border-2 border-[var(--border-color)] rounded-[40px] max-w-3xl w-full p-10 relative">
+            <button onclick="closeTrending()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
+            <h2 class="text-3xl font-black italic uppercase mb-2">Trending Games</h2>
+            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-6">Currently popular in RETH community</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 overflow-y-auto max-h-[60vh] pr-2">
+                <div class="trending-item text-center" onclick="filterByCategory('Blox Fruits', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/180da670732815340156a5965421c97a/420/420/Image/Png" alt="Blox Fruits">
+                    <p class="text-[10px] font-black uppercase mt-2">Blox Fruits</p>
+                </div>
+                <div class="trending-item text-center" onclick="filterByCategory('Pet Simulator 99', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/31969a239922579f1361868351586566/420/420/Image/Png" alt="Pet Sim 99">
+                    <p class="text-[10px] font-black uppercase mt-2">Pet Sim 99</p>
+                </div>
+                <div class="trending-item text-center" onclick="filterByCategory('King Legacy', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/7123985651581452285/420/420/Image/Png" alt="King Legacy">
+                    <p class="text-[10px] font-black uppercase mt-2">King Legacy</p>
+                </div>
+                <div class="trending-item text-center" onclick="filterByCategory('Brookhaven', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/b9546059c3519c9918730b77e8913917/420/420/Image/Png" alt="Brookhaven">
+                    <p class="text-[10px] font-black uppercase mt-2">Brookhaven</p>
+                </div>
+                <div class="trending-item text-center" onclick="filterByCategory('Murder Mystery 2', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/f04c549646b9550b0722c8335f606977/420/420/Image/Png" alt="MM2">
+                    <p class="text-[10px] font-black uppercase mt-2">MM2</p>
+                </div>
+                <div class="trending-item text-center" onclick="filterByCategory('Doors', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/c4a96116893699745e6912443493e811/420/420/Image/Png" alt="Doors">
+                    <p class="text-[10px] font-black uppercase mt-2">Doors</p>
+                </div>
+                <div class="trending-item text-center" onclick="filterByCategory('Blade Ball', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/005e8392131972621456a5965421c97a/420/420/Image/Png" alt="Blade Ball">
+                    <p class="text-[10px] font-black uppercase mt-2">Blade Ball</p>
+                </div>
+                <div class="trending-item text-center" onclick="filterByCategory('Sol\'s RNG', null); closeTrending()">
+                    <img src="https://tr.rbxcdn.com/3932731806316279154/420/420/Image/Png" alt="Sol's RNG">
+                    <p class="text-[10px] font-black uppercase mt-2">Sol's RNG</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- 3D ENGINE (Full) ---
+        // --- 3D ENGINE (45 Shapes, Scrolling Loop) ---
         const canvas = document.getElementById('bg-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const scene = new THREE.Scene();
@@ -233,7 +266,7 @@
             renderer.render(scene, camera);
         }
 
-        // --- CORE LOGIC ---
+        // --- CORE DATA LOGIC ---
         let allScripts = []; let currentPage = 1; let currentQuery = "";
         const verStar = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
@@ -263,8 +296,10 @@
         }
 
         function filterByCategory(cat, btn) {
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+            }
             document.getElementById('searchInput').value = cat;
             fetchScripts(cat, 1, false);
         }
@@ -302,7 +337,7 @@
             }).join('');
         }
 
-        // --- UTILS ---
+        // --- UI UTILS ---
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
             document.getElementById('dBtn').classList.toggle('active', m === 'dark');
@@ -310,17 +345,24 @@
             localStorage.setItem('reth-theme', m);
             shapes.forEach(s => s.material.color.set(m === 'light' ? 0x000000 : 0x4f6b8f));
         }
+
+        // Script Modal
         function openModal(i) {
             const s = allScripts[i];
             const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "");
             document.getElementById('mTitle').innerText = s.title;
             document.getElementById('mImg').src = thumb;
-            document.getElementById('mStatsRow').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount || 0}</span><span>Dislikes: ${s.dislikeCount || 0}</span><span>Game: ${s.game.name}</span>`;
+            document.getElementById('mStatsRow').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount || 0}</span><span>Game: ${s.game.name}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Code --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
             const m = document.getElementById('modal'); m.classList.replace('hidden', 'flex'); setTimeout(() => m.classList.add('opacity-100'), 10);
         }
         function closeModal() { const m = document.getElementById('modal'); m.classList.remove('opacity-100'); setTimeout(() => m.classList.replace('flex', 'hidden'), 300); }
+
+        // Trending Modal
+        function openTrending() { const m = document.getElementById('trendingModal'); m.classList.replace('hidden', 'flex'); setTimeout(() => m.classList.add('opacity-100'), 10); }
+        function closeTrending() { const m = document.getElementById('trendingModal'); m.classList.remove('opacity-100'); setTimeout(() => m.classList.replace('flex', 'hidden'), 300); }
+
         function showToast() { const t = document.getElementById('toast'); t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); }
         function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
         function quickCopy(i) { navigator.clipboard.writeText(allScripts[i].script); showToast(); }
