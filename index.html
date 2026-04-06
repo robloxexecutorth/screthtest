@@ -65,10 +65,7 @@
             100% { box-shadow: 0 0 5px rgba(88, 101, 242, 0.4); transform: scale(1); }
         }
 
-        .discord-btn:hover {
-            background: #4752c4;
-            box-shadow: 0 0 30px rgba(88, 101, 242, 1);
-        }
+        .discord-btn:hover { background: #4752c4; box-shadow: 0 0 30px rgba(88, 101, 242, 1); }
 
         /* Skeleton Animation */
         .skeleton {
@@ -83,25 +80,22 @@
             to { background-position: -200% 0; }
         }
 
-        /* Search & Filter */
-        .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; width: 100%; z-index: 10; }
+        /* Search & Filter & Categories */
+        .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 20px auto; position: relative; width: 100%; z-index: 10; }
         .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); }
+        
+        .category-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 800px; margin: 0 auto 60px auto; position: relative; z-index: 10; }
+        .chip { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 50px; font-size: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
+        .chip:hover, .chip.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
 
         /* Card System */
         .reth-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border-color); 
-            border-radius: 28px; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            overflow: hidden; 
-            position: relative; 
-            cursor: pointer; 
-            backdrop-filter: blur(12px);
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; 
+            position: relative; cursor: pointer; backdrop-filter: blur(12px);
         }
 
-        .card-pop {
-            animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
-        }
+        .card-pop { animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
 
         @keyframes cardEntrance {
             from { opacity: 0; transform: scale(0.8) translateY(30px); }
@@ -124,31 +118,19 @@
         .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--border-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
 
-        /* Load More Animation */
-        .btn-load-more { 
-            background: transparent; border: 2px solid var(--border-color); color: var(--text-main); 
-            padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; 
-            text-transform: uppercase; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); 
-            letter-spacing: 0.15em; backdrop-filter: blur(10px);
-        }
-        .btn-load-more:hover { 
-            background: var(--text-main); color: var(--bg-color); border-color: var(--text-main);
-            transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
+        /* Load More */
+        .btn-load-more { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); letter-spacing: 0.15em; backdrop-filter: blur(10px); }
+        .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
         /* Modal */
         #modal { backdrop-filter: blur(20px); position: fixed; inset: 0; }
         #modalImgArea { border: 2px solid var(--border-color); border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 25px; }
-        #mCode { 
-            background: var(--code-bg); color: var(--code-text); border: 2px solid var(--border-color); 
-            padding: 20px; border-radius: 18px; font-family: monospace; font-size: 10px; 
-            max-height: 180px; overflow: auto; white-space: pre-wrap; word-break: break-all;
-        }
+        #mCode { background: var(--code-bg); color: var(--code-text); border: 2px solid var(--border-color); padding: 20px; border-radius: 18px; font-family: monospace; font-size: 10px; max-height: 180px; overflow: auto; white-space: pre-wrap; word-break: break-all; }
 
         /* Toast */
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 30px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; z-index: 3000; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
-        /* Footer Credit */
+        /* Footer */
         .reth-footer { margin-top: 40px; padding: 40px 0; border-top: 1px solid var(--border-color); text-align: center; }
         .credit-link { color: var(--text-main); font-weight: 900; text-decoration: none; font-style: italic; transition: 0.3s; }
         .credit-link:hover { opacity: 0.7; }
@@ -182,6 +164,16 @@
             </div>
         </div>
 
+        <div class="category-container">
+            <button class="chip active" onclick="filterByCategory('', this)">All Games</button>
+            <button class="chip" onclick="filterByCategory('Universal', this)">Universal</button>
+            <button class="chip" onclick="filterByCategory('Blox Fruits', this)">Blox Fruits</button>
+            <button class="chip" onclick="filterByCategory('Pet Simulator', this)">Pet Sim 99</button>
+            <button class="chip" onclick="filterByCategory('Brookhaven', this)">Brookhaven</button>
+            <button class="chip" onclick="filterByCategory('Doors', this)">Doors</button>
+            <button class="chip" onclick="filterByCategory('Murder Mystery 2', this)">MM2</button>
+        </div>
+
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
         
         <div class="flex justify-center py-24" id="loadMoreArea" style="display: none;">
@@ -212,7 +204,7 @@
     </div>
 
     <script>
-        // --- 3D ENGINE (Three.js) ---
+        // --- 3D ENGINE (Full) ---
         const canvas = document.getElementById('bg-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const scene = new THREE.Scene();
@@ -232,33 +224,28 @@
                 shapes.push(mesh);
             }
         }
-
         function animate3D() {
             requestAnimationFrame(animate3D);
             shapes.forEach(s => {
-                s.position.y += s.userData.speedY;
-                s.rotation.x += s.userData.rot;
-                s.rotation.y += s.userData.rot;
+                s.position.y += s.userData.speedY; s.rotation.x += s.userData.rot; s.rotation.y += s.userData.rot;
                 if(s.position.y > 40) s.position.y = -40;
             });
             renderer.render(scene, camera);
         }
 
-        // --- DATA ENGINE ---
+        // --- CORE LOGIC ---
         let allScripts = []; let currentPage = 1; let currentQuery = "";
         const verStar = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
         function showSkeletons() {
             const grid = document.getElementById('scriptGrid');
-            const skeletonHTML = Array(8).fill(0).map(() => `
+            grid.innerHTML = Array(8).fill(0).map(() => `
                 <div class="reth-card p-6 opacity-50">
                     <div class="skeleton aspect-video rounded-2xl mb-5"></div>
                     <div class="skeleton h-10 w-full mb-4"></div>
                     <div class="skeleton h-4 w-2/3 mb-2"></div>
                     <div class="skeleton h-3 w-1/2"></div>
-                </div>
-            `).join('');
-            grid.innerHTML = skeletonHTML;
+                </div>`).join('');
         }
 
         async function fetchScripts(q = "", p = 1, append = false) {
@@ -275,30 +262,28 @@
             } catch (e) { console.error(e); }
         }
 
+        function filterByCategory(cat, btn) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('searchInput').value = cat;
+            fetchScripts(cat, 1, false);
+        }
+
         function render() {
             const grid = document.getElementById('scriptGrid');
-            const fV = document.getElementById('fVer').checked;
-            const fK = document.getElementById('fKey').checked;
-            const fU = document.getElementById('fUni').checked;
-            
+            const fV = document.getElementById('fVer').checked, fK = document.getElementById('fKey').checked, fU = document.getElementById('fUni').checked;
             const filtered = allScripts.filter(s => {
                 const matchesVer = !fV || s.verified;
                 const matchesKey = !fK || s.key === false;
                 const matchesUni = !fU || (s.game.name.toLowerCase().includes('universal') || s.game.name.toLowerCase().includes('all games'));
                 return matchesVer && matchesKey && matchesUni;
             });
-
             const startIndex = (currentPage - 1) * 20;
-
             grid.innerHTML = filtered.map((s, i) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                
                 const isNew = i >= startIndex;
-                const animClass = isNew ? "card-pop" : "";
-                const delay = isNew ? ((i - startIndex) * 0.05) : 0; 
-
                 return `
-                <div class="reth-card p-6 ${animClass}" onclick="openModal(${i})" style="animation-delay: ${delay}s">
+                <div class="reth-card p-6 ${isNew ? 'card-pop' : ''}" onclick="openModal(${i})" style="animation-delay: ${isNew ? (i-startIndex)*0.05 : 0}s">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
                         ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
                         <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
@@ -325,51 +310,26 @@
             localStorage.setItem('reth-theme', m);
             shapes.forEach(s => s.material.color.set(m === 'light' ? 0x000000 : 0x4f6b8f));
         }
-
         function openModal(i) {
             const s = allScripts[i];
             const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "");
             document.getElementById('mTitle').innerText = s.title;
             document.getElementById('mImg').src = thumb;
-            document.getElementById('mStatsRow').innerHTML = `
-                <span>Views: ${s.views.toLocaleString()}</span>
-                <span>Likes: ${s.likeCount || 0}</span>
-                <span>Dislikes: ${s.dislikeCount || 0}</span>
-                <span>Game: ${s.game.name}</span>
-            `;
+            document.getElementById('mStatsRow').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount || 0}</span><span>Dislikes: ${s.dislikeCount || 0}</span><span>Game: ${s.game.name}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Code --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
-            const m = document.getElementById('modal');
-            m.classList.replace('hidden', 'flex');
-            setTimeout(() => m.classList.add('opacity-100'), 10);
+            const m = document.getElementById('modal'); m.classList.replace('hidden', 'flex'); setTimeout(() => m.classList.add('opacity-100'), 10);
         }
-
-        function closeModal() {
-            const m = document.getElementById('modal');
-            m.classList.remove('opacity-100');
-            setTimeout(() => m.classList.replace('flex', 'hidden'), 300);
-        }
-
+        function closeModal() { const m = document.getElementById('modal'); m.classList.remove('opacity-100'); setTimeout(() => m.classList.replace('flex', 'hidden'), 300); }
         function showToast() { const t = document.getElementById('toast'); t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); }
         function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
         function quickCopy(i) { navigator.clipboard.writeText(allScripts[i].script); showToast(); }
         function loadMore() { fetchScripts(currentQuery, currentPage + 1, true); }
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('hidden'); }
 
-        window.onload = () => {
-            init3D(); animate3D();
-            setTheme(localStorage.getItem('reth-theme') || 'dark');
-            fetchScripts();
-        };
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        let db; document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(db); db = setTimeout(() => fetchScripts(e.target.value, 1, false), 500);
-        });
+        window.onload = () => { init3D(); animate3D(); setTheme(localStorage.getItem('reth-theme') || 'dark'); fetchScripts(); };
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
+        let db; document.getElementById('searchInput').addEventListener('input', (e) => { clearTimeout(db); db = setTimeout(() => fetchScripts(e.target.value, 1, false), 500); });
     </script>
 </body>
 </html>
