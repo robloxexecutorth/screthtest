@@ -196,6 +196,11 @@
                 <div class="trending-name-btn" onclick="filterByCategory('Blade Ball', null); closeTrending()">Blade Ball</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Sol\'s RNG', null); closeTrending()">Sol's RNG</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Adopt Me', null); closeTrending()">Adopt Me</div>
+                <div class="trending-name-btn" onclick="filterByCategory('RIVAL', null); closeTrending()">RIVAL</div>
+                <div class="trending-name-btn" onclick="filterByCategory('99 Night in The Forest', null); closeTrending()">99 Night in The Forest</div>
+                <div class="trending-name-btn" onclick="filterByCategory('EVADE', null); closeTrending()">EVADE</div>
+                <div class="trending-name-btn" onclick="filterByCategory('3008', null); closeTrending()">3008</div>
+                <div class="trending-name-btn" onclick="filterByCategory('Dead Rail', null); closeTrending()">Dead Rail</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Universal', null); closeTrending()">Universal Hub</div>
             </div>
         </div>
@@ -268,14 +273,14 @@
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 const isNew = i >= startIndex;
                 return `
-                <div class="reth-card p-6 ${isNew ? 'card-pop' : ''}" onclick="openModal(${i})" style="animation-delay: ${isNew ? (i-startIndex)*0.05 : 0}s">
+                <div class="reth-card p-6 ${isNew ? 'card-pop' : ''}" onclick="openModal(${startIndex + i})" style="animation-delay: ${isNew ? (i)*0.05 : 0}s">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
                         ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
                         <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
                         <div class="status-badge"><span class="dot"></span> Working</div>
                         <img src="${thumb}" class="w-full h-full object-cover">
                     </div>
-                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${i})">Copy Script</div>
+                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${startIndex + i})">Copy Script</div>
                     <div class="stats-row"><span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span><span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span></div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
                     <p class="text-[9px] text-zinc-500 font-bold uppercase truncate mt-1">${s.game.name}</p>
