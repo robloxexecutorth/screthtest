@@ -114,10 +114,11 @@
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="SEARCH FOR SCRIPTS..." class="reth-search">
             <button onclick="toggleFilter()" class="t-btn !px-8 !py-0 !rounded-2xl">Filter</button>
-            <div id="filterMenu" class="absolute top-full mt-4 right-0 w-64 bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-2xl p-6 hidden z-50">
+            <div id="filterMenu" class="absolute top-full mt-4 right-0 w-64 bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-2xl p-6 hidden z-50 shadow-2xl">
                 <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-4">Quick Filters</h3>
                 <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" id="fVer" onchange="render()"></label>
                 <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" id="fKey" onchange="render()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Universal Only</span><input type="checkbox" id="fUni" onchange="render()"></label>
             </div>
         </div>
 
@@ -204,7 +205,14 @@
             const grid = document.getElementById('scriptGrid');
             const fV = document.getElementById('fVer').checked;
             const fK = document.getElementById('fKey').checked;
-            const filtered = allScripts.filter(s => (!fV || s.verified) && (!fK || s.key === false));
+            const fU = document.getElementById('fUni').checked;
+            
+            const filtered = allScripts.filter(s => {
+                const matchesVer = !fV || s.verified;
+                const matchesKey = !fK || s.key === false;
+                const matchesUni = !fU || (s.game.name.toLowerCase().includes('universal') || s.game.name.toLowerCase().includes('all games'));
+                return matchesVer && matchesKey && matchesUni;
+            });
 
             grid.innerHTML = filtered.map((s, i) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
