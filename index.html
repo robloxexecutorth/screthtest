@@ -36,8 +36,11 @@
 
         body { margin: 0; background-color: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; transition: 0.3s; overflow-x: hidden; position: relative; }
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        
+        /* Typography */
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         
+        /* Navigation & Controls */
         .nav-controls { position: absolute; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
@@ -52,64 +55,66 @@
             50% { box-shadow: 0 0 20px rgba(88, 101, 242, 0.8); transform: scale(1.02); }
         }
 
-        /* Skeleton Animation */
-        .skeleton {
-            background: linear-gradient(90deg, var(--card-bg) 25%, rgba(255,255,255,0.05) 50%, var(--card-bg) 75%);
-            background-size: 200% 100%; animation: skeletonShimmer 1.5s infinite linear; border-radius: 12px;
-        }
-        @keyframes skeletonShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-
-        /* Card System - แก้ไข Hover ให้เด้งลื่นๆ */
+        /* --- CARD ANIMATION SYSTEM (NO REMOVAL) --- */
         .reth-card { 
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; 
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.4s; 
+            transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.5s ease;
             overflow: hidden; position: relative; cursor: pointer; backdrop-filter: blur(12px);
-            will-change: transform; transform: translateZ(0); /* บังคับ GPU เร่งความเร็ว */
+            will-change: transform; transform: translateY(0) scale(1);
         }
         
-        /* Animation ตอนโหลดเสร็จ */
-        .card-pop { animation: cardEntrance 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-        @keyframes cardEntrance { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .card-pop { animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+        @keyframes cardEntrance { 
+            from { opacity: 0; transform: translateY(40px) scale(0.92); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
 
-        /* Hover Effect: ต้องทำงานตลอดเวลา */
         .reth-card:hover { 
-            transform: translateY(-12px) scale(1.03) !important; 
+            transform: translateY(-15px) scale(1.035); 
             border-color: var(--text-main); 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            z-index: 50;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            z-index: 100;
         }
         
-        .reth-card img { opacity: 0.6; transition: 0.4s; pointer-events: none; }
-        .reth-card:hover img { opacity: 1; }
+        .reth-card img { opacity: 0.6; transition: 0.5s ease; }
+        .reth-card:hover img { opacity: 1; transform: scale(1.05); }
 
-        /* ส่วนประกอบอื่นๆ (เหมือนเดิม) */
+        /* Search & Filter UI */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 20px auto; position: relative; width: 100%; z-index: 100; }
-        .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); }
+        .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); outline: none; }
         .category-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 1000px; margin: 0 auto 60px auto; position: relative; z-index: 50; align-items: center; }
         .chip { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 50px; font-size: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
         .chip:hover, .chip.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
         .chip-plus { background: var(--text-main); color: var(--bg-color); border: none; padding: 8px 12px; border-radius: 50px; font-size: 10px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
         .chip-plus:hover { transform: scale(1.1) rotate(90deg); }
 
+        /* Badges */
         .ver-badge { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
         .dot { height: 6px; width: 6px; border-radius: 50%; background: #22c55e; }
         .key-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .bg-key { background: #ef4444; color: white; }
         .bg-keyless { background: #eab308; color: black; }
+        
+        /* Stats & Buttons */
         .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--border-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
-        .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
+        .stats-row { display: flex; gap: 15px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
+        .stats-row i { margin-right: 4px; }
+        .stats-row span { display: flex; align-items: center; }
 
+        /* Modals & Code */
         #modal, #trendingModal { backdrop-filter: blur(25px); position: fixed; inset: 0; z-index: 2000; }
         .modal-inner { background: var(--modal-bg); border: 2px solid var(--border-color); border-radius: 40px; width: 100%; padding: 40px; position: relative; }
-        #modalImgArea { border: 2px solid var(--border-color); border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 25px; }
         #mCode { background: var(--code-bg); color: var(--code-text); border: 2px solid var(--border-color); padding: 20px; border-radius: 18px; font-family: monospace; font-size: 10px; max-height: 180px; overflow: auto; white-space: pre-wrap; word-break: break-all; }
+        
+        /* Toast & Load More */
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 30px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; z-index: 3000; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-
         .btn-load-more { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.4s; letter-spacing: 0.15em; backdrop-filter: blur(10px); }
         .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); }
+        
         .reth-footer { margin-top: 40px; padding: 40px 0; border-top: 1px solid var(--border-color); text-align: center; }
-        .credit-link { color: var(--text-main); font-weight: 900; text-decoration: none; font-style: italic; }
+        .trending-item { background: var(--card-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
+        .trending-item:hover { background: var(--text-main); color: var(--bg-color); }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -161,7 +166,7 @@
         <footer class="reth-footer">
             <div class="flex flex-col items-center gap-3">
                 <p class="text-[10px] font-black uppercase text-zinc-500 tracking-[0.4em]">Powered By</p>
-                <a href="https://scriptblox.com" target="_blank" class="credit-link text-xl tracking-tighter">SCRIPT<span class="text-zinc-500">BLOX</span></a>
+                <a href="https://scriptblox.com" target="_blank" class="credit-link text-xl font-bold italic tracking-tighter">SCRIPT<span class="text-zinc-500">BLOX</span></a>
                 <p class="text-[9px] font-bold text-zinc-600 uppercase mt-4 tracking-widest">© 2026 RETH OFFICIAL — Crafted for Excellence</p>
             </div>
         </footer>
@@ -172,7 +177,7 @@
             <button onclick="closeModal()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
             <h2 id="mTitle" class="text-2xl font-black italic uppercase mb-2"></h2>
             <div id="mStatsRow" class="stats-row mb-6"></div>
-            <div id="modalImgArea"><img id="mImg" src="" class="w-full h-full object-cover"></div>
+            <div id="modalImgArea" class="border-2 border-[var(--border-color)] rounded-2xl overflow-hidden aspect-video bg-black mb-6"><img id="mImg" src="" class="w-full h-full object-cover"></div>
             <div class="flex gap-4 mb-8">
                 <button onclick="copyFromModal()" class="bg-white text-black border-2 border-[var(--border-color)] flex-1 py-4 rounded-xl font-black text-[11px] uppercase transition hover:bg-zinc-200">Copy Script</button>
                 <a id="mLink" href="#" target="_blank" class="flex-1 border-2 border-[var(--border-color)] rounded-xl flex items-center justify-center text-[11px] font-black uppercase text-[var(--text-main)]">Source Link</a>
@@ -185,32 +190,19 @@
         <div class="modal-inner max-w-2xl">
             <button onclick="closeTrending()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
             <h2 class="text-2xl font-black italic uppercase mb-6 tracking-tighter">Trending Game Hubs</h2>
-            <div class="trending-list overflow-y-auto max-h-[60vh] pr-2">
-                <div class="trending-name-btn" onclick="filterByCategory('Be a Lucky Block', null); closeTrending()">Be a Lucky Block</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Steal a brainrot', null); closeTrending()">Steal a brainrot</div>
-                <div class="trending-name-btn" onclick="filterByCategory('The Strongest Battlegrounds', null); closeTrending()">The Strongest Battlegrounds</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Grow a garden', null); closeTrending()">Grow a garden</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Prison Life', null); closeTrending()">Prison Life</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Build a Boat for Treasure', null); closeTrending()">Build a Boat for Treasure</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Fling Things and People', null); closeTrending()">Fling Things and People</div>
-                <div class="trending-name-btn" onclick="filterByCategory('KAT', null); closeTrending()">KAT</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Sailor Piece', null); closeTrending()">Sailor Piece</div>
-                <div class="trending-name-btn" onclick="filterByCategory('King Legacy', null); closeTrending()">King Legacy</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Doors', null); closeTrending()">Doors</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Blade Ball', null); closeTrending()">Blade Ball</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Sol\'s RNG', null); closeTrending()">Sol's RNG</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Adopt Me', null); closeTrending()">Adopt Me</div>
-                <div class="trending-name-btn" onclick="filterByCategory('RIVAL', null); closeTrending()">RIVAL</div>
-                <div class="trending-name-btn" onclick="filterByCategory('EVADE', null); closeTrending()">EVADE</div>
-                <div class="trending-name-btn" onclick="filterByCategory('3008', null); closeTrending()">3008</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Dead Rail', null); closeTrending()">Dead Rail</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Universal', null); closeTrending()">Universal Hub</div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto max-h-[60vh] pr-2">
+                <div class="trending-item" onclick="filterByCategory('Be a Lucky Block', null); closeTrending()">Be a Lucky Block</div>
+                <div class="trending-item" onclick="filterByCategory('Steal a brainrot', null); closeTrending()">Steal a brainrot</div>
+                <div class="trending-item" onclick="filterByCategory('The Strongest Battlegrounds', null); closeTrending()">Strongest Battle</div>
+                <div class="trending-item" onclick="filterByCategory('Prison Life', null); closeTrending()">Prison Life</div>
+                <div class="trending-item" onclick="filterByCategory('Doors', null); closeTrending()">Doors</div>
+                <div class="trending-item" onclick="filterByCategory('Universal', null); closeTrending()">Universal Hub</div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 3D ENGINE ---
+        // --- 3D ENGINE (MAINTAINED) ---
         const canvas = document.getElementById('bg-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const scene = new THREE.Scene();
@@ -230,51 +222,49 @@
         }
         function animate3D() {
             requestAnimationFrame(animate3D);
-            shapes.forEach(s => { s.position.y += s.userData.speedY; s.rotation.x += s.userData.rot; s.rotation.y += s.userData.rot; if(s.position.y > 40) s.position.y = -40; });
+            shapes.forEach(s => { 
+                s.position.y += s.userData.speedY; 
+                s.rotation.x += s.userData.rot; s.rotation.y += s.userData.rot; 
+                if(s.position.y > 40) s.position.y = -40; 
+            });
             renderer.render(scene, camera);
         }
 
-        // --- CORE LOGIC ---
+        // --- DATA LOGIC ---
         let allScripts = []; let currentPage = 1; let currentQuery = "";
         const verStar = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
-        function showSkeletons() {
-            document.getElementById('scriptGrid').innerHTML = Array(8).fill(0).map(() => `<div class="reth-card p-6 opacity-50"><div class="skeleton aspect-video rounded-2xl mb-5"></div><div class="skeleton h-10 w-full mb-4"></div><div class="skeleton h-4 w-2/3 mb-2"></div></div>`).join('');
-        }
-
         async function fetchScripts(q = "", p = 1, append = false) {
-            if (!append) { showSkeletons(); allScripts = []; }
+            if (!append) { document.getElementById('scriptGrid').innerHTML = ""; allScripts = []; }
             currentQuery = q; currentPage = p;
             const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=20&page=${p}` : `https://scriptblox.com/api/script/fetch?page=${p}&max=20`;
             try {
                 const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(api)}`);
                 const data = await res.json();
                 const newBatch = data.result.scripts || data.result.docs || [];
-                
                 const oldLength = allScripts.length;
                 allScripts = [...allScripts, ...newBatch];
-                
-                renderList(newBatch, append, oldLength);
+                renderCards(newBatch, append, oldLength);
                 document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 1)) ? 'flex' : 'none';
             } catch (e) { console.error(e); }
         }
 
-        function renderList(scripts, append, startIdx) {
+        function renderCards(scripts, append, startIdx) {
             const grid = document.getElementById('scriptGrid');
             const fV = document.getElementById('fVer').checked, fK = document.getElementById('fKey').checked, fU = document.getElementById('fUni').checked;
             
             const filtered = scripts.filter(s => {
-                const matchesVer = !fV || s.verified;
-                const matchesKey = !fK || s.key === false;
-                const matchesUni = !fU || (s.game.name.toLowerCase().includes('universal') || s.game.name.toLowerCase().includes('all games'));
-                return matchesVer && matchesKey && matchesUni;
+                const mVer = !fV || s.verified;
+                const mKey = !fK || s.key === false;
+                const mUni = !fU || (s.game.name.toLowerCase().includes('universal') || s.game.name.toLowerCase().includes('all games'));
+                return mVer && mKey && mUni;
             });
 
             const html = filtered.map((s, i) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 const finalIdx = startIdx + i;
                 return `
-                <div class="reth-card p-6 card-pop" onclick="openModal(${finalIdx})" style="animation-delay: ${(i % 20) * 0.05}s">
+                <div class="reth-card p-6 card-pop" onclick="openModal(${finalIdx})" style="animation-delay: ${(i % 20) * 0.06}s">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
                         ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
                         <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
@@ -282,7 +272,11 @@
                         <img src="${thumb}" loading="lazy" class="w-full h-full object-cover">
                     </div>
                     <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${finalIdx})">Copy Script</div>
-                    <div class="stats-row"><span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span><span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span></div>
+                    <div class="stats-row">
+                        <span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span>
+                        <span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span>
+                        <span><i class="fa-solid fa-thumbs-down"></i> ${s.dislikeCount || 0}</span>
+                    </div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
                     <p class="text-[9px] text-zinc-500 font-bold uppercase truncate mt-1">${s.game.name}</p>
                 </div>`;
@@ -292,30 +286,28 @@
             else grid.innerHTML = html;
         }
 
-        function filterRefresh() {
-            document.getElementById('scriptGrid').innerHTML = "";
-            renderList(allScripts, false, 0);
-        }
-
+        // --- CORE FUNCTIONS (NO REMOVAL) ---
+        function filterRefresh() { document.getElementById('scriptGrid').innerHTML = ""; renderCards(allScripts, false, 0); }
         function filterByCategory(cat, btn) {
             if(btn) { document.querySelectorAll('.chip').forEach(c => c.classList.remove('active')); btn.classList.add('active'); }
             document.getElementById('searchInput').value = cat; fetchScripts(cat, 1, false);
         }
-
-        // --- UTILS ---
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
             document.getElementById('dBtn').classList.toggle('active', m === 'dark');
             document.getElementById('lBtn').classList.toggle('active', m === 'light');
             localStorage.setItem('reth-theme', m);
-            shapes.forEach(s => s.material.color.set(m === 'light' ? 0x000000 : 0x4f6b8f));
+            if(shapes.length) shapes.forEach(s => s.material.color.set(m === 'light' ? 0x000000 : 0x4f6b8f));
         }
-
         function openModal(i) {
             const s = allScripts[i];
-            const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "");
-            document.getElementById('mTitle').innerText = s.title; document.getElementById('mImg').src = thumb;
-            document.getElementById('mStatsRow').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount || 0}</span><span>Game: ${s.game.name}</span>`;
+            document.getElementById('mTitle').innerText = s.title;
+            document.getElementById('mImg').src = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "");
+            document.getElementById('mStatsRow').innerHTML = `
+                <span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span>
+                <span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span>
+                <span><i class="fa-solid fa-thumbs-down"></i> ${s.dislikeCount || 0}</span>
+                <span class="ml-auto">Game: ${s.game.name}</span>`;
             document.getElementById('mCode').innerText = s.script || "-- No Code --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
             const m = document.getElementById('modal'); m.classList.replace('hidden', 'flex'); setTimeout(() => m.classList.add('opacity-100'), 10);
@@ -323,15 +315,15 @@
         function closeModal() { const m = document.getElementById('modal'); m.classList.remove('opacity-100'); setTimeout(() => m.classList.replace('flex', 'hidden'), 300); }
         function openTrending() { const m = document.getElementById('trendingModal'); m.classList.replace('hidden', 'flex'); setTimeout(() => m.classList.add('opacity-100'), 10); }
         function closeTrending() { const m = document.getElementById('trendingModal'); m.classList.remove('opacity-100'); setTimeout(() => m.classList.replace('flex', 'hidden'), 300); }
-        function showToast() { const t = document.getElementById('toast'); t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); }
-        function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
         function quickCopy(i) { navigator.clipboard.writeText(allScripts[i].script); showToast(); }
+        function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
+        function showToast() { const t = document.getElementById('toast'); t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); }
         function loadMore() { fetchScripts(currentQuery, currentPage + 1, true); }
         function toggleFilter() { document.getElementById('filterMenu').classList.toggle('hidden'); }
 
         window.onload = () => { init3D(); animate3D(); setTheme(localStorage.getItem('reth-theme') || 'dark'); fetchScripts(); };
-        window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
         let db; document.getElementById('searchInput').addEventListener('input', (e) => { clearTimeout(db); db = setTimeout(() => fetchScripts(e.target.value, 1, false), 500); });
+        window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
     </script>
 </body>
 </html>
