@@ -38,7 +38,6 @@
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .reth-title { font-size: clamp(60px, 10vw, 85px); font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; letter-spacing: -0.05em; }
         
-        /* Navigation Controls */
         .nav-controls { position: absolute; top: 25px; right: 25px; display: flex; gap: 10px; z-index: 1100; }
         .t-btn { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 10px; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
         .t-btn.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
@@ -53,14 +52,12 @@
             50% { box-shadow: 0 0 20px rgba(88, 101, 242, 0.8); transform: scale(1.02); }
         }
 
-        /* Skeleton Animation */
         .skeleton {
             background: linear-gradient(90deg, var(--card-bg) 25%, rgba(255,255,255,0.05) 50%, var(--card-bg) 75%);
             background-size: 200% 100%; animation: skeletonShimmer 1.5s infinite linear; border-radius: 12px;
         }
         @keyframes skeletonShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
-        /* Search & Categories Setup */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 20px auto; position: relative; width: 100%; z-index: 100; }
         .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); }
         
@@ -71,7 +68,6 @@
         .chip-plus { background: var(--text-main); color: var(--bg-color); border: none; padding: 8px 12px; border-radius: 50px; font-size: 10px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
         .chip-plus:hover { transform: scale(1.1) rotate(90deg); }
 
-        /* Card System & Effects */
         .reth-card { 
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; 
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; 
@@ -83,7 +79,6 @@
         .reth-card img { opacity: 0.6; transition: 0.4s; }
         .reth-card:hover img { opacity: 1; }
 
-        /* Badges */
         .ver-badge { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
         .dot { height: 6px; width: 6px; border-radius: 50%; background: #22c55e; }
@@ -94,12 +89,10 @@
         .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--border-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
 
-        /* Trending Grid UI (Text Only) */
         .trending-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .trending-name-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 18px; border-radius: 15px; text-align: center; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; min-height: 60px; line-height: 1.2; }
+        .trending-name-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 18px; border-radius: 15px; text-align: center; font-size: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; min-height: 60px; }
         .trending-name-btn:hover { background: var(--text-main); color: var(--bg-color); transform: scale(1.02); }
 
-        /* Modal layers (Fix overlapping) */
         #modal, #trendingModal { backdrop-filter: blur(25px); position: fixed; inset: 0; z-index: 2000; }
         .modal-inner { background: var(--modal-bg); border: 2px solid var(--border-color); border-radius: 40px; width: 100%; padding: 40px; position: relative; }
         #modalImgArea { border: 2px solid var(--border-color); border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; background: #000; margin-bottom: 25px; }
@@ -151,16 +144,13 @@
         </div>
 
         <div id="scriptGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
-        
-        <div class="flex justify-center py-24" id="loadMoreArea" style="display: none;">
-            <button onclick="loadMore()" class="btn-load-more">Load More Scripts</button>
-        </div>
+        <div class="flex justify-center py-24" id="loadMoreArea" style="display: none;"><button onclick="loadMore()" class="btn-load-more">Load More Scripts</button></div>
 
         <footer class="reth-footer">
             <div class="flex flex-col items-center gap-3">
                 <p class="text-[10px] font-black uppercase text-zinc-500 tracking-[0.4em]">Powered By</p>
                 <a href="https://scriptblox.com" target="_blank" class="credit-link text-xl tracking-tighter">SCRIPT<span class="text-zinc-500">BLOX</span></a>
-                <p class="text-[9px] font-bold text-zinc-600 uppercase mt-4 tracking-widest">© 2026 RETH OFFICIAL — Crafted for Excellence</p>
+                <p class="text-[9px] font-bold text-zinc-600 uppercase mt-4 tracking-widest">© 2026 RETH OFFICIAL</p>
             </div>
         </footer>
     </div>
@@ -182,8 +172,13 @@
     <div id="trendingModal" class="fixed inset-0 hidden items-center justify-center p-6 bg-black/80 opacity-0 transition-opacity duration-300">
         <div class="modal-inner max-w-2xl">
             <button onclick="closeTrending()" class="absolute top-8 right-8 text-[10px] font-black text-zinc-500 uppercase">Close [X]</button>
-            <h2 class="text-2xl font-black italic uppercase mb-6 tracking-tighter">Trending Game Hubs</h2>
+            <h2 class="text-2xl font-black italic uppercase mb-6 tracking-tighter">Popular Game Hubs</h2>
             <div class="trending-list overflow-y-auto max-h-[60vh] pr-2">
+                <div class="trending-name-btn" onclick="filterByCategory('RIVAL', null); closeTrending()">RIVAL</div>
+                <div class="trending-name-btn" onclick="filterByCategory('99 Night in The Forest', null); closeTrending()">99 Night in The Forest</div>
+                <div class="trending-name-btn" onclick="filterByCategory('EVADE', null); closeTrending()">EVADE</div>
+                <div class="trending-name-btn" onclick="filterByCategory('3008', null); closeTrending()">3008</div>
+                <div class="trending-name-btn" onclick="filterByCategory('Dead Rail', null); closeTrending()">Dead Rail</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Be a Lucky Block', null); closeTrending()">Be a Lucky Block</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Steal a brainrot', null); closeTrending()">Steal a brainrot</div>
                 <div class="trending-name-btn" onclick="filterByCategory('The Strongest Battlegrounds', null); closeTrending()">The Strongest Battlegrounds</div>
@@ -194,15 +189,13 @@
                 <div class="trending-name-btn" onclick="filterByCategory('King Legacy', null); closeTrending()">King Legacy</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Doors', null); closeTrending()">Doors</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Blade Ball', null); closeTrending()">Blade Ball</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Sol\'s RNG', null); closeTrending()">Sol's RNG</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Adopt Me', null); closeTrending()">Adopt Me</div>
-                <div class="trending-name-btn" onclick="filterByCategory('Universal', null); closeTrending()">Universal Hub</div>
+                <div class="trending-name-btn" onclick="filterByCategory('Universal', null); closeTrending()">Universal</div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 3D ENGINE (Maintaining all 45 Shapes) ---
+        // --- 3D ENGINE (45 Shapes - FULL) ---
         const canvas = document.getElementById('bg-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const scene = new THREE.Scene();
@@ -226,7 +219,7 @@
             renderer.render(scene, camera);
         }
 
-        // --- DATA & RENDERING LOGIC ---
+        // --- CORE LOGIC ---
         let allScripts = []; let currentPage = 1; let currentQuery = "";
         const verStar = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
@@ -283,7 +276,6 @@
             }).join('');
         }
 
-        // --- INTERFACE UTILS ---
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
             document.getElementById('dBtn').classList.toggle('active', m === 'dark');
