@@ -46,7 +46,7 @@
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 60px auto; position: relative; width: 100%; z-index: 10; }
         .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); }
 
-        /* Card System + POP Animation */
+        /* Card System */
         .reth-card { 
             background: var(--card-bg); 
             border: 1px solid var(--border-color); 
@@ -56,7 +56,10 @@
             position: relative; 
             cursor: pointer; 
             backdrop-filter: blur(12px);
-            /* เพิ่มอนิเมชั่นตอนโหลดขึ้นมา */
+        }
+
+        /* คลาสใหม่สำหรับตัวที่เพิ่งโหลดมา */
+        .card-pop {
             animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
         }
 
@@ -231,14 +234,19 @@
                 return matchesVer && matchesKey && matchesUni;
             });
 
+            // หาจุดเริ่มต้นของการ์ดใหม่ (20 ใบต่อหน้า)
+            const startIndex = (currentPage - 1) * 20;
+
             grid.innerHTML = filtered.map((s, i) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
                 
-                // คำนวณ delay เพื่อให้การ์ดค่อยๆ เด้งทีละใบ
-                const delay = (i % 20) * 0.05; 
+                // เช็คว่าการ์ดใบนี้เป็นของหน้าใหม่ที่กำลังโหลดหรือไม่
+                const isNew = i >= startIndex;
+                const animClass = isNew ? "card-pop" : "";
+                const delay = isNew ? ((i - startIndex) * 0.05) : 0; 
 
                 return `
-                <div class="reth-card p-6" onclick="openModal(${i})" style="animation-delay: ${delay}s">
+                <div class="reth-card p-6 ${animClass}" onclick="openModal(${i})" style="animation-delay: ${delay}s">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
                         ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
                         <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
