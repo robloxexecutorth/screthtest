@@ -74,8 +74,10 @@
             position: relative; cursor: pointer; backdrop-filter: blur(12px);
             will-change: transform, opacity;
         }
-        .card-pop { animation: cardEntrance 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-        @keyframes cardEntrance { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        /* ปรับความเร็ว Animation ให้เด้งไวขึ้น */
+        .card-pop { animation: cardEntrance 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+        @keyframes cardEntrance { from { opacity: 0; transform: scale(0.85) translateY(25px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        
         .reth-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--text-main); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .reth-card img { opacity: 0.6; transition: 0.3s; content-visibility: auto; }
         .reth-card:hover img { opacity: 1; }
@@ -129,9 +131,9 @@
             <button onclick="toggleFilter()" class="t-btn !px-8 !py-0 !rounded-2xl">Filter</button>
             <div id="filterMenu" class="absolute top-full mt-4 right-0 w-64 bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-2xl p-6 hidden z-50 shadow-2xl">
                 <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-4">Quick Filters</h3>
-                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" id="fVer" onchange="render()"></label>
-                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" id="fKey" onchange="render()"></label>
-                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Universal Only</span><input type="checkbox" id="fUni" onchange="render()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" id="fVer" onchange="filterAndRender()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" id="fKey" onchange="filterAndRender()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Universal Only</span><input type="checkbox" id="fUni" onchange="filterAndRender()"></label>
             </div>
         </div>
 
@@ -207,6 +209,7 @@
     </div>
 
     <script>
+        // --- 3D ENGINE ---
         const canvas = document.getElementById('bg-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         const scene = new THREE.Scene();
@@ -230,25 +233,75 @@
             renderer.render(scene, camera);
         }
 
+        // --- CORE LOGIC ---
         let allScripts = []; let currentPage = 1; let currentQuery = "";
         const verStar = `<svg viewBox="0 0 24 24" class="w-full h-full" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L14.39 3.46L17.77 2.82L18.89 6.04L22.14 7.02L21.31 10.33L23 13.17L20.61 15.63L21.25 19.01L18.03 20.13L17.05 23.38L13.74 22.55L10.9 24.24L8.44 21.85L5.06 22.49L3.94 19.27L0.69 18.29L1.52 14.98L-0.17 12.14L2.22 9.68L1.58 6.3L4.8 5.18L5.78 1.93L9.09 2.76L11.93 1.07Z" fill="#1D9BF0"/><path d="M9.5 15.5l-3.5-3.5 1.4-1.4 2.1 2.1 5.6-5.6 1.4 1.4-7 7z" fill="white"/></svg>`;
 
         function showSkeletons() {
-            const grid = document.getElementById('scriptGrid');
-            grid.innerHTML = Array(8).fill(0).map(() => `<div class="reth-card p-6 opacity-50"><div class="skeleton aspect-video rounded-2xl mb-5"></div><div class="skeleton h-10 w-full mb-4"></div><div class="skeleton h-4 w-2/3 mb-2"></div></div>`).join('');
+            document.getElementById('scriptGrid').innerHTML = Array(8).fill(0).map(() => `<div class="reth-card p-6 opacity-50"><div class="skeleton aspect-video rounded-2xl mb-5"></div><div class="skeleton h-10 w-full mb-4"></div><div class="skeleton h-4 w-2/3 mb-2"></div></div>`).join('');
         }
 
         async function fetchScripts(q = "", p = 1, append = false) {
+            if (!append) showSkeletons();
             currentQuery = q; currentPage = p;
             const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=20&page=${p}` : `https://scriptblox.com/api/script/fetch?page=${p}&max=20`;
             try {
                 const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(api)}`);
                 const data = await res.json();
-                const scripts = data.result.scripts || data.result.docs || [];
-                allScripts = append ? [...allScripts, ...scripts] : scripts;
+                const newScripts = data.result.scripts || data.result.docs || [];
+                
+                if(append) {
+                    allScripts = [...allScripts, ...newScripts];
+                    renderBatch(newScripts, true);
+                } else {
+                    allScripts = newScripts;
+                    renderBatch(allScripts, false);
+                }
+                
                 document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 1)) ? 'flex' : 'none';
-                render(append); // Pass append state
             } catch (e) { console.error(e); }
+        }
+
+        // ฟังชันก์ใหม่: ช่วย Render เป็นชุดๆ เพื่อให้ Animation ไม่เพี้ยน
+        function renderBatch(scripts, isAppend) {
+            const grid = document.getElementById('scriptGrid');
+            const fV = document.getElementById('fVer').checked, fK = document.getElementById('fKey').checked, fU = document.getElementById('fUni').checked;
+            
+            const filtered = scripts.filter(s => {
+                const matchesVer = !fV || s.verified;
+                const matchesKey = !fK || s.key === false;
+                const matchesUni = !fU || (s.game.name.toLowerCase().includes('universal') || s.game.name.toLowerCase().includes('all games'));
+                return matchesVer && matchesKey && matchesUni;
+            });
+
+            const html = filtered.map((s, i) => {
+                const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
+                const globalIndex = isAppend ? (allScripts.length - scripts.length + i) : i;
+                
+                return `
+                <div class="reth-card p-6 card-pop" onclick="openModal(${globalIndex})" style="animation-delay: ${(i % 20) * 0.04}s">
+                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
+                        ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
+                        <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
+                        <div class="status-badge"><span class="dot"></span> Working</div>
+                        <img src="${thumb}" loading="lazy" class="w-full h-full object-cover">
+                    </div>
+                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${globalIndex})">Copy Script</div>
+                    <div class="stats-row"><span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span><span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span></div>
+                    <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
+                    <p class="text-[9px] text-zinc-500 font-bold uppercase truncate mt-1">${s.game.name}</p>
+                </div>`;
+            }).join('');
+
+            if (isAppend) grid.insertAdjacentHTML('beforeend', html);
+            else grid.innerHTML = html;
+        }
+
+        // กรณีเปลี่ยน Filter ให้ล้างแล้ว Render ใหม่ทั้งหมด
+        function filterAndRender() {
+            const grid = document.getElementById('scriptGrid');
+            grid.innerHTML = "";
+            renderBatch(allScripts, false);
         }
 
         function filterByCategory(cat, btn) {
@@ -256,44 +309,7 @@
             document.getElementById('searchInput').value = cat; fetchScripts(cat, 1, false);
         }
 
-        function render(isAppend = false) {
-            const grid = document.getElementById('scriptGrid');
-            const fV = document.getElementById('fVer').checked, fK = document.getElementById('fKey').checked, fU = document.getElementById('fUni').checked;
-            
-            const filtered = allScripts.filter(s => {
-                const matchesVer = !fV || s.verified;
-                const matchesKey = !fK || s.key === false;
-                const matchesUni = !fU || (s.game.name.toLowerCase().includes('universal') || s.game.name.toLowerCase().includes('all games'));
-                return matchesVer && matchesKey && matchesUni;
-            });
-
-            // Logic: เฉพาะตัวที่เพิ่มมาใหม่ถึงจะรัน Animation และ Delay จะเริ่มนับใหม่ที่ 0 ทุกครั้งที่ Load More
-            const itemsPerPage = 20;
-            const newItemsStartIndex = isAppend ? (allScripts.length - itemsPerPage) : 0;
-
-            const html = filtered.map((s, i) => {
-                const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                const isNew = i >= newItemsStartIndex;
-                const animationDelay = isNew ? (i % itemsPerPage) * 0.03 : 0; // ปรับลดดีเลย์เหลือ 0.03 และ Reset ทุก 20 ตัว
-
-                return `
-                <div class="reth-card p-6 ${isNew ? 'card-pop' : ''}" onclick="openModal(${i})" style="animation-delay: ${animationDelay}s">
-                    <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
-                        ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
-                        <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
-                        <div class="status-badge"><span class="dot"></span> Working</div>
-                        <img src="${thumb}" loading="lazy" class="w-full h-full object-cover">
-                    </div>
-                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${i})">Copy Script</div>
-                    <div class="stats-row"><span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span><span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span></div>
-                    <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
-                    <p class="text-[9px] text-zinc-500 font-bold uppercase truncate mt-1">${s.game.name}</p>
-                </div>`;
-            }).join('');
-            
-            grid.innerHTML = html;
-        }
-
+        // --- UTILS ---
         function setTheme(m) {
             document.body.setAttribute('data-theme', m);
             document.getElementById('dBtn').classList.toggle('active', m === 'dark');
