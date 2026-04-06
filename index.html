@@ -52,35 +52,44 @@
             50% { box-shadow: 0 0 20px rgba(88, 101, 242, 0.8); transform: scale(1.02); }
         }
 
+        /* Skeleton Animation */
         .skeleton {
             background: linear-gradient(90deg, var(--card-bg) 25%, rgba(255,255,255,0.05) 50%, var(--card-bg) 75%);
             background-size: 200% 100%; animation: skeletonShimmer 1.5s infinite linear; border-radius: 12px;
         }
         @keyframes skeletonShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
+        /* Card System - แก้ไข Hover ให้เด้งลื่นๆ */
+        .reth-card { 
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s, box-shadow 0.4s; 
+            overflow: hidden; position: relative; cursor: pointer; backdrop-filter: blur(12px);
+            will-change: transform; transform: translateZ(0); /* บังคับ GPU เร่งความเร็ว */
+        }
+        
+        /* Animation ตอนโหลดเสร็จ */
+        .card-pop { animation: cardEntrance 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+        @keyframes cardEntrance { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Hover Effect: ต้องทำงานตลอดเวลา */
+        .reth-card:hover { 
+            transform: translateY(-12px) scale(1.03) !important; 
+            border-color: var(--text-main); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            z-index: 50;
+        }
+        
+        .reth-card img { opacity: 0.6; transition: 0.4s; pointer-events: none; }
+        .reth-card:hover img { opacity: 1; }
+
+        /* ส่วนประกอบอื่นๆ (เหมือนเดิม) */
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 20px auto; position: relative; width: 100%; z-index: 100; }
         .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); }
-        
         .category-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 1000px; margin: 0 auto 60px auto; position: relative; z-index: 50; align-items: center; }
         .chip { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 50px; font-size: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
         .chip:hover, .chip.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
-
         .chip-plus { background: var(--text-main); color: var(--bg-color); border: none; padding: 8px 12px; border-radius: 50px; font-size: 10px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
         .chip-plus:hover { transform: scale(1.1) rotate(90deg); }
-
-        .reth-card { 
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 28px; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden; 
-            position: relative; cursor: pointer; backdrop-filter: blur(12px);
-            will-change: transform, opacity;
-        }
-        /* ปรับความเร็ว Animation ให้เด้งไวขึ้น */
-        .card-pop { animation: cardEntrance 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-        @keyframes cardEntrance { from { opacity: 0; transform: scale(0.85) translateY(25px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        
-        .reth-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--text-main); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .reth-card img { opacity: 0.6; transition: 0.3s; content-visibility: auto; }
-        .reth-card:hover img { opacity: 1; }
 
         .ver-badge { position: absolute; top: 12px; left: 12px; width: 26px; height: 26px; z-index: 30; }
         .status-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 10; display: flex; align-items: center; gap: 6px; color: white; }
@@ -88,13 +97,8 @@
         .key-badge { position: absolute; top: 12px; left: 45px; border-radius: 8px; padding: 5px 10px; font-size: 8px; font-weight: 900; z-index: 15; text-transform: uppercase; }
         .bg-key { background: #ef4444; color: white; }
         .bg-keyless { background: #eab308; color: black; }
-        
         .btn-copy-white { background: #ffffff; color: #000000; border: 1.5px solid var(--border-color); text-align: center; padding: 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-bottom: 15px; width: 100%; display: block; transition: 0.2s; }
         .stats-row { display: flex; gap: 12px; font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
-
-        .trending-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .trending-name-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 18px; border-radius: 15px; text-align: center; font-size: 9px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; min-height: 60px; line-height: 1.2; }
-        .trending-name-btn:hover { background: var(--text-main); color: var(--bg-color); transform: scale(1.02); }
 
         #modal, #trendingModal { backdrop-filter: blur(25px); position: fixed; inset: 0; z-index: 2000; }
         .modal-inner { background: var(--modal-bg); border: 2px solid var(--border-color); border-radius: 40px; width: 100%; padding: 40px; position: relative; }
@@ -104,7 +108,6 @@
 
         .btn-load-more { background: transparent; border: 2px solid var(--border-color); color: var(--text-main); padding: 18px 50px; border-radius: 20px; font-size: 11px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.4s; letter-spacing: 0.15em; backdrop-filter: blur(10px); }
         .btn-load-more:hover { background: var(--text-main); color: var(--bg-color); }
-
         .reth-footer { margin-top: 40px; padding: 40px 0; border-top: 1px solid var(--border-color); text-align: center; }
         .credit-link { color: var(--text-main); font-weight: 900; text-decoration: none; font-style: italic; }
     </style>
@@ -131,9 +134,9 @@
             <button onclick="toggleFilter()" class="t-btn !px-8 !py-0 !rounded-2xl">Filter</button>
             <div id="filterMenu" class="absolute top-full mt-4 right-0 w-64 bg-[var(--modal-bg)] border border-[var(--border-color)] rounded-2xl p-6 hidden z-50 shadow-2xl">
                 <h3 class="text-[9px] font-black text-zinc-500 uppercase tracking-widest mb-4">Quick Filters</h3>
-                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" id="fVer" onchange="filterAndRender()"></label>
-                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" id="fKey" onchange="filterAndRender()"></label>
-                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Universal Only</span><input type="checkbox" id="fUni" onchange="filterAndRender()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Verified Only</span><input type="checkbox" id="fVer" onchange="filterRefresh()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Keyless Only</span><input type="checkbox" id="fKey" onchange="filterRefresh()"></label>
+                <label class="flex justify-between py-2 cursor-pointer text-[11px] font-bold uppercase"><span>Universal Only</span><input type="checkbox" id="fUni" onchange="filterRefresh()"></label>
             </div>
         </div>
 
@@ -192,14 +195,12 @@
                 <div class="trending-name-btn" onclick="filterByCategory('Fling Things and People', null); closeTrending()">Fling Things and People</div>
                 <div class="trending-name-btn" onclick="filterByCategory('KAT', null); closeTrending()">KAT</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Sailor Piece', null); closeTrending()">Sailor Piece</div>
-                <div class="trending-name-btn" onclick="filterByCategory('The Forge', null); closeTrending()">The Forge</div>
                 <div class="trending-name-btn" onclick="filterByCategory('King Legacy', null); closeTrending()">King Legacy</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Doors', null); closeTrending()">Doors</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Blade Ball', null); closeTrending()">Blade Ball</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Sol\'s RNG', null); closeTrending()">Sol's RNG</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Adopt Me', null); closeTrending()">Adopt Me</div>
                 <div class="trending-name-btn" onclick="filterByCategory('RIVAL', null); closeTrending()">RIVAL</div>
-                <div class="trending-name-btn" onclick="filterByCategory('99 Night in The Forest', null); closeTrending()">99 Night in The Forest</div>
                 <div class="trending-name-btn" onclick="filterByCategory('EVADE', null); closeTrending()">EVADE</div>
                 <div class="trending-name-btn" onclick="filterByCategory('3008', null); closeTrending()">3008</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Dead Rail', null); closeTrending()">Dead Rail</div>
@@ -242,28 +243,23 @@
         }
 
         async function fetchScripts(q = "", p = 1, append = false) {
-            if (!append) showSkeletons();
+            if (!append) { showSkeletons(); allScripts = []; }
             currentQuery = q; currentPage = p;
             const api = q ? `https://scriptblox.com/api/script/search?q=${encodeURIComponent(q)}&max=20&page=${p}` : `https://scriptblox.com/api/script/fetch?page=${p}&max=20`;
             try {
                 const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(api)}`);
                 const data = await res.json();
-                const newScripts = data.result.scripts || data.result.docs || [];
+                const newBatch = data.result.scripts || data.result.docs || [];
                 
-                if(append) {
-                    allScripts = [...allScripts, ...newScripts];
-                    renderBatch(newScripts, true);
-                } else {
-                    allScripts = newScripts;
-                    renderBatch(allScripts, false);
-                }
+                const oldLength = allScripts.length;
+                allScripts = [...allScripts, ...newBatch];
                 
+                renderList(newBatch, append, oldLength);
                 document.getElementById('loadMoreArea').style.display = (currentPage < (data.result.totalPages || 1)) ? 'flex' : 'none';
             } catch (e) { console.error(e); }
         }
 
-        // ฟังชันก์ใหม่: ช่วย Render เป็นชุดๆ เพื่อให้ Animation ไม่เพี้ยน
-        function renderBatch(scripts, isAppend) {
+        function renderList(scripts, append, startIdx) {
             const grid = document.getElementById('scriptGrid');
             const fV = document.getElementById('fVer').checked, fK = document.getElementById('fKey').checked, fU = document.getElementById('fUni').checked;
             
@@ -276,32 +272,29 @@
 
             const html = filtered.map((s, i) => {
                 const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "https://via.placeholder.com/400x225");
-                const globalIndex = isAppend ? (allScripts.length - scripts.length + i) : i;
-                
+                const finalIdx = startIdx + i;
                 return `
-                <div class="reth-card p-6 card-pop" onclick="openModal(${globalIndex})" style="animation-delay: ${(i % 20) * 0.04}s">
+                <div class="reth-card p-6 card-pop" onclick="openModal(${finalIdx})" style="animation-delay: ${(i % 20) * 0.05}s">
                     <div class="relative aspect-video rounded-2xl overflow-hidden mb-5 bg-zinc-900 border-2 border-[var(--border-color)]">
                         ${s.verified ? `<div class="ver-badge">${verStar}</div>` : ""}
                         <div class="key-badge ${s.key ? 'bg-key' : 'bg-keyless'}">${s.key ? 'Key' : 'Keyless'}</div>
                         <div class="status-badge"><span class="dot"></span> Working</div>
                         <img src="${thumb}" loading="lazy" class="w-full h-full object-cover">
                     </div>
-                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${globalIndex})">Copy Script</div>
+                    <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${finalIdx})">Copy Script</div>
                     <div class="stats-row"><span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span><span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span></div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
                     <p class="text-[9px] text-zinc-500 font-bold uppercase truncate mt-1">${s.game.name}</p>
                 </div>`;
             }).join('');
 
-            if (isAppend) grid.insertAdjacentHTML('beforeend', html);
+            if (append) grid.insertAdjacentHTML('beforeend', html);
             else grid.innerHTML = html;
         }
 
-        // กรณีเปลี่ยน Filter ให้ล้างแล้ว Render ใหม่ทั้งหมด
-        function filterAndRender() {
-            const grid = document.getElementById('scriptGrid');
-            grid.innerHTML = "";
-            renderBatch(allScripts, false);
+        function filterRefresh() {
+            document.getElementById('scriptGrid').innerHTML = "";
+            renderList(allScripts, false, 0);
         }
 
         function filterByCategory(cat, btn) {
@@ -328,10 +321,8 @@
             const m = document.getElementById('modal'); m.classList.replace('hidden', 'flex'); setTimeout(() => m.classList.add('opacity-100'), 10);
         }
         function closeModal() { const m = document.getElementById('modal'); m.classList.remove('opacity-100'); setTimeout(() => m.classList.replace('flex', 'hidden'), 300); }
-
         function openTrending() { const m = document.getElementById('trendingModal'); m.classList.replace('hidden', 'flex'); setTimeout(() => m.classList.add('opacity-100'), 10); }
         function closeTrending() { const m = document.getElementById('trendingModal'); m.classList.remove('opacity-100'); setTimeout(() => m.classList.replace('flex', 'hidden'), 300); }
-
         function showToast() { const t = document.getElementById('toast'); t.style.display='block'; setTimeout(()=>t.style.display='none', 2000); }
         function copyFromModal() { navigator.clipboard.writeText(document.getElementById('mCode').innerText); showToast(); }
         function quickCopy(i) { navigator.clipboard.writeText(allScripts[i].script); showToast(); }
