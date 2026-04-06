@@ -87,6 +87,11 @@
 
         /* Toast */
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #22c55e; color: white; padding: 12px 30px; border-radius: 50px; font-size: 11px; font-weight: 900; text-transform: uppercase; z-index: 3000; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+
+        /* Footer Credit */
+        .reth-footer { margin-top: 40px; padding: 40px 0; border-top: 1px solid var(--border-color); text-align: center; }
+        .credit-link { color: var(--text-main); font-weight: 900; text-decoration: none; font-style: italic; transition: 0.3s; }
+        .credit-link:hover { opacity: 0.7; }
     </style>
 </head>
 <body class="p-6 md:p-16">
@@ -121,6 +126,14 @@
         <div class="flex justify-center py-24" id="loadMoreArea" style="display: none;">
             <button onclick="loadMore()" class="btn-load-more">Load More Scripts</button>
         </div>
+
+        <footer class="reth-footer">
+            <div class="flex flex-col items-center gap-3">
+                <p class="text-[10px] font-black uppercase text-zinc-500 tracking-[0.4em]">Powered By</p>
+                <a href="https://scriptblox.com" target="_blank" class="credit-link text-xl tracking-tighter">SCRIPT<span class="text-zinc-500">BLOX</span></a>
+                <p class="text-[9px] font-bold text-zinc-600 uppercase mt-4 tracking-widest">© 2026 RETH OFFICIAL — Crafted for Excellence</p>
+            </div>
+        </footer>
     </div>
 
     <div id="modal" class="fixed inset-0 z-[2000] hidden items-center justify-center p-6 bg-black/80 opacity-0 transition-opacity duration-300">
@@ -206,7 +219,8 @@
                     <div class="btn-copy-white" onclick="event.stopPropagation(); quickCopy(${i})">Copy Script</div>
                     <div class="stats-row">
                         <span><i class="fa-solid fa-eye"></i> ${s.views.toLocaleString()}</span>
-                        <span>👍 ${s.likeCount || 0}</span>
+                        <span><i class="fa-solid fa-thumbs-up"></i> ${s.likeCount || 0}</span>
+                        <span><i class="fa-solid fa-thumbs-down"></i> ${s.dislikeCount || 0}</span>
                     </div>
                     <h3 class="text-sm font-black uppercase truncate">${s.title}</h3>
                     <p class="text-[9px] text-zinc-500 font-bold uppercase truncate mt-1">${s.game.name}</p>
@@ -228,7 +242,12 @@
             const thumb = s.image && !s.image.includes('http') ? `https://scriptblox.com${s.image}` : (s.game.imageUrl || "");
             document.getElementById('mTitle').innerText = s.title;
             document.getElementById('mImg').src = thumb;
-            document.getElementById('mStatsRow').innerHTML = `<span>Views: ${s.views.toLocaleString()}</span><span>Likes: ${s.likeCount || 0}</span><span>Game: ${s.game.name}</span>`;
+            document.getElementById('mStatsRow').innerHTML = `
+                <span>Views: ${s.views.toLocaleString()}</span>
+                <span>Likes: ${s.likeCount || 0}</span>
+                <span>Dislikes: ${s.dislikeCount || 0}</span>
+                <span>Game: ${s.game.name}</span>
+            `;
             document.getElementById('mCode').innerText = s.script || "-- No Code --";
             document.getElementById('mLink').href = "https://scriptblox.com/script/" + s.slug;
             const m = document.getElementById('modal');
