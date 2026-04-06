@@ -64,7 +64,7 @@
         .search-container { display: flex; gap: 12px; max-width: 650px; margin: 0 auto 20px auto; position: relative; width: 100%; z-index: 100; }
         .reth-search { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-main); font-size: 14px; font-weight: 700; text-transform: uppercase; flex: 1; padding: 22px 28px; backdrop-filter: blur(15px); }
         
-        .category-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto 60px auto; position: relative; z-index: 50; align-items: center; }
+        .category-container { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; max-width: 1000px; margin: 0 auto 60px auto; position: relative; z-index: 50; align-items: center; }
         .chip { background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 50px; font-size: 8px; font-weight: 900; text-transform: uppercase; cursor: pointer; color: var(--text-dim); transition: 0.2s; backdrop-filter: blur(10px); }
         .chip:hover, .chip.active { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
 
@@ -145,6 +145,9 @@
             <button class="chip active" onclick="filterByCategory('', this)">All Games</button>
             <button class="chip" onclick="filterByCategory('Blox Fruits', this)">Blox Fruits</button>
             <button class="chip" onclick="filterByCategory('Pet Simulator 99', this)">Pet Sim 99</button>
+            <button class="chip" onclick="filterByCategory('Prison Life', this)">Prison Life</button>
+            <button class="chip" onclick="filterByCategory('Build a Boat for Treasure', this)">Build a Boat</button>
+            <button class="chip" onclick="filterByCategory('Fling Things and People', this)">Fling Things</button>
             <button class="chip" onclick="filterByCategory('Brookhaven', this)">Brookhaven</button>
             <button class="chip" onclick="filterByCategory('Murder Mystery 2', this)">MM2</button>
             <button class="chip-plus" onclick="openTrending()"><i class="fa-solid fa-plus"></i></button>
@@ -188,6 +191,9 @@
                 <div class="trending-name-btn" onclick="filterByCategory('Steal a brainrot', null); closeTrending()">Steal a brainrot</div>
                 <div class="trending-name-btn" onclick="filterByCategory('The Strongest Battlegrounds', null); closeTrending()">The Strongest Battlegrounds</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Grow a garden', null); closeTrending()">Grow a garden</div>
+                <div class="trending-name-btn" onclick="filterByCategory('Prison Life', null); closeTrending()">Prison Life</div>
+                <div class="trending-name-btn" onclick="filterByCategory('Build a Boat for Treasure', null); closeTrending()">Build a Boat for Treasure</div>
+                <div class="trending-name-btn" onclick="filterByCategory('Fling Things and People', null); closeTrending()">Fling Things and People</div>
                 <div class="trending-name-btn" onclick="filterByCategory('KAT', null); closeTrending()">KAT</div>
                 <div class="trending-name-btn" onclick="filterByCategory('Sailor Piece', null); closeTrending()">Sailor Piece</div>
                 <div class="trending-name-btn" onclick="filterByCategory('The Forge', null); closeTrending()">The Forge</div>
